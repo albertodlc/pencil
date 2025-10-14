@@ -1,8 +1,6 @@
 const {clipboard, nativeImage, shell, ipcRenderer, webFrame} = require("electron");
 
-const _             = require("lodash");
 const rimraf        = require("rimraf");
-const QP            = require("q");
 
 const tmp           = require("tmp");
 const path          = require("path");

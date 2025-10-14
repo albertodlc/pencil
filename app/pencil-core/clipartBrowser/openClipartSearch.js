@@ -82,8 +82,8 @@ OpenClipartSearch.prototype.parseSearchResult = function(response) {
     result.resultCount = response.info.results;
     result.pages = response.info.pages;
 
-    _.forEach(response.payload, function(e) {
-        var item = {
+    response.payload.forEach(e => {
+        const item = {
             name: e.title,
             description: e.description,
             src: e.svg.url,
@@ -96,6 +96,7 @@ OpenClipartSearch.prototype.parseSearchResult = function(response) {
 
         result.result.push(item);
     });
+
 
     return result;
 };

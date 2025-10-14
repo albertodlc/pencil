@@ -55,8 +55,13 @@ CollectionRepository.getCollectionRepos = function () {
     return repos;
 };
 
+/**
+ * 
+ * @param {*} url 
+ * @returns 
+ */
 CollectionRepository.loadCollections = function(url) {
-    return QP.Promise(function(resolve, reject) {
+    return new Promise((resolve, reject) => {
 
         var nugget = require("nugget");
         var tempDir = tmp.dirSync({ keep: false, unsafeCleanup: true }).name;
@@ -90,6 +95,7 @@ CollectionRepository.loadCollections = function(url) {
 
     });
 };
+
 CollectionRepository.parseFile = function(url, callback) {
     try {
         var fs = require('fs');
@@ -133,10 +139,8 @@ CollectionRepository.parse = function(dom, url) {
         collections.push(CollectionRepository.parseCollection(node));
     });
 
-    _.forEach(collections, function(c) {
-        var existed = _.find(CollectionManager.shapeDefinition.collections, function(e) {
-            return e.id == c.id;
-        });
+    collections.forEach(c => {
+        const existed = CollectionManager.shapeDefinition.collections.find(e => e.id === c.id);
         if (existed) {
             c._installed = true;
         }
@@ -149,10 +153,16 @@ CollectionRepository.parse = function(dom, url) {
 };
 
 CollectionRepository.parseCollection = function(collectionNode) {
-    var collection = {};
+    function toCamelCase(str) {
+        return str
+            .replace(/[-_]+(.)?/g, (_, chr) => chr ? chr.toUpperCase() : '')
+            .replace(/^(.)/, (_, chr) => chr.toLowerCase());
+    }
 
-    Dom.workOn("./*", collectionNode, function (node) {
-        collection[_.camelCase(node.localName)] = Dom.getText(node);
+    const collection = {};
+
+    Dom.workOn("./*", collectionNode, node => {
+        collection[toCamelCase(node.localName)] = Dom.getText(node);
     });
 
     return collection;

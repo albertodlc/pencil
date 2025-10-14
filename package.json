@@ -12,10 +12,14 @@
     "copyright": "Copyright © 2008-2016 Evolus. All rights reserved.",
     "mac": {
       "category": "public.app-category.graphics-design",
-      "target": [{
-           "target": "dmg",
-           "arch": ["arm64"]
-      }]
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64"
+          ]
+        }
+      ]
     },
     "dmg": {
       "contents": [
@@ -74,9 +78,9 @@
   "scripts": {
     "postinstall": "install-app-deps",
     "install-app-deps": "node ./node_modules/electron-builder/out/install-app-deps.js",
-    "start": "./node_modules/.bin/electron ./app",
-    "start:dev": "./node_modules/.bin/electron ./app --enable-dev --enable-transparent-visuals",
-    "start:mac": "./node_modules/.bin/electron ./app --enable-dev",
+    "start": "npx electron ./app",
+    "start:dev": "npx electron ./app --enable-dev --enable-transparent-visuals",
+    "start:mac": "npx electron ./app --enable-dev",
     "clean": "rimraf dist",
     "pack": "build",
     "dist": "build",

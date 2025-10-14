@@ -1,3 +1,5 @@
+// TODO: Move all this methods to a JS class
+
 var CollectionManager = {};
 
 CollectionManager.shapeDefinition = {};
@@ -340,25 +342,31 @@ CollectionManager.findDefinitionFile = function(dir) {
 
     return null;
 };
-CollectionManager.extractCollection = function(file, callback) {
 
-    return QP.Promise(function(resolve, reject) {
+/**
+ * 
+ * @param {*} file 
+ * @param {*} callback 
+ * @returns 
+ */
+CollectionManager.extractCollection = function(file, callback) {
+    return new Promise((resolve, reject) => {
         function error(err) {
             if (callback) {
                 callback(err);
             }
-            reject(err);
+            reject(new Error(err));
         }
 
-        var filePath = file.path;
-        var fileName = file.name.replace(/\.[^\.]+$/, "") + "_" + Math.ceil(Math.random() * 1000) + "_" + (new Date().getTime());
+        const filePath = file.path;
+        const fileName = file.name.replace(/\.[^\.]+$/, "") + "_" + Math.ceil(Math.random() * 1000) + "_" + (new Date().getTime());
 
-        var targetDir = path.join(CollectionManager.getUserStencilDirectory(), fileName);
+        const targetDir = path.join(CollectionManager.getUserStencilDirectory(), fileName);
         console.log("extracting to", targetDir);
 
         var admZip = require('adm-zip');
 
-        var zip = new admZip(filePath);
+        const zip = new admZip(filePath);
         zip.extractAllToAsync(targetDir, true, function (err) {
             if (err) {
                 error(err);
@@ -369,26 +377,9 @@ CollectionManager.extractCollection = function(file, callback) {
                 resolve(targetDir);
             }
         });
-
-        // var extractor = unzip.Extract({ path: targetDir });
-        // extractor.on("close", function () {
-        //     if (callback) {
-        //         callback(err);
-        //     }
-        //     resolve(targetDir);
-        // });
-        // extractor.on("error", (err) => {
-        //     console.log("extract error", err);
-        //     error(err);
-
-        //     setTimeout(function() {
-        //         CollectionManager.removeCollectionDir(targetDir);
-        //     }, 10);
-        // });
-
-        // fs.createReadStream(filePath).pipe(extractor);
     });
 };
+
 CollectionManager.installCollectionFonts = function (collection) {
     if (!collection.fonts || collection.fonts.length == 0) {
         return;
@@ -439,8 +430,14 @@ CollectionManager.installCollectionFonts = function (collection) {
         });
     }
 };
+/**
+ * 
+ * @param {*} targetDir 
+ * @param {*} callback 
+ * @returns 
+ */
 CollectionManager.installCollection = function(targetDir, callback) {
-    return QP.Promise(function(resolve, reject) {
+    return new Promise((resolve, reject) => {
         try {
             var definitionFile = CollectionManager.findDefinitionFile(targetDir);
             if (!definitionFile) throw Util.getMessage("collection.specification.is.not.found.in.the.archive");
@@ -448,7 +445,7 @@ CollectionManager.installCollection = function(targetDir, callback) {
             var parser = new ShapeDefCollectionParser();
             var collection = parser.parseURL(definitionFile);
 
-            if (collection && collection.id) {
+            if (collection?.id) {
                 //check for duplicate of name
                 for (i in CollectionManager.shapeDefinition.collections) {
                     var existingCollection = CollectionManager.shapeDefinition.collections[i];
