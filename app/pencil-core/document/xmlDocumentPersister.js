@@ -17,10 +17,10 @@ XMLDocumentPersister.load = function (file) {
 
 XMLDocumentPersister.parse = function (dom) {
     var doc = new PencilDocument();
-    Dom.workOn("./p:Properties/p:Property", dom.documentElement, function (propNode) {
+    NDom.workOn("./p:Properties/p:Property", dom.documentElement, function (propNode) {
         doc.properties[propNode.getAttribute("name")] = propNode.textContent;
     });
-    Dom.workOn("./p:Pages/p:Page", dom.documentElement, function (pageNode) {
+    NDom.workOn("./p:Pages/p:Page", dom.documentElement, function (pageNode) {
         var page = XMLDocumentPersister.parsePage(pageNode, doc);
 
         for (i in XMLDocumentPersister.hooks) {
@@ -60,10 +60,10 @@ XMLDocumentPersister.parse = function (dom) {
 
 XMLDocumentPersister.parsePage = function (pageNode, doc) {
     var page = new Page(doc);
-    Dom.workOn("./p:Properties/p:Property", pageNode, function (propNode) {
+    NDom.workOn("./p:Properties/p:Property", pageNode, function (propNode) {
         page.properties[propNode.getAttribute("name")] = propNode.textContent;
     });
-    var contentNode = Dom.getSingle("./p:Content", pageNode);
+    var contentNode = NDom.getSingle("./p:Content", pageNode);
     if (contentNode) {
         page.contentNode = document.importNode(contentNode, true);
     } else page.contentNode = null;

@@ -110,7 +110,7 @@ ExportWizard.onPageSelectionChanged = function () {
     var total = 0;
     var selected = 0;
 
-    Dom.workOn("./xul:listitem", ExportWizard.pageList, function (item) {
+    NDom.workOn("./xul:listitem", ExportWizard.pageList, function (item) {
         if (item.checked) selected ++;
         total ++;
     });
@@ -248,7 +248,7 @@ ExportWizard.validatePageSelection = function () {
     if (ExportWizard.pageSelectionGroup.value != "only") return true;
 
     var selected = 0;
-    Dom.workOn("./xul:listitem", ExportWizard.pageList, function (item) {
+    NDom.workOn("./xul:listitem", ExportWizard.pageList, function (item) {
         if (item.checked) selected ++;
     });
 
@@ -309,7 +309,7 @@ ExportWizard.onFinish = function () {
     if (ExportWizard.pageSelectionGroup.value == "only") {
         selection.pageIds = [];
 
-        Dom.workOn("./xul:listitem", ExportWizard.pageList, function (item) {
+        NDom.workOn("./xul:listitem", ExportWizard.pageList, function (item) {
             if (item.checked) selection.pageIds.push(item._pageId);
         });
     }

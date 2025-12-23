@@ -11,7 +11,7 @@ OnScreenTextEditor.initialize = function (canvas) {
 	if (OnScreenTextEditor._initialized) return;
 	
 	
-	OnScreenTextEditor.htmlDiv = canvas.ownerDocument.importNode(Dom.getSingle("/p:Config/html:div", OnScreenTextEditor.configDoc), true);
+	OnScreenTextEditor.htmlDiv = canvas.ownerDocument.importNode(NDom.getSingle("/p:Config/html:div", OnScreenTextEditor.configDoc), true);
 
 	OnScreenTextEditor.htmlDiv.style.display = "none";
     //canvas.installControlSVGElement(this.svgElement);
@@ -21,8 +21,8 @@ OnScreenTextEditor.initialize = function (canvas) {
 
 
     //register event
-    OnScreenTextEditor.singleTextEditor = Dom.getSingle(".//*[@p:name='TextEditor']", OnScreenTextEditor.htmlDiv);
-    OnScreenTextEditor.multiTextEditor = Dom.getSingle(".//*[@p:name='MultiLineTextEditor']", OnScreenTextEditor.htmlDiv);
+    OnScreenTextEditor.singleTextEditor = NDom.getSingle(".//*[@p:name='TextEditor']", OnScreenTextEditor.htmlDiv);
+    OnScreenTextEditor.multiTextEditor = NDom.getSingle(".//*[@p:name='MultiLineTextEditor']", OnScreenTextEditor.htmlDiv);
 
     OnScreenTextEditor.singleTextEditor._editor = "plainText";
     OnScreenTextEditor.multiTextEditor._editor = "plainText";

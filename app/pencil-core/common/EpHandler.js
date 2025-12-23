@@ -21,11 +21,11 @@ EpHandler.prototype.parseOldFormatDocument = function (filePath, callback) {
         this.controller.oldPencilDoc = true;
         var dom = Controller.parser.parseFromString(fs.readFileSync(filePath, "utf8"), "text/xml");
 
-        Dom.workOn("./p:Properties/p:Property", dom.documentElement, function (propNode) {
+        NDom.workOn("./p:Properties/p:Property", dom.documentElement, function (propNode) {
             thiz.controller.doc.properties[propNode.getAttribute("name")] = propNode.textContent;
         });
 
-        var pageNodes = Dom.getList("./p:Pages/p:Page", dom.documentElement);
+        var pageNodes = NDom.getList("./p:Pages/p:Page", dom.documentElement);
         console.log(pageNodes);
         var pageNodeIndex = -1;
         function parseNextPageNode(__callback) {

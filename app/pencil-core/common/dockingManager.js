@@ -2,7 +2,7 @@ function DockingManager (target) {
     this.target = target;
     this.svg = target.svg;
 
-    this.metaNode = Dom.getSingle("./p:metadata", this.svg);
+    this.metaNode = NDom.getSingle("./p:metadata", this.svg);
     if (!this.metaNode) {
         this.metaNode = this.svg.ownerDocument.createElementNS(PencilNamespaces.p, "p:metadata");
         this.svg.appendChild(this.metaNode);
@@ -12,7 +12,7 @@ function DockingManager (target) {
     if (this.parentContainerId && this.parentContainerId.indexOf("#") == 0) {
         this.parentContainerId = this.parentContainerId.substring(1);
     }
-    this.childTargetsNode = Dom.getSingle("./p:childTargets", this.metaNode);
+    this.childTargetsNode = NDom.getSingle("./p:childTargets", this.metaNode);
     if (!this.childTargetsNode) {
         this.childTargetsNode = this.svg.ownerDocument.createElementNS(PencilNamespaces.p, "p:childTargets");
         this.metaNode.appendChild(this.childTargetsNode);
@@ -155,7 +155,7 @@ DockingManager.prototype.getChildTargets = function () {
     var children = [];
     var thiz = this;
     if (this.childTargetsNode) {
-        Dom.workOn(".//p:childTarget", this.childTargetsNode, function (node) {
+        NDom.workOn(".//p:childTarget", this.childTargetsNode, function (node) {
             var c = thiz.createController(node.getAttribute("childRef"), node.getAttribute("anchor"));
             if (c) {
                 children.push(c);
@@ -165,7 +165,7 @@ DockingManager.prototype.getChildTargets = function () {
     return children;
 };
 DockingManager.prototype.addChildTarget = function (target) {
-    var n = Dom.getSingle(".//*[@childRef='#" + target.id + "']", this.svg);
+    var n = NDom.getSingle(".//*[@childRef='#" + target.id + "']", this.svg);
     if (n) {
         return;
     }
@@ -175,7 +175,7 @@ DockingManager.prototype.addChildTarget = function (target) {
     this.childTargetsNode.appendChild(n);
 };
 DockingManager.prototype.removeChild = function (target) {
-    var n = Dom.getSingle(".//*[@childRef='#" + target.id + "']", this.svg);
+    var n = NDom.getSingle(".//*[@childRef='#" + target.id + "']", this.svg);
     if (n) {
         this.childTargetsNode.removeChild(n);
     }

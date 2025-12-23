@@ -32,7 +32,7 @@ Pencil uses [Atom Electron](http://electron.atom.io/) as the runtime, follow the
   * Install dependencies:
 
       ```bash
-      $ npm install
+      $ npm /app/install
       ```
       
   * Start Pencil using the prebuilt version of Electron

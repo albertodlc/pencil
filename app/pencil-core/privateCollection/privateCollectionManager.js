@@ -22,7 +22,7 @@ PrivateCollectionManager.loadPrivateCollections = function () {
             PrivateCollectionManager.privateShapeDef.collections = [];
             var dom = dom.documentElement;
             var parser = new PrivateShapeDefParser();
-            Dom.workOn("./p:Collection", dom, function (node) {
+            NDom.workOn("./p:Collection", dom, function (node) {
                 PrivateCollectionManager.addShapeCollection(parser.parseNode(node), true);
             });
         }
@@ -219,7 +219,7 @@ PrivateCollectionManager.parseSingleCollectionFile = function (definitionFile) {
     if (dom != null) {
         var dom = dom.documentElement;
         var parser = new PrivateShapeDefParser();
-        Dom.workOn("./p:Collection", dom, function (node) {
+        NDom.workOn("./p:Collection", dom, function (node) {
             collection = parser.parseNode(node);
         });
     };
@@ -299,7 +299,7 @@ PrivateCollectionManager.installCollectionFromFile = function (file) {
     //         if (dom != null) {
     //             var dom = dom.documentElement;
     //             var parser = new PrivateShapeDefParser();
-    //             Dom.workOn("./p:Collection", dom, function (node) {
+    //             NDom.workOn("./p:Collection", dom, function (node) {
     //                 collection = parser.parseNode(node);
     //             });
     //         };

@@ -315,19 +315,19 @@ InstallRemoteCollectionsDialog.getXmlFromServer = function(url) {
     return xml;
 };
 InstallRemoteCollectionsDialog.parseXML = function(xml) {    
-    var node = Dom.getSingle("/Collections", xml.documentElement);
+    var node = NDom.getSingle("/Collections", xml.documentElement);
     InstallRemoteCollectionsDialog.collectionLength = node.getAttribute("max");
     InstallRemoteCollectionsDialog.currentPage = node.getAttribute("start") / InstallRemoteCollectionsDialog.collectionsPerPage + 1;
     InstallRemoteCollectionsDialog.collections = [];
-    Dom.workOn("./Collection", xml.documentElement, function(node){
+    NDom.workOn("./Collection", xml.documentElement, function(node){
         var collection = {};
-        collection.id = Dom.getSingle("./collectionId/text()", node).nodeValue;
-        collection.name = Dom.getSingle("./name/text()", node).nodeValue;
-        if(Dom.getSingle("./description/text()", node)) collection.description = Dom.getSingle("./description/text()", node).nodeValue;
-        collection.author = Dom.getSingle("./author/text()", node).nodeValue;
-        collection.lastUpdated = Dom.getSingle("./lastUpdate/text()", node).nodeValue;
-        if(Dom.getSingle("./icon/text()", node)) collection.icon = Dom.getSingle("./icon/text()", node).nodeValue;
-        collection.packageUrl = Dom.getSingle("./packageUrl/text()", node).nodeValue;
+        collection.id = NDom.getSingle("./collectionId/text()", node).nodeValue;
+        collection.name = NDom.getSingle("./name/text()", node).nodeValue;
+        if(NDom.getSingle("./description/text()", node)) collection.description = NDom.getSingle("./description/text()", node).nodeValue;
+        collection.author = NDom.getSingle("./author/text()", node).nodeValue;
+        collection.lastUpdated = NDom.getSingle("./lastUpdate/text()", node).nodeValue;
+        if(NDom.getSingle("./icon/text()", node)) collection.icon = NDom.getSingle("./icon/text()", node).nodeValue;
+        collection.packageUrl = NDom.getSingle("./packageUrl/text()", node).nodeValue;
         InstallRemoteCollectionsDialog.collections.push(collection);
     });
 };

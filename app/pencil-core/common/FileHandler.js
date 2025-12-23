@@ -19,12 +19,12 @@ FileHandler.prototype.parseDocument = function (filePath, callback) {
         }
 
         var dom = Controller.parser.parseFromString(fs.readFileSync(contentFile, "utf8"), "text/xml");
-        Dom.workOn("./p:Properties/p:Property", dom.documentElement, function (propNode) {
+        NDom.workOn("./p:Properties/p:Property", dom.documentElement, function (propNode) {
             var value = propNode.textContent;
             if (value == "undefined" || value == "null") return;
             thiz.controller.doc.properties[propNode.getAttribute("name")] = value;
         });
-        Dom.workOn("./p:Pages/p:Page", dom.documentElement, function (pageNode) {
+        NDom.workOn("./p:Pages/p:Page", dom.documentElement, function (pageNode) {
             if (!pageNode) return;
             var pageFileName = pageNode.getAttribute("href");
             if (pageFileName == null) return;
@@ -41,7 +41,7 @@ FileHandler.prototype.parseDocument = function (filePath, callback) {
         thiz.controller.doc.pages.forEach(function (page) {
             var pageFile = page.tempFilePath;
             var dom = Controller.parser.parseFromString(fs.readFileSync(pageFile, "utf8"), "text/xml");
-            Dom.workOn("./p:Properties/p:Property", dom.documentElement, function (propNode) {
+            NDom.workOn("./p:Properties/p:Property", dom.documentElement, function (propNode) {
                 var propName = propNode.getAttribute("name");
                 var value = propNode.textContent;
                 if(propName == "note") {
@@ -154,7 +154,7 @@ FileHandler.prototype.parseDocumentThumbnail = function (filePath, callback) {
                         var dom = Controller.parser.parseFromString(fs.readFileSync(xmlFile.name, "utf8"), "text/xml");
                         xmlFile.removeCallback();
 
-                        Dom.workOn("./p:Pages/p:Page", dom.documentElement, function (pageNode) {
+                        NDom.workOn("./p:Pages/p:Page", dom.documentElement, function (pageNode) {
                             var pageFileName = pageNode.getAttribute("href");
                             if (!extractPath) {
                                 extractPath = "thumbnails/" + pageFileName.replace(/^page_/, "").replace(/\.xml$/, "") + ".png";
@@ -179,7 +179,7 @@ FileHandler.prototype.parseDocumentThumbnail = function (filePath, callback) {
 FileHandler.prototype.parsePageFromNode = function (pageNode, callback) {
     var thiz = this;
     var page = new Page(this.controller.doc);
-    Dom.workOn("./p:Properties/p:Property", pageNode, function (propNode) {
+    NDom.workOn("./p:Properties/p:Property", pageNode, function (propNode) {
         var name = propNode.getAttribute("name");
         var value = propNode.textContent;
         if(name == "note") {
@@ -211,7 +211,7 @@ FileHandler.prototype.parsePageFromNode = function (pageNode, callback) {
         thiz.controller.doc.pages.push(page);
     }
 
-    var contentNode = Dom.getSingle("./p:Content", pageNode);
+    var contentNode = NDom.getSingle("./p:Content", pageNode);
     if (contentNode) {
         var node = document.importNode(contentNode.cloneNode(true), true);
         this.controller.invalidateContentNode(node, function () {

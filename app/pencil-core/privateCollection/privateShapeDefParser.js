@@ -12,11 +12,11 @@ PrivateShapeDefParser.prototype.parseNode = function (dom) {
     collection.infoUrl = dom.getAttribute("p:InfoUrl");
     collection.map = {};
 
-    Dom.workOn("./p:Groups/p:Group", dom, function (node) {
+    NDom.workOn("./p:Groups/p:Group", dom, function (node) {
         var id = node.getAttribute("p:Id");
         var name = node.getAttribute("p:Name");
         var icon = node.getAttribute("p:Icon");
-        var contentNode = Dom.getSingle("./p:Content/svg:g", node);
+        var contentNode = NDom.getSingle("./p:Content/svg:g", node);
 
         var shapeDef = new PrivateShapeDef();
 

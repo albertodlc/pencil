@@ -10,7 +10,7 @@ Connector.prepareInvalidation = function (canvas) {
     Connector.caches = [];
     Connector.cacheMap = {};
     Connector.incomingMap = {};
-    Dom.workOn(".//svg:g[@p:type='Shape']", canvas.drawingLayer, function (node) {
+    NDom.workOn(".//svg:g[@p:type='Shape']", canvas.drawingLayer, function (node) {
         if (canvas.isShapeLocked(node)) return;
         
         var defId = canvas.getType(node);
@@ -217,7 +217,7 @@ Connector.invalidateOutboundConnectionsForShapeTarget = function (target) {
             !handle.meta.connectedShapeId ||
             !handle.meta.connectedOutletId) continue;
 
-        var shape = Dom.getSingle(".//svg:g[@p:type='Shape'][@id='" + handle.meta.connectedShapeId + "']", canvas.drawingLayer);
+        var shape = NDom.getSingle(".//svg:g[@p:type='Shape'][@id='" + handle.meta.connectedShapeId + "']", canvas.drawingLayer);
         if (!shape) continue;
         
         var target = canvas.createControllerFor(shape);
@@ -271,7 +271,7 @@ Connector.areClassesMatched = function (classes1, classes2) {
 Connector.getMatchingOutlets = function (canvas, shape, classes) {
     var matchingOutlets = [];
     var classes1 = classes.split(/[ ]*\,[ ]*/);
-    Dom.workOn(".//svg:g[@p:type='Shape']", canvas.drawingLayer, function (node) {
+    NDom.workOn(".//svg:g[@p:type='Shape']", canvas.drawingLayer, function (node) {
         if (node.id == shape.id) return;
         
         var source = canvas.createControllerFor(node);

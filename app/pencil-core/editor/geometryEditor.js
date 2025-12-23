@@ -18,26 +18,26 @@ GeometryEditor.prototype.install = function (canvas) {
     this.canvas = canvas;
     this.canvas.geometryEditor = this;
     this.canvas.onScreenEditors.push(this);
-    this.svgElement = canvas.ownerDocument.importNode(Dom.getSingle("/p:Config/svg:g", GeometryEditor.configDoc), true);
+    this.svgElement = canvas.ownerDocument.importNode(NDom.getSingle("/p:Config/svg:g", GeometryEditor.configDoc), true);
 
     this.svgElement.style.visibility = "hidden";
     canvas.installControlSVGElement(this.svgElement);
 
-    this.anchorContainer = Dom.getSingle("./svg:g[@p:name='Anchors']", this.svgElement);
-    this.borderRect = Dom.getSingle("./svg:rect[@p:name='Bound']", this.svgElement);
+    this.anchorContainer = NDom.getSingle("./svg:g[@p:name='Anchors']", this.svgElement);
+    this.borderRect = NDom.getSingle("./svg:rect[@p:name='Bound']", this.svgElement);
 
-    //this.debugText = Dom.getSingle("./svg:text[@p:name='debug']", this.svgElement).firstChild;
+    //this.debugText = NDom.getSingle("./svg:text[@p:name='debug']", this.svgElement).firstChild;
 
-    this.anchor0 = Dom.getSingle(".//svg:rect[@p:name='TopLeft']", this.svgElement);
-    this.anchor1 = Dom.getSingle(".//svg:rect[@p:name='Top']", this.svgElement);
-    this.anchor2 = Dom.getSingle(".//svg:rect[@p:name='TopRight']", this.svgElement);
-    this.anchor3 = Dom.getSingle(".//svg:rect[@p:name='Right']", this.svgElement);
-    this.anchor4 = Dom.getSingle(".//svg:rect[@p:name='BottomRight']", this.svgElement);
-    this.anchor5 = Dom.getSingle(".//svg:rect[@p:name='Bottom']", this.svgElement);
-    this.anchor6 = Dom.getSingle(".//svg:rect[@p:name='BottomLeft']", this.svgElement);
-    this.anchor7 = Dom.getSingle(".//svg:rect[@p:name='Left']", this.svgElement);
+    this.anchor0 = NDom.getSingle(".//svg:rect[@p:name='TopLeft']", this.svgElement);
+    this.anchor1 = NDom.getSingle(".//svg:rect[@p:name='Top']", this.svgElement);
+    this.anchor2 = NDom.getSingle(".//svg:rect[@p:name='TopRight']", this.svgElement);
+    this.anchor3 = NDom.getSingle(".//svg:rect[@p:name='Right']", this.svgElement);
+    this.anchor4 = NDom.getSingle(".//svg:rect[@p:name='BottomRight']", this.svgElement);
+    this.anchor5 = NDom.getSingle(".//svg:rect[@p:name='Bottom']", this.svgElement);
+    this.anchor6 = NDom.getSingle(".//svg:rect[@p:name='BottomLeft']", this.svgElement);
+    this.anchor7 = NDom.getSingle(".//svg:rect[@p:name='Left']", this.svgElement);
 
-    Dom.workOn(".//svg:rect[@class='Anchor']", this.svgElement, function (node) {
+    NDom.workOn(".//svg:rect[@class='Anchor']", this.svgElement, function (node) {
             node.setAttribute("width", GeometryEditor.ANCHOR_SIZE * 2);
             node.setAttribute("height", GeometryEditor.ANCHOR_SIZE * 2);
 
@@ -327,7 +327,7 @@ GeometryEditor.prototype.setTool = function (tool) {
     this.tool = tool;
     this.svgElement.setAttribute("class", "GeoEditor Tool_" + this.tool);
 
-    Dom.workOn(".//svg:rect[@class='Anchor']", this.svgElement, function (node) {
+    NDom.workOn(".//svg:rect[@class='Anchor']", this.svgElement, function (node) {
             if (tool == "rotate") {
                 node.setAttribute("rx", GeometryEditor.ANCHOR_SIZE);
                 node.setAttribute("ry", GeometryEditor.ANCHOR_SIZE);

@@ -68,7 +68,7 @@ Pencil.installXferHelpers = function (canvas) {
     }
 };
 Pencil.fixUI = function () {
-    Dom.workOn(".//xul:*[@image]", Pencil.window, function (node) {
+    NDom.workOn(".//xul:*[@image]", Pencil.window, function (node) {
         var image = node.getAttribute("image");
         if (image.match(/^moz\-icon:\/\/([^\?]+)\?size=([a-z]+)$/)) {
             var src = "Icons/MozIcons/" + RegExp.$1 + "-" + RegExp.$2 + ".png";
@@ -263,7 +263,7 @@ Pencil.setPainterCommandChecked = function (v) {
 };
 Pencil.getCanvasList = function () {
     var r = [];
-    Dom.workOn("//xul:pcanvas", document.documentElement, function (node) {
+    NDom.workOn("//xul:pcanvas", document.documentElement, function (node) {
         r.push(node);
     });
     return r;

@@ -267,7 +267,7 @@ DocumentExportManager.prototype._getPageLinks = function (page, pageExtraInfos, 
     return validLinks;
 };
 DocumentExportManager._cleanupParseError = function (node) {
-    Dom.workOn("//html:parsererror", node, function (errorNode) {
+    NDom.workOn("//html:parsererror", node, function (errorNode) {
         var b = errorNode.parentNode;
         b.parentNode.removeChild(b);
     });
@@ -343,7 +343,7 @@ DocumentExportManager.prototype._exportDocumentToXML = function (doc, pages, pag
         }
 
         var propertyNode = pageNode.ownerDocument.createElementNS(PencilNamespaces.p, "p:Property");
-        Dom.getSingle("./p:Properties", pageNode).appendChild(propertyNode);
+        NDom.getSingle("./p:Properties", pageNode).appendChild(propertyNode);
 
         propertyNode.setAttribute("name", "backgroundColorRGBA");
         propertyNode.appendChild(dom.createTextNode(backgroundColor));
@@ -421,7 +421,7 @@ DocumentExportManager.prototype._exportDocumentToXML = function (doc, pages, pag
 
 DocumentExportManager.prototype._populateLinkTargetsInNote = function (htmlNode) {
     var thiz = this;
-    Dom.workOn("//html:a[@page-id or starts-with(@href, '#id:')]", htmlNode, function (link) {
+    NDom.workOn("//html:a[@page-id or starts-with(@href, '#id:')]", htmlNode, function (link) {
         var id = link.getAttribute("page-id");
         if (!id) {
             id = link.getAttribute("href").substring(4);
@@ -434,7 +434,7 @@ DocumentExportManager.prototype._populateLinkTargetsInNote = function (htmlNode)
         link.setAttribute("page-fid", page.fid);
     });
 
-    Dom.workOn("//html:a[@page-fid or starts-with(@href, '#fid:')]", htmlNode, function (link) {
+    NDom.workOn("//html:a[@page-fid or starts-with(@href, '#fid:')]", htmlNode, function (link) {
         var fid = link.getAttribute("page-fid");
         if (!fid) {
             fid = link.getAttribute("href").substring(5);
@@ -446,7 +446,7 @@ DocumentExportManager.prototype._populateLinkTargetsInNote = function (htmlNode)
         link.setAttribute("page-id", page.id);
     });
 
-    Dom.workOn("//html:a[@page-name or starts-with(@href, '#name:')]", htmlNode, function (link) {
+    NDom.workOn("//html:a[@page-name or starts-with(@href, '#name:')]", htmlNode, function (link) {
         var name = link.getAttribute("page-name");
         if (!name) {
             name = link.getAttribute("href").substring(6);

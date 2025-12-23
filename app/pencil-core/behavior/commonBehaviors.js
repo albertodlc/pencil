@@ -384,7 +384,7 @@ Pencil.behaviors.TextContent = function (text, stripAccel, keepExistingRootEleme
                 Dom.empty(this);
                 this.appendChild(div);
             } else {
-                var root = Dom.getSingle("./html:div", this);
+                var root = NDom.getSingle("./html:div", this);
                 if (!root) return;
 
                 Dom.empty(root);
@@ -533,7 +533,7 @@ Pencil.behaviors.MaintainGlobalDef = function (id, contentFragement) {
     debug(pcanvas);
 
     var drawingLayer = pcanvas.drawingLayer;
-    var defs = Dom.getSingle("./svg:defs[@id='" + id + "']", drawingLayer);
+    var defs = NDom.getSingle("./svg:defs[@id='" + id + "']", drawingLayer);
 
     if (defs) return;   //TODO: re-validate?
 

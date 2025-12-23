@@ -122,12 +122,12 @@ CollectionRepository.parse = function(dom, url) {
     var collectionsNode = dom.documentElement;
     var metadata = {};
 
-    Dom.workOn("./p:metadata", collectionsNode, function (node) {
-        metadata[node.localName] = Dom.getText(node);
+    NDom.workOn("./p:metadata", collectionsNode, function (node) {
+        metadata[node.localName] = NDom.getText(node);
     });
 
     //the one with uppercase "C" is intended for newer version with support for version checking
-    Dom.workOn("./p:Collection", collectionsNode, function (node) {
+    NDom.workOn("./p:Collection", collectionsNode, function (node) {
         var minVersion = node.getAttribute("required-version");
         if (minVersion) {
             if (Util.compareVersion(pkgInfo.version, minVersion) < 0) return;
@@ -135,7 +135,7 @@ CollectionRepository.parse = function(dom, url) {
         collections.push(CollectionRepository.parseCollection(node));
     });
 
-    Dom.workOn("./p:collection", collectionsNode, function (node) {
+    NDom.workOn("./p:collection", collectionsNode, function (node) {
         collections.push(CollectionRepository.parseCollection(node));
     });
 
@@ -161,8 +161,8 @@ CollectionRepository.parseCollection = function(collectionNode) {
 
     const collection = {};
 
-    Dom.workOn("./*", collectionNode, node => {
-        collection[toCamelCase(node.localName)] = Dom.getText(node);
+    NDom.workOn("./*", collectionNode, node => {
+        collection[toCamelCase(node.localName)] = NDom.getText(node);
     });
 
     return collection;

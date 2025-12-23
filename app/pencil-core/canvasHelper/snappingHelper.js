@@ -81,7 +81,7 @@ SnappingHelper.prototype.rebuildSnappingGuide = function () {
     if (!this.isSnappingEnabled()) return;
     var thiz = this;
     this.snappingGuide = { };
-    Dom.workOn("./svg:g[@p:type]", this.canvas.drawingLayer, function (node) {
+    NDom.workOn("./svg:g[@p:type]", this.canvas.drawingLayer, function (node) {
         try {
             var c = thiz.canvas.createControllerFor(node);
             if (c.getSnappingGuide) {

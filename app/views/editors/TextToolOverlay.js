@@ -29,7 +29,7 @@ function TextToolOverlay() {
         // if (node == thiz.medCleanUpButton) {
         //     var v = thiz._richTextEditor.getRichtextValue();
         //     try {
-        //         v = Dom.getText(Dom.parseToNode(v));
+        //         v = NDom.getText(Dom.parseToNode(v));
         //         thiz._richTextEditor.setRichtextValue(v);
         //     } catch (e) { }
         //

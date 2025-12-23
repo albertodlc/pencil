@@ -21,7 +21,7 @@ BaseRasterizedExporter.prototype.getWarnings = function () {
 BaseRasterizedExporter.prototype.fixAbsoluteRasterizedPaths = function (sourceDOM, destDir) {
     //changing rasterized path to relative
     var pathPrefix = destDir + path.sep;
-    Dom.workOn("//p:Page/@rasterized", sourceDOM, function (attr) {
+    NDom.workOn("//p:Page/@rasterized", sourceDOM, function (attr) {
         var path = attr.nodeValue;
         if (path.indexOf(pathPrefix) == 0) {
             path = path.substring(pathPrefix.length);

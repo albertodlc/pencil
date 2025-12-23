@@ -539,7 +539,7 @@ Canvas.prototype.invalidateAll = function (callback) {
     }
 
     try {
-        Dom.workOn(".//svg:g[@p:type='Shape']", this.drawingLayer, function (node) {
+        NDom.workOn(".//svg:g[@p:type='Shape']", this.drawingLayer, function (node) {
             try {
                 var controller = this.createControllerFor(node);
                 if (controller && controller.validateAll) controller.validateAll();
@@ -555,7 +555,7 @@ Canvas.prototype.selectAll = function () {
 
     this.clearSelection();
     var thiz = this;
-    Dom.workOn("./svg:g[@p:type]", this.drawingLayer, function (node) {
+    NDom.workOn("./svg:g[@p:type]", this.drawingLayer, function (node) {
         if (thiz.isShapeLocked(node))
             return;
         try {
@@ -713,7 +713,7 @@ Canvas.prototype.invalidateShapeContent = function (shape, shapeDef) {
     }
 
     // generate the ids
-    Dom.workOn(".//*[@p:name]", shape, function (node) {
+    NDom.workOn(".//*[@p:name]", shape, function (node) {
         var name = node.getAttributeNS(PencilNamespaces.p, "name");
         var oldId = node.getAttribute("id");
         if (oldId)
@@ -1044,7 +1044,7 @@ Canvas.prototype.handleMouseUp = function (event) {
             this.clearSelection();
         }
         var thiz = this;
-        Dom.workOn("./svg:g[@p:type]", this.drawingLayer, function (node) {
+        NDom.workOn("./svg:g[@p:type]", this.drawingLayer, function (node) {
             if (thiz.isShapeLocked(node))
                 return;
             var controller = thiz.createControllerFor(node);
@@ -1546,7 +1546,7 @@ Canvas.prototype.handleContextMenuShow = function (event) {
 /*
     try {
         this._lastEvent = event;
-        Dom.workOn("./xul:menuseparator", this.popup, function (sep) {
+        NDom.workOn("./xul:menuseparator", this.popup, function (sep) {
             sep.style.display = "";
         });
         for (var i = 0; i < this.popup.childNodes.length; i++) {
@@ -1715,7 +1715,7 @@ Canvas.prototype.buildAttachMenuItem = function () {
                     var target = containerNode._container._target;
                     var defId = target.def.id;
                     var name = target.getName ? target.getName() : "";
-                    var metaNode = Dom.getSingle("./p:metadata", target.svg);
+                    var metaNode = NDom.getSingle("./p:metadata", target.svg);
                     var ctm = target.svg
                             .getTransformToElement(thiz.drawingLayer);
                     var cctm = containerNode._container.svg
@@ -1964,8 +1964,8 @@ Canvas.prototype.doCopy = function () {
 
 
     transferableData.dataNode.removeAttribute("p:parentRef");
-    var metaNode = Dom.getSingle(".//p:metadata", transferableData.dataNode);
-    var childTargetsNode = Dom.getSingle("./p:childTargets", metaNode);
+    var metaNode = NDom.getSingle(".//p:metadata", transferableData.dataNode);
+    var childTargetsNode = NDom.getSingle("./p:childTargets", metaNode);
     if (childTargetsNode) {
         childTargetsNode.parentNode.removeChild(childTargetsNode);
     }
@@ -2208,8 +2208,8 @@ Canvas.prototype.handleMouseDown = function (event) {
             var contents = [];
 
             target.dataNode.removeAttribute("p:parentRef");
-            var metaNode = Dom.getSingle(".//p:metadata", target.dataNode);
-            var childTargetsNode = Dom.getSingle("./p:childTargets", metaNode);
+            var metaNode = NDom.getSingle(".//p:metadata", target.dataNode);
+            var childTargetsNode = NDom.getSingle("./p:childTargets", metaNode);
             if (childTargetsNode) {
                 childTargetsNode.parentNode.removeChild(childTargetsNode);
             }
@@ -2358,7 +2358,7 @@ Canvas.prototype.doGroupImpl_ = function () {
 
     var nodes = [];
     var rect = null;
-    Dom.workOn("./svg:g[@p:type]", this.drawingLayer, function (node) {
+    NDom.workOn("./svg:g[@p:type]", this.drawingLayer, function (node) {
         for (t in targets) {
             if (targets[t].isFor(node)) {
                 nodes.push(node);
@@ -2643,7 +2643,7 @@ Canvas.prototype.sizeToContent__ = function (hPadding, vPadding) {
         console.log(name, "left: ", rect.left, "top: ", rect.top, "width: ", rect.width, "height: ", rect.height);
     }
     out("this.svg", this.svg.getBoundingClientRect());
-    Dom.workOn("./svg:g[@p:type]", this.drawingLayer, function (node) {
+    NDom.workOn("./svg:g[@p:type]", this.drawingLayer, function (node) {
         try {
             var controller = thiz.createControllerFor(node);
             if (controller.def && controller.def.meta.excludeSizeCalculation) return;
@@ -2699,7 +2699,7 @@ Canvas.prototype.sizeToContent__ = function (hPadding, vPadding) {
     var dx = 0 - maxBox.x1 + hPadding;
     var dy = 0 - maxBox.y1 + vPadding;
 
-    Dom.workOn("./svg:g[@p:type]", this.drawingLayer, function (node) {
+    NDom.workOn("./svg:g[@p:type]", this.drawingLayer, function (node) {
         try {
             var controller = thiz.createControllerFor(node);
             var bbox = controller.getBoundingRect();
@@ -2820,7 +2820,7 @@ Canvas.prototype.insertPrivateShapeImpl_ = function (shapeDef, bound) {
     g.appendChild(shapeDef.content);
 
     // validate
-    var shape = Dom.getSingle("/svg:g[@p:type='Shape' or @p:type='Group']", g);
+    var shape = NDom.getSingle("/svg:g[@p:type='Shape' or @p:type='Group']", g);
     if (!shape) {
         return;
     }
@@ -2828,7 +2828,7 @@ Canvas.prototype.insertPrivateShapeImpl_ = function (shapeDef, bound) {
     shape = this.ownerDocument.importNode(shape, true);
 
     // generate the ids
-    Dom.workOn(".//*[@p:name]", shape, function (node) {
+    NDom.workOn(".//*[@p:name]", shape, function (node) {
         var name = node.getAttributeNS(PencilNamespaces.p, "name");
         var oldId = node.getAttribute("id");
         if (oldId)

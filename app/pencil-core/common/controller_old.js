@@ -486,7 +486,7 @@ Controller.prototype._handleContextMenuShow = function (event) {
         return node.localName == "tab";
     });
 
-    Dom.workOn("./xul:menuseparator", this.tabPopupMenu, function (sep) {
+    NDom.workOn("./xul:menuseparator", this.tabPopupMenu, function (sep) {
         sep.style.display = "";
     });
 
@@ -1109,7 +1109,7 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, des
 
 Controller.prototype._populateLinkTargetsInNote = function (htmlNode) {
     var thiz = this;
-    Dom.workOn("//html:a[@page-id or starts-with(@href, '#id:')]", htmlNode, function (link) {
+    NDom.workOn("//html:a[@page-id or starts-with(@href, '#id:')]", htmlNode, function (link) {
         var id = link.getAttribute("page-id");
         if (!id) {
             id = link.getAttribute("href").substring(4);
@@ -1122,7 +1122,7 @@ Controller.prototype._populateLinkTargetsInNote = function (htmlNode) {
         link.setAttribute("page-fid", page.properties.fid);
     });
 
-    Dom.workOn("//html:a[@page-fid or starts-with(@href, '#fid:')]", htmlNode, function (link) {
+    NDom.workOn("//html:a[@page-fid or starts-with(@href, '#fid:')]", htmlNode, function (link) {
         var fid = link.getAttribute("page-fid");
         if (!fid) {
             fid = link.getAttribute("href").substring(5);
@@ -1134,7 +1134,7 @@ Controller.prototype._populateLinkTargetsInNote = function (htmlNode) {
         link.setAttribute("page-id", page.properties.id);
     });
 
-    Dom.workOn("//html:a[@page-name or starts-with(@href, '#name:')]", htmlNode, function (link) {
+    NDom.workOn("//html:a[@page-name or starts-with(@href, '#name:')]", htmlNode, function (link) {
         var name = link.getAttribute("page-name");
         if (!name) {
             name = link.getAttribute("href").substring(6);
@@ -1299,7 +1299,7 @@ Controller.prototype._exportAsLayout = function () {
 
     var items = [];
 
-    Dom.workOn("//svg:g[@p:type='Shape']", container, function (g) {
+    NDom.workOn("//svg:g[@p:type='Shape']", container, function (g) {
             var dx = 0; //rect.left;
             var dy = 0; //rect.top;
 
@@ -1462,7 +1462,7 @@ function LinkingGeometryPreprocessor(pageExtraInfo) {
     this.pageExtraInfo = pageExtraInfo;
 }
 LinkingGeometryPreprocessor.prototype.process = function (doc) {
-    var objects = Dom.getList(".//svg:g[@p:RelatedPage]", doc);
+    var objects = NDom.getList(".//svg:g[@p:RelatedPage]", doc);
     objects.reverse();
     debug("Count: " + objects.length);
     this.pageExtraInfo.objectsWithLinking = [];

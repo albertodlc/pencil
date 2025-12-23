@@ -340,7 +340,7 @@ BaseCollectionPane.prototype.openCollection = function (collection) {
 
         var hasMatched = false;
 
-        Dom.workOn(".//*[@sc-ref]", this.collectionLayoutContainer, function (n) {
+        NDom.workOn(".//*[@sc-ref]", this.collectionLayoutContainer, function (n) {
             var scName = n.getAttribute("sc-ref");
             var sc = collection.getShortcutByDisplayName(collection.id + ":" + scName);
             n._def = sc;
@@ -356,7 +356,7 @@ BaseCollectionPane.prototype.openCollection = function (collection) {
                 n.removeAttribute("matched");
             }
         });
-        Dom.workOn(".//*[@ref]", this.collectionLayoutContainer, function (n) {
+        NDom.workOn(".//*[@ref]", this.collectionLayoutContainer, function (n) {
             var defId = n.getAttribute("ref");
             var def = CollectionManager.shapeDefinition.locateDefinition(defId);
             n._def = def;
@@ -371,7 +371,7 @@ BaseCollectionPane.prototype.openCollection = function (collection) {
                 n.removeAttribute("matched");
             }
         });
-        Dom.workOn(".//*[@pr-ref]", this.collectionLayoutContainer, function (n) {
+        NDom.workOn(".//*[@pr-ref]", this.collectionLayoutContainer, function (n) {
             if (!collection.builtinPrivateCollection || !collection.builtinPrivateCollection.map) return;
             var defId = n.getAttribute("pr-ref");
             var def = collection.builtinPrivateCollection.map[defId];

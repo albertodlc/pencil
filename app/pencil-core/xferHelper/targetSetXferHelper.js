@@ -10,7 +10,7 @@ TargetSetXferHelper.prototype.toString = function () {
 };
 TargetSetXferHelper.prototype.handleData = function (dom) {
     //validate
-    var shapes = Dom.getList("/svg:*/svg:g[@p:type]", dom);
+    var shapes = NDom.getList("/svg:*/svg:g[@p:type]", dom);
 
     if (!shapes) {
         throw Util.getMessage("bad.data.in.the.clipboard");

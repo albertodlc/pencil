@@ -145,7 +145,9 @@ Object.defineProperty(Event.prototype, "originalTarget", {
     } else {
         root.ResizeSensor = factory();
     }
-}(this, function () {
+}
+
+(this, function () {
 
     // Make sure it does not throw in a SSR (Server Side Rendering) situation
     if (typeof window === "undefined") {
@@ -357,7 +359,6 @@ Object.defineProperty(Event.prototype, "originalTarget", {
     };
 
     return ResizeSensor;
-
 }));
 
 (function(){
@@ -425,51 +426,155 @@ Object.defineProperty(Event.prototype, "originalTarget", {
   }
 })();
 
-/* class */ var Dom = {};
-
-/* static int */ Dom.workOn = function (xpath, node, worker) {
-    var nodes = Dom.getList(xpath, node);
-
-    for (var i = 0; i < nodes.length; i ++) {
-        worker(nodes[i]);
-    }
-    return nodes.length;
-};
-/* static int */ Dom.getText = function (node) {
-    return node.textContent;
-};
-
-/* static Node */ Dom.getSingle = function (xpath, node) {
-    var doc = node.ownerDocument ? node.ownerDocument : node;
-    var xpathResult = doc.evaluate(xpath, node, PencilNamespaces.resolve, XPathResult.ANY_TYPE, null);
-    return xpathResult.iterateNext();
-};
-/* static Node */ Dom.getSingleValue = function (xpath, node) {
-    var doc = node.ownerDocument ? node.ownerDocument : node;
-    var xpathResult = doc.evaluate(xpath, node, PencilNamespaces.resolve, XPathResult.ANY_TYPE, null);
-    var node = xpathResult.iterateNext();
-
-    return node ? node.nodeValue : null;
-};
-/* static Node[] */ Dom.getList = function (xpath, node) {
-    var doc = node.ownerDocument ? node.ownerDocument : node;
-    var xpathResult = doc.evaluate(xpath, node, PencilNamespaces.resolve, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
-    var nodes = [];
-    var next = xpathResult.iterateNext();
-    while (next) {
-        nodes.push(next);
-        next = xpathResult.iterateNext();
+class TimeUtil {
+    /**
+     * Display a date diff with current date in text
+     * 
+     * @param {*} date date to compare with current date
+     * 
+     * @returns a text with the date period
+     * 
+     */
+    static timeFromNow(date) { 
+        const seconds = Math.floor((Date.now() - date.getTime()) / 1000); 
+        const intervals = [ 
+            { label: "year", secs: 31536000 }, 
+            { label: "month", secs: 2592000 },
+            { label: "day", secs: 86400 }, 
+            { label: "hour", secs: 3600 }, 
+            { label: "minute", secs: 60 }, 
+            { label: "second", secs: 1 } 
+        ]; 
+        
+        for (const interval of intervals) { 
+            const count = Math.floor(seconds / interval.secs); 
+            if (count >= 1) { 
+                return count === 1 ? 
+                    `1 ${interval.label} ago` : 
+                    `${count} ${interval.label}s ago`; 
+            } 
+        } 
     }
 
-    return nodes;
+    static formatTimestamp(date = new Date()) {
+        const pad = (n, width = 2) => String(n).padStart(width, "0");
+
+        const year = date.getFullYear();
+        const month = pad(date.getMonth() + 1);
+        const day = pad(date.getDate());
+
+        const hours = pad(date.getHours());
+        const minutes = pad(date.getMinutes());
+        const seconds = pad(date.getSeconds());
+        const millis = pad(date.getMilliseconds(), 3);
+
+        const offset = -date.getTimezoneOffset(); // minutes
+        const sign = offset >= 0 ? "+" : "-";
+        const offsetHours = pad(Math.floor(Math.abs(offset) / 60));
+        const offsetMinutes = pad(Math.abs(offset) % 60);
+
+        return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${millis}${sign}${offsetHours}${offsetMinutes}`;
+    }
 }
-/* public static XmlDocument */ Dom.getImplementation = function () {
-    return document.implementation;
-};
+
+
+var Dom = {};
+
+/**
+ * ! Replace Dom = {}
+ * 
+ */
+class NDom {
+    /**
+     * 
+     * @param {*} xpath 
+     * @param {*} node 
+     * @param {*} worker 
+     * @returns 
+     */
+    static workOn(xpath, node, worker){
+        let nodes = NDom.getList(xpath, node);
+
+        for (let i = 0; i < nodes.length; i ++) {
+            worker(nodes[i]);
+        }
+
+        return nodes.length;
+    }
+
+    /**
+     * 
+     * @param {*} node 
+     * @returns 
+     */
+    static getText(node) {
+        return node.textContent;
+    }
+
+    /**
+     * 
+     * @param {*} xpath 
+     * @param {*} node 
+     * @returns 
+     */
+    static getSingle(xpath, node) {
+        var doc = node.ownerDocument ? node.ownerDocument : node;
+        var xpathResult = doc.evaluate(xpath, node, PencilNamespaces.resolve, XPathResult.ANY_TYPE, null);
+
+        return xpathResult.iterateNext();
+    }
+
+    /**
+     * ! UNUSED
+     * 
+     * @param {*} xpath 
+     * @param {*} node 
+     * @returns 
+     */
+    static getSingleValue(xpath, node) {
+        var doc = node.ownerDocument ? node.ownerDocument : node;
+        var xpathResult = doc.evaluate(xpath, node, PencilNamespaces.resolve, XPathResult.ANY_TYPE, null);
+
+        // FIXME: when changed to 'let' it says that the var is prev. declared
+        var node = xpathResult.iterateNext();
+
+        return node ? node.nodeValue : null;
+    }
+
+    /**
+     * 
+     * @param {*} xpath 
+     * @param {*} node 
+     * @returns 
+     */
+    static getList(xpath, node) {
+        var doc = node.ownerDocument ? node.ownerDocument : node;
+        var xpathResult = doc.evaluate(xpath, node, PencilNamespaces.resolve, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+        var nodes = [];
+
+        var next = xpathResult.iterateNext();
+
+        while (next) {
+            nodes.push(next);
+            next = xpathResult.iterateNext();
+        }
+
+        return nodes;
+    }
+
+    /**
+     * ! UNUSED
+     * 
+     * @returns 
+     */
+    static getImplementation() {
+        return document.implementation;
+    }
+}
 
 var domParser = new DOMParser();
 
-/* public static XmlDocument */ Dom.loadSystemXml = function (relPath, preProcessFileContent) {
+Dom.loadSystemXml = function (relPath, preProcessFileContent) {
     var absPath = getStaticFilePath(relPath);
     return Dom.parseFile(absPath, preProcessFileContent);
 };
@@ -635,6 +740,7 @@ Dom.findParentByTagName = function (node, tagName) {
         return n.tagName && n.tagName.toUpperCase && (n.tagName.toUpperCase() == tagName);
     });
 }
+
 Dom.doOnChildRecursively = function (node, evaluator, worker) {
     if (!node || !node.childNodes) return null;
 
@@ -645,6 +751,7 @@ Dom.doOnChildRecursively = function (node, evaluator, worker) {
     }
 
 };
+
 Dom.doOnChild = function (node, evaluator, worker) {
     if (!node || !node.childNodes) return null;
 
@@ -654,9 +761,11 @@ Dom.doOnChild = function (node, evaluator, worker) {
     }
 
 };
+
 Dom.doOnAllChildren = function (node, worker) {
     Dom.doOnChild(node, DomAcceptAllEvaluator, worker);
 };
+
 Dom.doOnChildRecursively = function (node, evaluator, worker) {
     if (!node || !node.childNodes) return null;
 
@@ -667,6 +776,7 @@ Dom.doOnChildRecursively = function (node, evaluator, worker) {
     }
 
 };
+
 Dom.doOnAllChildRecursively = function (node, worker) {
     if (!node || !node.childNodes) return null;
 
@@ -677,6 +787,7 @@ Dom.doOnAllChildRecursively = function (node, worker) {
     }
 
 };
+
 var DomAcceptAllEvaluator = {
     eval: function (target) { return true; }
 };
@@ -783,20 +894,16 @@ Dom.toXhtml = function (html) {
     Dom._dummyDiv.style.display = "block";
     var xhtml = Dom.serializeNode(Dom._dummyDiv);
     Dom._dummyDiv.style.display = "none";
-//    xhtml = xhtml.replace(/(<[^>]+) xmlns=""([^>]*>)/g, function (zero, one, two) {
-//        return one + two;
-//    });
-//    xhtml = xhtml.replace(/<[\/A-Z0-9]+[ \t\r\n>]/g, function (zero) {
-//        return zero.toLowerCase();
-//    });
     return xhtml;
 };
+
 Dom.htmlEncode = function (text) {
     if (!Dom.htmlEncodeDiv) Dom.htmlEncodeDiv = document.createElement("div");
     Dom.htmlEncodeDiv.innerHTML = "";
     Dom.htmlEncodeDiv.appendChild(document.createTextNode(text));
     return Dom.htmlEncodeDiv.innerHTML;
 };
+
 Dom.attrEncode = function (s, preserveCR) {
     preserveCR = preserveCR ? '&#13;' : '\n';
     return ('' + s) /* Forces the conversion to string. */
@@ -835,14 +942,14 @@ Dom.setInnerText = function (element, text) {
 };
 Dom.renewId = function (shape) {
     var seed = Math.round(Math.random() * 1000);
-    Dom.workOn(".//*/@id|/@id", shape, function (node) {
+    NDom.workOn(".//*/@id|/@id", shape, function (node) {
         var uuid = Util.newUUID();
         Dom.updateIdRef(shape, node.value, uuid);
         node.value = uuid;
     });
 };
 Dom.updateIdRef = function (shape, oldId, newId) {
-    Dom.workOn(".//*/@p:filter | .//*/@filter | .//*/@style | .//*/@xlink:href | .//*/@clip-path | .//*/@marker-end | .//*/@marker-start | .//*/@mask | .//*/@childRef | .//@p:parentRef", shape, function (node) {
+    NDom.workOn(".//*/@p:filter | .//*/@filter | .//*/@style | .//*/@xlink:href | .//*/@clip-path | .//*/@marker-end | .//*/@marker-start | .//*/@mask | .//*/@childRef | .//@p:parentRef", shape, function (node) {
         var value = node.value;
         if (value == "#" + oldId) {
             value = "#" + newId;
@@ -866,7 +973,7 @@ Dom.updateIdRef = function (shape, oldId, newId) {
     });
 };
 Dom.resolveIdRef = function (shape, seed) {
-    Dom.workOn(".//*/@p:filter | .//*/@filter | .//*/@style | .//*/@xlink:href | .//*/@clip-path | .//*/@marker-end | .//*/@marker-start | .//*/@mask | .//*/@childRef | .//@p:parentRef", shape, function (node) {
+    NDom.workOn(".//*/@p:filter | .//*/@filter | .//*/@style | .//*/@xlink:href | .//*/@clip-path | .//*/@marker-end | .//*/@marker-start | .//*/@mask | .//*/@childRef | .//@p:parentRef", shape, function (node) {
         var value = node.value;
         if (value.substring(0, 1) == "#") {
             value += seed;
@@ -1133,10 +1240,12 @@ Svg.optimizeSpeed = function(target, on) {
         target.removeAttributeNS(PencilNamespaces.p, "moving");
     }
 };
+
 Svg.UNIT = ["em", "ex", "px", "pt", "pc", "cm", "mm", "in", "%"];
+
 Svg.getWidth = function (dom) {
     try {
-        var width = Dom.getSingle("/svg:svg/@width", dom).nodeValue;
+        var width = NDom.getSingle("/svg:svg/@width", dom).nodeValue;
         for (var i = 0; i < Svg.UNIT.length; i++) {
             if (width.indexOf(Svg.UNIT[i]) != -1) {
                 width = width.substring(0, width.length - Svg.UNIT[i].length);
@@ -1149,9 +1258,10 @@ Svg.getWidth = function (dom) {
     }
     return 0;
 };
+
 Svg.getHeight = function (dom) {
     try {
-        var height = Dom.getSingle("/svg:svg/@height", dom).nodeValue;
+        var height = NDom.getSingle("/svg:svg/@height", dom).nodeValue;
         for (var i = 0; i < Svg.UNIT.length; i++) {
             if (height.indexOf(Svg.UNIT[i]) != -1) {
                 height = height.substring(0, height.length - Svg.UNIT[i].length);
@@ -1163,6 +1273,7 @@ Svg.getHeight = function (dom) {
     }
     return 0;
 };
+
 Svg.SYMBOL_NAME_ATTR = "symbolName";
 Svg.getSymbolName = function (node) {
     if (node.hasAttributeNS(PencilNamespaces.p, Svg.SYMBOL_NAME_ATTR)) {
@@ -1171,6 +1282,7 @@ Svg.getSymbolName = function (node) {
         return null;
     }
 };
+
 Svg.setSymbolName = function (node, name) {
     if (typeof(name) === "undefined" || name === null) {
         node.remoteAttributeNS(PencilNamespaces.p, Svg.SYMBOL_NAME_ATTR);

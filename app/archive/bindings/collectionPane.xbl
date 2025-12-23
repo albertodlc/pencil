@@ -217,7 +217,7 @@
                         importedLayout.setAttribute("style", style);
                         
                         //div.setAttribute("class", "CustomLayoutContent");
-                        Dom.workOn(".//html:*[@id]", div, function (node) {
+                        NDom.workOn(".//html:*[@id]", div, function (node) {
                             var ref = node.getAttribute("id");
                             if (ref.indexOf(":") < 0) ref = collection.id + ":" + ref;
                             var def = collection.getShapeDefById(ref);
@@ -289,7 +289,7 @@
                 <body>
                 <![CDATA[
                     //debug("filterShapes: " + filter);
-                    var shapes = Dom.getList(".//*[@ptype='ShapeDef' or @ptype='Shortcut']", this.contentBox);
+                    var shapes = NDom.getList(".//*[@ptype='ShapeDef' or @ptype='Shortcut']", this.contentBox);
                     if (shapes) {
                         for (var i = 0; i < shapes.length; i++) {
                             var def = shapes[i]._def;
@@ -439,4 +439,3 @@
         </xbl:content>
     </binding>
 </bindings>
-

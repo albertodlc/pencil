@@ -213,7 +213,7 @@ FontRepository.prototype.load = function () {
         var dom = Dom.parseFile(registryFilePath);
 
         var thiz = this;
-        Dom.workOn("/p:FontRegistry/p:Font", dom, function (node) {
+        NDom.workOn("/p:FontRegistry/p:Font", dom, function (node) {
             var fontName = node.getAttribute("name");
             var location = node.getAttribute("location");
             var source = node.getAttribute("source") || "";
@@ -226,7 +226,7 @@ FontRepository.prototype.load = function () {
                 variants: []
             };
             thiz.fonts.push(font);
-            Dom.workOn("./p:FontStyle", node, function (styleNode) {
+            NDom.workOn("./p:FontStyle", node, function (styleNode) {
                 var weight = styleNode.getAttribute("weight");
                 var style = styleNode.getAttribute("style");
                 var href = styleNode.getAttribute("href");

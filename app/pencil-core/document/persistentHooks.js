@@ -4,7 +4,7 @@ var relativeHRefHook = {
     onDomSerialization: function (dom) {
         var thiz = this;
 
-        Dom.workOn("//@xlink:href", dom, function (href) {
+        NDom.workOn("//@xlink:href", dom, function (href) {
             var hrefValue = href.nodeValue;
             if (!hrefValue.match(/^file:\/\/.*$/)) return;
 
@@ -14,7 +14,7 @@ var relativeHRefHook = {
             }
         });
         var xpath = "//svg:g[@p:type='Shape' and @p:def='Evolus.Common:Bitmap']//p:property[@name='imageData']";
-        Dom.workOn(xpath, dom, function (property) {
+        NDom.workOn(xpath, dom, function (property) {
             var imageData = ImageData.fromString(property.textContent);
             if (!imageData.data.match(/^file:\/\/.*$/)) return;
 
@@ -29,7 +29,7 @@ var relativeHRefHook = {
     onPageLoad: function (page) {
         var thiz = this;
 
-        Dom.workOn("//@xlink:href", page.contentNode, function (href) {
+        NDom.workOn("//@xlink:href", page.contentNode, function (href) {
             var hrefValue = href.nodeValue;
             if (hrefValue.match(/^[a-z]+:\/\/.*$/)) return;
 
@@ -39,7 +39,7 @@ var relativeHRefHook = {
             }
         });
         var xpath = "//svg:g[@p:type='Shape' and @p:def='Evolus.Common:Bitmap']//p:property[@name='imageData']";
-        Dom.workOn(xpath, page.contentNode, function (property) {
+        NDom.workOn(xpath, page.contentNode, function (property) {
             var imageData = ImageData.fromString(property.textContent);
             if (!imageData.data) {
                 thiz.badImageDataFound = true;

@@ -11,7 +11,7 @@ Object.defineProperty(OffScreenCanvas.prototype, "ownerDocument", {
 });
 
 OffScreenCanvas.prototype.invalidateAll = function () {
-    Dom.workOn(".//svg:g[@p:type='Shape']", this.svg, function (node) {
+    NDom.workOn(".//svg:g[@p:type='Shape']", this.svg, function (node) {
         try {
             var controller = this.createControllerFor(node);
             if (controller && controller.validateAll) controller.validateAll("offScreen");

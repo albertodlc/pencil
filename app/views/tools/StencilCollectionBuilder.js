@@ -39,7 +39,7 @@ collection.BOUND_CALCULATOR = {
                     var name = targetName;
                     if (targetName.match(/^text.*/)) name += "text"; //HACK: use text element natural bound
 
-                    var node = Dom.getSingle(".//svg:*[@p:name='" + name + "']", shapeNode);
+                    var node = NDom.getSingle(".//svg:*[@p:name='" + name + "']", shapeNode);
                     if (node) {
                         var bbox = node.getBBox();
                         if (bbox.width > 0 && bbox.height > 0) {
@@ -120,7 +120,7 @@ collection.copyClipboardSVGImage = function (target, imageDataPropName, boxPropN
 
     if (!dontParsePathData) {
         var parsedData = [];
-        Dom.workOn("//svg:path[@d]", dom.documentElement, function (pathNode) {
+        NDom.workOn("//svg:path[@d]", dom.documentElement, function (pathNode) {
             var d = pathNode.getAttribute("d");
             var parsed = thiz.def.collection.parsePathData(d);
             var pathInfo = {
@@ -505,7 +505,7 @@ collection.toColorizedDOMNode = function (svgXML, color) {
 
     if (color) {
         var c = color.toRGBAString();
-        Dom.workOn("//svg:*", svg, function (node) {
+        NDom.workOn("//svg:*", svg, function (node) {
             if (node.style.fill != "none") {
                 node.style.fill = c;
             }
@@ -952,7 +952,7 @@ StencilCollectionBuilder.prototype.buildImpl = function (options, onBuildDoneCal
 
         //append global propert fragment
         if (globalPropertySpecs && globalPropertySpecs.length > 0) {
-            var globalGroupNode = Dom.getSingle("/p:Shapes/p:Properties/p:PropertyGroup", dom);
+            var globalGroupNode = NDom.getSingle("/p:Shapes/p:Properties/p:PropertyGroup", dom);
             globalGroupNode.appendChild(Dom.newDOMFragment(globalPropertySpecs, dom));
 
             for (var spec of globalPropertySpecs) {
@@ -968,7 +968,7 @@ StencilCollectionBuilder.prototype.buildImpl = function (options, onBuildDoneCal
         }
 
         //re-fill shape's property fragment
-        Dom.workOn("/p:Shapes/p:Shape", dom, function (shapeDefNode) {
+        NDom.workOn("/p:Shapes/p:Shape", dom, function (shapeDefNode) {
             if (shapeDefNode._propertyFragmentSpec && shapeDefNode._propertyFragmentSpec.length > 0) {
                 //generalizing global properties
                 for (var spec of shapeDefNode._propertyFragmentSpec) {
@@ -1000,7 +1000,7 @@ StencilCollectionBuilder.prototype.buildImpl = function (options, onBuildDoneCal
                     }
                 }
 
-                var groupNode = Dom.getSingle("./p:Properties/p:PropertyGroup[@holder='true']", shapeDefNode);
+                var groupNode = NDom.getSingle("./p:Properties/p:PropertyGroup[@holder='true']", shapeDefNode);
                 groupNode.appendChild(Dom.newDOMFragment(shapeDefNode._propertyFragmentSpec, dom));
             }
         });
@@ -1104,7 +1104,7 @@ StencilCollectionBuilder.prototype.buildImpl = function (options, onBuildDoneCal
 
             var hasContribution = false;
 
-            Dom.workOn(".//svg:g[@p:type='Shape']", svg, function (shapeNode) {
+            NDom.workOn(".//svg:g[@p:type='Shape']", svg, function (shapeNode) {
                 var c = page.canvas.createControllerFor(shapeNode);
 
                 if (!c.performAction) return;
@@ -1391,7 +1391,7 @@ StencilCollectionBuilder.prototype.processShortcuts = function (pages, dom, dir,
             var svg = page.canvas.drawingLayer;
 
             var defIdPrefix = collection.id + ":";
-            var shapeNodes = Dom.getList("./svg:g[@p:type='Shape']", svg);
+            var shapeNodes = NDom.getList("./svg:g[@p:type='Shape']", svg);
 
             Util.workOnListAsync(shapeNodes, function (shapeNode, index, __callback) {
                 thiz.progressListener.onProgressUpdated(`Processing shortcuts in '${page.name}...'`, index, shapeNodes.length);
@@ -1540,7 +1540,7 @@ StencilCollectionBuilder.prototype.processShortcuts = function (pages, dom, dir,
                     __callback();
                 });
             }, function () {
-                var groupNodes = Dom.getList("./svg:g[@p:type='Group']", svg);
+                var groupNodes = NDom.getList("./svg:g[@p:type='Group']", svg);
 
                 Util.workOnListAsync(groupNodes, function (groupNode, index, __callback) {
                     thiz.progressListener.onProgressUpdated(`Processing private shapes in '${page.name}...'`, index, groupNodes.length);
@@ -1589,7 +1589,7 @@ StencilCollectionBuilder.prototype.generateCollectionLayout = function (collecti
 
     const IMAGE_FILE = "layout_image.png";
 
-    Dom.workOn("./svg:g[@p:type='Shape']", container, function (g) {
+    NDom.workOn("./svg:g[@p:type='Shape']", container, function (g) {
             var dx = 0; //rect.left;
             var dy = 0; //rect.top;
 
@@ -1637,7 +1637,7 @@ StencilCollectionBuilder.prototype.generateCollectionLayout = function (collecti
     });
     
     var privateShapeItems = [];
-    Dom.workOn("./svg:g[@p:type='Group']", container, function (g) {
+    NDom.workOn("./svg:g[@p:type='Group']", container, function (g) {
         var defId = g.getAttributeNS(PencilNamespaces.p, "private-def-id");
         if (!defId) return;
         
@@ -1849,7 +1849,7 @@ StencilCollectionBuilder.prototype.deploy = function (callback) {
             }
             
             var dom = new DOMParser().parseFromString(data, "text/xml");
-            var collectionNode = Dom.getSingle("/p:Collections/p:Collection[p:id/text()='" + currentOptions.id + "']", dom);
+            var collectionNode = NDom.getSingle("/p:Collections/p:Collection[p:id/text()='" + currentOptions.id + "']", dom);
             if (collectionNode) {
                 while (collectionNode.firstChild) collectionNode.removeChild(collectionNode.firstChild);
             } else {
@@ -1869,7 +1869,7 @@ StencilCollectionBuilder.prototype.deploy = function (callback) {
             attr("author", currentOptions.author);
             attr("website", currentOptions.website || "https://pencil.evolus.vn/");
             attr("version", currentOptions.version || "1.0");
-            attr("updated", moment().format("YYYY-MM-DD[T]HH:mm:ss.SSSZZ"));
+            attr("updated", TimeUtil.formatTimestamp());
             attr("license", currentOptions.license || "MIT");
             attr("url", repoDownloadBaseURL + currentOptions.id + "/" + zipFileName + "?t=" + (new Date().getTime()));
             attr("thumbnail", repoDownloadBaseURL + currentOptions.id + "/layout_image.png?t=" + (new Date().getTime()));

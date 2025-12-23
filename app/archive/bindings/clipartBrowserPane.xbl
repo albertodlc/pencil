@@ -197,7 +197,7 @@
                                     }
 
                                     //if (scale < 1) {
-                                        var viewBox = Dom.getSingle("/svg:svg/@viewBox", dom);
+                                        var viewBox = NDom.getSingle("/svg:svg/@viewBox", dom);
                                         if (viewBox != null) {
                                             viewBox = viewBox.nodeValue.split(/\s+/);
                                             if (viewBox.length >= 4) {
@@ -402,4 +402,3 @@
         </xbl:content>
     </binding>
 </bindings>
-

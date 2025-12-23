@@ -6,7 +6,7 @@ Pencil.findObjectByName = function (ref, name) {
                     return node.getAttributeNS && node.getAttributeNS(PencilNamespaces.p, "type") == "Shape";
                 });
 
-    var target = Dom.getSingle(".//*[@p:name='" + name + "']", shape);
+    var target = NDom.getSingle(".//*[@p:name='" + name + "']", shape);
 
     return target;
 };
@@ -15,7 +15,7 @@ Pencil.findObjectById = function (ref, id) {
         return node.getAttributeNS && node.getAttributeNS(PencilNamespaces.p, "type") == "Shape";
     });
 
-    var target = Dom.getSingle(".//*[@id='" + id + "']", shape);
+    var target = NDom.getSingle(".//*[@id='" + id + "']", shape);
 
     return target;
 };

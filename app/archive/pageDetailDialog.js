@@ -68,7 +68,7 @@ function handleOnloadImpl() {
         //search for a predefined size that matches current size
         var result = {};
         var sizeText = [currentData.width, currentData.height].join("x");
-        Dom.workOn(".//xul:menuitem[@p:predefined]", size, function (node) {
+        NDom.workOn(".//xul:menuitem[@p:predefined]", size, function (node) {
             if (node.value == sizeText) {
                 result.item = node;
             }
@@ -165,7 +165,7 @@ function invalidateInputs() {
         width.value = RegExp.$1;
         height.value = RegExp.$2;
     }
-    Dom.workOn("./xul:*", width.parentNode, function (node) {
+    NDom.workOn("./xul:*", width.parentNode, function (node) {
         node.disabled = customSizeDisabled;
     });
 

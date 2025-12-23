@@ -4,7 +4,6 @@ const rimraf        = require("rimraf");
 
 const tmp           = require("tmp");
 const path          = require("path");
-const moment        = require("moment");
 const fs            = require("fs");
 const os            = require("os");
 const jimp          = require("jimp");

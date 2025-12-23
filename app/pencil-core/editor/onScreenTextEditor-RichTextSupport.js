@@ -27,7 +27,7 @@ OnScreenTextEditor._runEditorCommandByList = function (command, list) {
 
 OnScreenTextEditor._enableTextToolbar = function (enable) {
     var toolbar = document.getElementById("textFormatToolbar");
-    Dom.workOn(".//*[local-name() = 'toolbarbutton' or local-name() = 'menulist']", toolbar, function (node) {
+    NDom.workOn(".//*[local-name() = 'toolbarbutton' or local-name() = 'menulist']", toolbar, function (node) {
         node.disabled = !enable;
     });
 };
@@ -279,7 +279,7 @@ OnScreenTextEditor._installSimpleCommandHandler = function (id, commandName, val
         if (id == "mclearButton") {
             var v = OnScreenTextEditor.getRichtextValue();
             try {
-                v = Dom.getText(Dom.parseToNode(v));
+                v = NDom.getText(Dom.parseToNode(v));
                 OnScreenTextEditor.richTextEditor.contentDocument.body.innerHTML = v;
             } catch (e) { }
         }
@@ -380,7 +380,7 @@ OnScreenTextEditor.getRichtextValue = function () {
 
 OnScreenTextEditor.prototype.applyChanges = function () {
     if (this.currentTarget && this.textEditingInfo) {
-        Dom.workOn(".//html:script", OnScreenTextEditor.richTextEditor.contentDocument.body, function (node) {
+        NDom.workOn(".//html:script", OnScreenTextEditor.richTextEditor.contentDocument.body, function (node) {
             node.parentNode.removeChild(node);
         });
         var html = Dom.serializeNode(OnScreenTextEditor.richTextEditor.contentDocument.body);

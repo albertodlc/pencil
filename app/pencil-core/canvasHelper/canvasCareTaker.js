@@ -79,7 +79,7 @@ CanvasCareTaker.prototype.loadState = function (filePath) {
     var dom = Controller.parser.parseFromString(fs.readFileSync(filePath, "utf8"), "text/xml");
     this.index = parseInt(dom.documentElement.getAttribute("index"), 10);
     this.mementos = [];
-    Dom.workOn("/p:CareTakerContent/*", dom, function (node) {
+    NDom.workOn("/p:CareTakerContent/*", dom, function (node) {
         if (!node || !node.getAttribute) return;
         var memento = CanvasMemento.deserializeFromNode(node);
         this.mementos.push(memento);

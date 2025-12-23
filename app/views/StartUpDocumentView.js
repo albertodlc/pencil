@@ -18,7 +18,7 @@ function StartUpDocumentView() {
             var stats = fs.statSync(filePath);
             if (stats) {
                 binding.name.innerHTML = Dom.htmlEncode(path.basename(filePath));
-                binding.info.innerHTML = Dom.htmlEncode(moment(stats.mtime).fromNow());
+                binding.info.innerHTML = Dom.htmlEncode( TimeUtil.timeFromNow(stats.mtime) );
                 if (!gridViewCheck) binding.path.innerHTML = Dom.htmlEncode(filePath);
                 var pinDocs = Config.get("pin-documents");
                 if (pinDocs && pinDocs.indexOf(filePath) >= 0) Dom.addClass(binding.pin, "Unpin");

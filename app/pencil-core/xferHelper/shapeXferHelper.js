@@ -10,7 +10,7 @@ ShapeXferHelper.prototype.toString = function () {
 };
 ShapeXferHelper.prototype.handleData = function (dom) {
     //validate
-    var shape = Dom.getSingle("/svg:g[@p:type='Shape' or @p:type='Group']", dom);
+    var shape = NDom.getSingle("/svg:g[@p:type='Shape' or @p:type='Group']", dom);
 
     if (!shape) {
         throw Util.getMessage("bad.data.in.the.clipboard");

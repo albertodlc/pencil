@@ -336,12 +336,12 @@ StencilGenerator.createSVGStencils = function (item, svgDocument, index) {
         var stencils = [];
         var id = 0;
 
-        var defNode = Dom.getSingle("./svg:defs", svgDocument.documentElement);
-        var metaNode = Dom.getSingle("./svg:metadata", svgDocument.documentElement);
+        var defNode = NDom.getSingle("./svg:defs", svgDocument.documentElement);
+        var metaNode = NDom.getSingle("./svg:metadata", svgDocument.documentElement);
 
         var detectInkscape = document.getElementById("detectInkscape").checked;
         if (detectInkscape) {
-            Dom.workOn("//*[@inkscape:groupmode='layer']/*", svgDocument.documentElement, function (path) {
+            NDom.workOn("//*[@inkscape:groupmode='layer']/*", svgDocument.documentElement, function (path) {
                 var node = StencilGenerator.createDataNode(path, defNode, metaNode)
                 var box = StencilGenerator.getBox(node);
                 stencils.push({

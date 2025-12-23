@@ -16,7 +16,7 @@ ExportTemplate.parse = function (dir) {
     var template = new ExportTemplate();
 
     template.editableProperties = [];
-    Dom.workOn("/*/p:Property", dom, function (propNode) {
+    NDom.workOn("/*/p:Property", dom, function (propNode) {
         var name = propNode.getAttribute("name");
         var value = propNode.textContent;
         template[name] = value;
@@ -40,7 +40,7 @@ ExportTemplate.parse = function (dir) {
         property.value = property.initialValue;
 
         //parsing meta
-        Dom.workOn("./@p:*", propNode, function (metaAttribute) {
+        NDom.workOn("./@p:*", propNode, function (metaAttribute) {
             var metaValue = metaAttribute.nodeValue;
             metaValue = metaValue.replace(/\$([a-z][a-z0-9]*)/gi, function (zero, one) {
                 property.relatedProperties[one] = true;

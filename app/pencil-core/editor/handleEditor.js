@@ -15,8 +15,8 @@ HandleEditor.configDoc = Dom.loadSystemXml("pencil-core/editor/handleEditor.conf
 HandleEditor.prototype.install = function (canvas) {
     this.canvas = canvas;
     this.canvas.onScreenEditors.push(this);
-    this.svgElement = canvas.ownerDocument.importNode(Dom.getSingle("/p:Config/svg:g", HandleEditor.configDoc), true);
-    this.svgContainer = Dom.getSingle("./svg:g[@class='Inner']", this.svgElement)
+    this.svgElement = canvas.ownerDocument.importNode(NDom.getSingle("/p:Config/svg:g", HandleEditor.configDoc), true);
+    this.svgContainer = NDom.getSingle("./svg:g[@class='Inner']", this.svgElement)
 
     this.svgElement.style.visibility = "hidden";
     canvas.installControlSVGElement(this.svgElement);
@@ -173,7 +173,7 @@ HandleEditor.prototype.handleKeyPressEvent = function (event) {
 
 	var thiz = this;
 	var focusedHandle = null;
-	Dom.workOn("./svg:rect[@p:name='Handle']", this.svgElement, function (handle) {
+	NDom.workOn("./svg:rect[@p:name='Handle']", this.svgElement, function (handle) {
 		if (handle._def && handle._def.name == thiz.focusedHandleName) {
 			focusedHandle = handle;
 		}
@@ -336,7 +336,7 @@ HandleEditor.prototype.getPropertyConstraintsFromDef = function (def) {
 
 HandleEditor.prototype.invalidateFocusedHandle = function () {
 	var thiz = this;
-	Dom.workOn("./svg:rect[@p:name='Handle']", this.svgElement, function (handle) {
+	NDom.workOn("./svg:rect[@p:name='Handle']", this.svgElement, function (handle) {
 		if (handle._def && handle._def.name == thiz.focusedHandleName) {
 			handle.setAttributeNS(PencilNamespaces.p, "p:focused", true);
 		} else {

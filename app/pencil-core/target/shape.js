@@ -15,17 +15,18 @@ function Shape(canvas, svg, forcedDefinition) {
     }
 
     //locating metadata node
-    this.metaNode = Dom.getSingle("./p:metadata", this.svg);
+    this.metaNode = Ndom.getSingle("./p:metadata", this.svg);
 
     //construct the target node map
     this.setupTargetMap("shouldRepair");
     //this.dockingManager = new DockingManager(this);
 }
+
 Shape.prototype.setupTargetMap = function (shouldRepair) {
     this.targetMap = {};
     for (i in this.def.behaviors) {
         var name = this.def.behaviors[i].target;
-        var target = Dom.getSingle(".//*[@p:name='" + name + "']", this.svg);
+        var target = Ndom.getSingle(".//*[@p:name='" + name + "']", this.svg);
         if (!target) {
             if (shouldRepair) {
                 console.error("Target '" + name + "' is not found. Repairing now...");
@@ -44,12 +45,15 @@ Shape.prototype.setupTargetMap = function (shouldRepair) {
         this.targetMap[name] = target;
     }
 };
+
 Shape.prototype.getName = function () {
     return this.def.displayName;
 };
+
 Shape.prototype.isFor = function (svg) {
     return this.svg == svg;
 };
+
 Shape.prototype.getProperties = function () {
     var properties = {};
     for (var name in this.def.propertyMap) {
@@ -58,6 +62,7 @@ Shape.prototype.getProperties = function () {
 
     return properties;
 };
+
 Shape.prototype.getPropertyGroups = function () {
     return this.def.propertyGroups;
 };
@@ -451,7 +456,7 @@ Shape.prototype.getMetadata = function (name) {
     return Util.getNodeMetadata(this.svg, name);
 };
 Shape.prototype.locatePropertyNode = function (name) {
-    return Dom.getSingle("./p:property[@name='" + name +"']", this.metaNode);
+    return Ndom.getSingle("./p:property[@name='" + name +"']", this.metaNode);
 };
 Shape.prototype.storeProperty = function (name, value) {
     //debug("setting: " + name + " = " + value.toString());
@@ -877,7 +882,7 @@ Shape.prototype.getTextEditingInfo = function (editingEvent) {
                                 break;
                             }
                         }
-                        var targetObject = Dom.getSingle(".//*[@p:name='" + target + "']", this.svg);
+                        var targetObject = Ndom.getSingle(".//*[@p:name='" + target + "']", this.svg);
                         if (targetObject) {
                             info = {prop: prop,
                                     value: this.getProperty(name),
@@ -909,7 +914,7 @@ Shape.prototype.getTextEditingInfo = function (editingEvent) {
                         bound = pEval("" + b.items[i].args[1].literal, obj);
                         align = pEval("" + b.items[i].args[2].literal, obj);
 
-                        var targetObject = Dom.getSingle(".//*[@p:name='" + target + "']", this.svg);
+                        var targetObject = Ndom.getSingle(".//*[@p:name='" + target + "']", this.svg);
 
                         info = {prop: prop,
                                 value: this.getProperty(name),
@@ -967,7 +972,7 @@ Shape.prototype.getTextEditingInfo = function (editingEvent) {
 
                         if (font) {
 
-                            var targetObject = Dom.getSingle(".//*[@p:name='" + target + "']", this.svg);
+                            var targetObject = Ndom.getSingle(".//*[@p:name='" + target + "']", this.svg);
                             //checking if the target is ok for use to base the location calculation
                             var ok = true;
                             try {

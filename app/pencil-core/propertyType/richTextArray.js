@@ -6,10 +6,10 @@ RichTextArray.fromString = function (xml) {
     var root = Dom.parseToNode(xml);
 
     var rows = [];
-    Dom.workOn("/*/r", root, function (r) {
+    NDom.workOn("/*/r", root, function (r) {
         var r = [];
         rows.push(r);
-        Dom.workOn("./c", r, function (c) {
+        NDom.workOn("./c", r, function (c) {
             r.push({
                 html: (c.firstChild && c.firstChild.nodeType == Node.CDATA_SECTION_NODE) ?
                             c.firstChild.nodeValue : ""

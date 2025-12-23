@@ -89,7 +89,7 @@ ExternalImageEditorDialog.prototype._checkStatus = function () {
     var newModificationTime = stat.mtime.getTime();
     var previouslyUpdated = this.updated;
     this.updated = newModificationTime > this.initialModificationTime;
-    this.lastModifyLabel.innerHTML = this.updated ? moment(stat.mtime).fromNow() : "Not modified";
+    this.lastModifyLabel.innerHTML = this.updated ? TimeUtil.timeFromNow(stat.mtime) : "Not modified";
     Dom.toggleClass(this.lastModifyLabel, "Updated", this.updated);
 
     if (!previouslyUpdated && this.updated) this.invalidateElements();

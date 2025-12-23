@@ -317,14 +317,14 @@ Controller.prototype.countResourceReferences = function (page) {
         contextNode = page.canvas.drawingLayer;
     } else {
         var dom = Controller.parser.parseFromString(fs.readFileSync(page.tempFilePath, "utf8"), "text/xml");
-        contextNode = Dom.getSingle("/p:Page/p:Content", dom);
+        contextNode = NDom.getSingle("/p:Page/p:Content", dom);
     }
 
-    Dom.workOn(".//svg:g[@p:type='Shape']", contextNode, function (node) {
+    NDom.workOn(".//svg:g[@p:type='Shape']", contextNode, function (node) {
         var defId = node.getAttributeNS(PencilNamespaces.p, "def");
         var def = CollectionManager.shapeDefinition.locateDefinition(defId);
 
-        Dom.workOn("./p:metadata/p:property", node, function (propNode) {
+        NDom.workOn("./p:metadata/p:property", node, function (propNode) {
             var name = propNode.getAttribute("name");
             var value = propNode.textContent;
 
@@ -467,12 +467,12 @@ Controller.prototype.invalidateContentNode = function (node, onDoneCallback) {
         });
     }
 
-    Dom.workOn("//svg:g[@p:type='Shape']", node, function (shapeNode) {
+    NDom.workOn("//svg:g[@p:type='Shape']", node, function (shapeNode) {
         var defId = shapeNode.getAttributeNS(PencilNamespaces.p, "def");
         var def = CollectionManager.shapeDefinition.locateDefinition(defId);
 
         if (def) {
-            Dom.workOn("./p:metadata/p:property", shapeNode, function (propertyNode) {
+            NDom.workOn("./p:metadata/p:property", shapeNode, function (propertyNode) {
                 var name = propertyNode.getAttribute("name");
                 var propertyDef = def.propertyMap[name];
                 if (!propertyDef || !propertyDef.type.invalidateValue) return;
@@ -493,7 +493,7 @@ Controller.prototype.invalidateContentNode = function (node, onDoneCallback) {
 };
 
 Controller.prototype.invalidateBrokenImageRefs = function (contentNode) {
-    Dom.workOn(".//html:img", contentNode, function (imgNode) {
+    NDom.workOn(".//html:img", contentNode, function (imgNode) {
         var src = imgNode.getAttribute("src");
         if (!src) return;
         if (!src.match(/^file:\/\/([^\?]+)(\?.+)?$/)) return;
@@ -658,7 +658,7 @@ Controller.serializePageToDom = function (page, noContent) {
             svg.setAttribute("height", "" + page.height  + "px");
             try {
                 var dom2 = Controller.parser.parseFromString(fs.readFileSync(page.tempFilePath, "utf8"), "text/xml");
-                var content2 = Dom.getSingle("/p:Page/p:Content", dom2);
+                var content2 = NDom.getSingle("/p:Page/p:Content", dom2);
                 while (content2.hasChildNodes()) {
                     var c = content2.firstChild;
                     content2.removeChild(c);
@@ -708,7 +708,7 @@ Controller.prototype.getPageSVG = function (page) {
         }
     } else {
         var dom = Controller.parser.parseFromString(fs.readFileSync(page.tempFilePath, "utf8"), "text/xml");
-        var content = Dom.getSingle("/p:Page/p:Content", dom);
+        var content = NDom.getSingle("/p:Page/p:Content", dom);
         while (content.hasChildNodes()) {
             var c = content.firstChild;
             content.removeChild(c);
@@ -735,7 +735,7 @@ Controller.prototype.swapIn = function (page, canvas) {
     if (page.canvas) throw "Invalid page state. Unable to swap in attached page.";
 
     var dom = Controller.parser.parseFromString(fs.readFileSync(page.tempFilePath, "utf8"), "text/xml");
-    var content = Dom.getSingle("/p:Page/p:Content", dom);
+    var content = NDom.getSingle("/p:Page/p:Content", dom);
 
     Dom.empty(canvas.drawingLayer);
     if (content) {
@@ -1547,12 +1547,12 @@ Controller.prototype.prepareForEmbedding = function (node, onPreparingDoneCallba
         });
     }
 
-    Dom.workOn("//svg:g[@p:type='Shape']", node, function (shapeNode) {
+    NDom.workOn("//svg:g[@p:type='Shape']", node, function (shapeNode) {
         var defId = shapeNode.getAttributeNS(PencilNamespaces.p, "def");
         var def = CollectionManager.shapeDefinition.locateDefinition(defId);
         if (!def) return;
 
-        Dom.workOn("./p:metadata/p:property", shapeNode, function (propertyNode) {
+        NDom.workOn("./p:metadata/p:property", shapeNode, function (propertyNode) {
             var name = propertyNode.getAttribute("name");
             var propertyDef = def.propertyMap[name];
             if (!propertyDef || !propertyDef.type.prepareForEmbedding) return;
@@ -1583,7 +1583,7 @@ Controller.prototype.exportAsLayout = function () {
 
     var devCollection = CollectionManager.getDeveloperStencil();
 
-    Dom.workOn("//svg:g[@p:type='Shape']", container, function (g) {
+    NDom.workOn("//svg:g[@p:type='Shape']", container, function (g) {
             var dx = 0; //rect.left;
             var dy = 0; //rect.top;
 
