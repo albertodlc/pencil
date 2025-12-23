@@ -335,7 +335,7 @@ OnScreenRichTextEditor.prototype.handleKeyPress = function (event) {
         var insideList = null;
         try {
             var node = window.getSelection().anchorNode;
-            insideList = Dom.findUpward(node, function (n) {
+            insideList = NDom.findUpward(node, function (n) {
                 return n.localName == "li";
             });
         } catch (e) {}
@@ -411,7 +411,7 @@ OnScreenRichTextEditor.prototype.cancelChange = function () {
 };
 OnScreenRichTextEditor.prototype.getRichtextValue = function () {
     return this.textEditor.innerHTML;
-    var html = Dom.serializeNode(this.textEditor.innerHTML);
+    var html = NDom.serializeNode(this.textEditor.innerHTML);
     html = html.replace(/<[\/A-Z0-9]+[ \t\r\n>]/g, function (zero) {
         return zero.toLowerCase();
     });

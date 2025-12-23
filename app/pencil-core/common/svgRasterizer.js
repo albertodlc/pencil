@@ -489,7 +489,7 @@ Rasterizer.prototype._saveNodeToTempFileAndLoad = function (svgNode, loadCallbac
     // this.cleanup();
     //
     // this.lastTempFile = Local.newTempFile("raster", "svg");
-    // Dom.serializeNodeToFile(svgNode, this.lastTempFile,
+    // NDom.serializeNodeToFile(svgNode, this.lastTempFile,
     //     "<?xml-stylesheet href=\"chrome://global/skin/\" type=\"text/css\"?>\n" +
     //     "<?xml-stylesheet href=\"chrome://pencil/skin/htmlForeignObject.css\" type=\"text/css\"?>\n" +
     //     "<?xml-stylesheet href=\"chrome://pencil/skin/htmlForeignObjectXUL.css\" type=\"text/css\"?>");

@@ -2,7 +2,7 @@ var TemplateManagementDialog = {};
 
 TemplateManagementDialog.init = function () {
     TemplateManagementDialog.manager = window.opener.ExportTemplateManager;
-    Dom.populate(TemplateManagementDialog, ["templateTypeSelector", "templateListContent"]);
+    NDom.populate(TemplateManagementDialog, ["templateTypeSelector", "templateListContent"]);
     TemplateManagementDialog.uninstallButton = document.documentElement.getButton("extra1");
 
     TemplateManagementDialog.loadTemplatesForSelectedType();
@@ -45,8 +45,8 @@ TemplateManagementDialog.loadTemplatesForSelectedType = function () {
         rows.push(row);
     }
 
-    Dom.empty(TemplateManagementDialog.templateListContent);
-    TemplateManagementDialog.templateListContent.appendChild(Dom.newDOMFragment(rows));
+    NDom.empty(TemplateManagementDialog.templateListContent);
+    TemplateManagementDialog.templateListContent.appendChild(NDom.newDOMFragment(rows));
 };
 TemplateManagementDialog.getSelectedTemplates = function () {
     var tree = TemplateManagementDialog.templateListContent.parentNode;

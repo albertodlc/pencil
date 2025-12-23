@@ -3,7 +3,7 @@ function ShadowStyleEditor() {
     
     var thiz = this;
     this.selectorContainer.shouldCloseOnBlur = function(event) {
-        var found = Dom.findUpward(event.target, function (node) {
+        var found = NDom.findUpward(event.target, function (node) {
             return node == thiz.colorButton;
         });
         return !found;

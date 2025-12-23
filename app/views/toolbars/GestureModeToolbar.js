@@ -11,7 +11,7 @@ function GestureModeToolbar() {
 __extend(ToolBar, GestureModeToolbar);
 
 GestureModeToolbar.prototype.handleClick = function (event) {
-    var button = Dom.findUpwardForNodeWithData(event.target, "_mode");
+    var button = NDom.findUpwardForNodeWithData(event.target, "_mode");
     if (!button) return;
     if (!Pencil.activeCanvas) return;
     GestureHelper.fromCanvas(Pencil.activeCanvas).setActiveModeId(button._mode.id);
@@ -20,7 +20,7 @@ GestureModeToolbar.prototype.handleClick = function (event) {
 GestureModeToolbar.prototype.init = function () {
     var thiz = this;
     GestureHelper.MODES.forEach(function (mode) {
-        var button = Dom.newDOMElement({
+        var button = NDom.newDOMElement({
             _name: "button",
             mode: "icon",
             checked: "false",
@@ -40,7 +40,7 @@ GestureModeToolbar.prototype.invalidateModeUI = function () {
     if (!Pencil.activeCanvas) return;
     var activeMode = GestureHelper.fromCanvas(Pencil.activeCanvas).getActiveMode();
 
-    Dom.doOnAllChildren(this.buttonContainer, function (button) {
+    NDom.doOnAllChildren(this.buttonContainer, function (button) {
         if (!button._mode) return;
         var selected = button._mode.id == activeMode.id;;
         button.setAttribute("checked", selected);

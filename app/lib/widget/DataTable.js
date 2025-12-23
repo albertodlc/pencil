@@ -1,42 +1,42 @@
 lwidget.DataTable = function () {
-    Dom.registerEvent(window, "load", function () {
+    NDom.registerEvent(window, "load", function () {
         var f = function (event) {
-            var target = Dom.getTarget(event);
-            Dom.doOnChildRecursively(target, {
+            var target = NDom.getTarget(event);
+            NDom.doOnChildRecursively(target, {
                 eval: function (node) {
-                    return Dom.hasClass(node, "DataTable") && node._dt && node._dt.invalidateSizing;
+                    return NDom.hasClass(node, "DataTable") && node._dt && node._dt.invalidateSizing;
                 }
             }, function (node) {
                 node._dt.invalidateSizing();
             });
         };
-        Dom.registerEvent(document.body, "overflow", f, false);
-        Dom.registerEvent(document.body, "underflow", f, false);
+        NDom.registerEvent(document.body, "overflow", f, false);
+        NDom.registerEvent(document.body, "underflow", f, false);
     });
 
     function clickHandler(event) {
-        var target = Dom.getTarget(event);
-        var link = Dom.findUpward(target, new DomTagNameEvaluator("a"));
+        var target = NDom.getTarget(event);
+        var link = NDom.findUpward(target, new DomTagNameEvaluator("a"));
         if (link) return;
-        var selectionPane = Dom.findUpward(target, {
+        var selectionPane = NDom.findUpward(target, {
             eval: function (n) {
-                var hasClass = Dom.hasClass(n, "ActionInfoPane");
+                var hasClass = NDom.hasClass(n, "ActionInfoPane");
                 return hasClass;
             },
         });
         if (selectionPane) return;
 
         //alert("start checking from: " + event.type);
-        var checkbox = Dom.findUpward(target, {
+        var checkbox = NDom.findUpward(target, {
             eval: function (n) {
-                var hasClass = Dom.hasClass(n, "DataTableCheck");
+                var hasClass = NDom.hasClass(n, "DataTableCheck");
                 return hasClass;
             },
         });
 
-        var infoSelection = Dom.findUpward(target, {
+        var infoSelection = NDom.findUpward(target, {
             eval: function (n) {
-                var hasClass = Dom.hasClass(n, "DataTableCheckInfo");
+                var hasClass = NDom.hasClass(n, "DataTableCheckInfo");
                 return hasClass;
             },
         });
@@ -54,10 +54,10 @@ lwidget.DataTable = function () {
             return;
         }
 
-        var th = Dom.findUpward(target, new DomTagNameEvaluator("th"));
+        var th = NDom.findUpward(target, new DomTagNameEvaluator("th"));
         if (th) return;
 
-        var actionNode = Dom.findUpward(target, {
+        var actionNode = NDom.findUpward(target, {
             eval: function (n) {
                 return n.getAttribute && n.getAttribute("action-id");
             }
@@ -66,12 +66,12 @@ lwidget.DataTable = function () {
 
 
         //check for primary clickable item
-        var td = Dom.findUpward(target, new DomTagNameEvaluator("td"), function (node) {
+        var td = NDom.findUpward(target, new DomTagNameEvaluator("td"), function (node) {
             return node == dataTable.container;
         });
         if (td) {
             var primary = null;
-            Dom.doOnChildRecursively(td, {
+            NDom.doOnChildRecursively(td, {
                 eval: function (n) {
                     return n.getAttribute && n.getAttribute("primary") == "true";
                 }
@@ -86,7 +86,7 @@ lwidget.DataTable = function () {
         }
 
         //find data row instance
-        var row = Dom.findUpward(target, {
+        var row = NDom.findUpward(target, {
             eval: function (n) {
                 return n.getAttribute && n.getAttribute("data-index");
             }
@@ -139,7 +139,7 @@ lwidget.DataTable = function () {
         var dataTable = DataTable.findInstance(event);
         if (!dataTable) return;
 
-        var all = Dom.hasClass(checkbox, "All");
+        var all = NDom.hasClass(checkbox, "All");
 
         if (all) {
             if (checkbox.checked) {
@@ -172,14 +172,14 @@ lwidget.DataTable = function () {
             dataTable.fireAllCheckBoxChangedEvent(checkbox.checked);
         } else {
             var allChecked = true;
-            Dom.doOnChildRecursively(dataTable.table, {
-                eval: function (n) { return Dom.hasClass(n, "DataTableCheck") && Dom.hasClass(n, "Item")}
+            NDom.doOnChildRecursively(dataTable.table, {
+                eval: function (n) { return NDom.hasClass(n, "DataTableCheck") && NDom.hasClass(n, "Item")}
             }, function (c) {
                 if (!c.checked) allChecked = false;
             })
 
-            Dom.doOnChildRecursively(dataTable.table, {
-                eval: function (n) { return Dom.hasClass(n, "DataTableCheck") && Dom.hasClass(n, "All")}
+            NDom.doOnChildRecursively(dataTable.table, {
+                eval: function (n) { return NDom.hasClass(n, "DataTableCheck") && NDom.hasClass(n, "All")}
             }, function (c) {
                 c.checked = allChecked && !dataTable.multiPages;
             })
@@ -197,10 +197,10 @@ lwidget.DataTable = function () {
         var dataTable = DataTable.findInstance(event);
         if (!dataTable) return;
 
-        var target = Dom.getTarget(event);
-        var th = Dom.findUpward(target, {
+        var target = NDom.getTarget(event);
+        var th = NDom.findUpward(target, {
             eval: function (n) {
-                return Dom.hasClass(n, "Sortable") && n.id;
+                return NDom.hasClass(n, "Sortable") && n.id;
             }
         });
 
@@ -212,7 +212,7 @@ lwidget.DataTable = function () {
 
             if (column.columnId == id) {
                 console.log("Found colum id ", column, th);
-                var asc = Dom.hasClass(th, "AscSort");
+                var asc = NDom.hasClass(th, "AscSort");
                 var order = {
                         propertyName: column.propertyName,
                         asc: !asc
@@ -263,7 +263,7 @@ lwidget.DataTable = function () {
             var action = this.actions[i];
             if (action.isApplicable && !action.isApplicable(data)) continue;
 
-            html += "<span action-id=\"" + action.id + "\" class=\"fa " + action.type + " Action"  + action.id +  " " + (action.isApplicable && action.isApplicable(data) ? "" : "disabled")  + "\" title=\"" + Dom.htmlEncode(action.title) + "\"></span>"
+            html += "<span action-id=\"" + action.id + "\" class=\"fa " + action.type + " Action"  + action.id +  " " + (action.isApplicable && action.isApplicable(data) ? "" : "disabled")  + "\" title=\"" + NDom.htmlEncode(action.title) + "\"></span>"
         }
         return html;
     };
@@ -296,7 +296,7 @@ lwidget.DataTable = function () {
         this.headerHeight = 0;
         this.hiddenHeader = false;
 
-        Dom.registerEvent(this.container, "click", clickHandler, false);
+        NDom.registerEvent(this.container, "click", clickHandler, false);
 
         var ua = navigator.userAgent.toLowerCase();
         if (ua.indexOf("chrome/") >= 0
@@ -307,13 +307,13 @@ lwidget.DataTable = function () {
             function detector() {
                 try {
                     if (typeof (thiz.lastContainerWidth) != "undefined") {
-                        var w = Dom.getOffsetWidth(thiz.container);
+                        var w = NDom.getOffsetWidth(thiz.container);
                         if (w != thiz.lastContainerWidth) {
                             thiz.invalidateSizing(detector);
                         }
                     }
                 } finally {
-                    if (!Dom.isElementExistedInDocument(thiz.container)) {
+                    if (!NDom.isElementExistedInDocument(thiz.container)) {
                         return;
                     }
                     window.setTimeout(detector, 500);
@@ -329,16 +329,16 @@ lwidget.DataTable = function () {
     DataTable.prototype.withOverflowIndicators = function(indicatorContainer) {
         var thiz = this;
         var left = document.createElement("div");
-        Dom.addClass(left, "DTOverflowIndicator DTOverflowIndicatorLeft");
+        NDom.addClass(left, "DTOverflowIndicator DTOverflowIndicatorLeft");
         indicatorContainer.appendChild(left);
         this.leftOverflowIndicator = left;
 
         var right = document.createElement("div");
-        Dom.addClass(right, "DTOverflowIndicator DTOverflowIndicatorRight");
+        NDom.addClass(right, "DTOverflowIndicator DTOverflowIndicatorRight");
         indicatorContainer.appendChild(right);
         this.rightOverflowIndicator = right;
 
-        Dom.registerEvent(this.container, "scroll", function () {
+        NDom.registerEvent(this.container, "scroll", function () {
             thiz.invalidateOverflowIndicators();
         }, false);
 
@@ -359,11 +359,11 @@ lwidget.DataTable = function () {
         var infoPane = document.createElement("div");
         var bodyPane = document.createElement("div");
         var footerPane = document.createElement("div");
-        Dom.addClass(infoPane, "SelectionInfoPane");
-        Dom.addClass(bodyPane, "SelectionBodyPane");
+        NDom.addClass(infoPane, "SelectionInfoPane");
+        NDom.addClass(bodyPane, "SelectionBodyPane");
         infoPane.appendChild(bodyPane);
         infoPane.appendChild(footerPane);
-        Dom.addClass(footerPane, "ActionInfoPane FooterBar");
+        NDom.addClass(footerPane, "ActionInfoPane FooterBar");
         var ab = new widget.ActionBar(footerPane);
         ab.register({
             getIcon: function () { return "fa fa-trash" },
@@ -419,9 +419,9 @@ lwidget.DataTable = function () {
                             selectedsInPaginator.splice(foundIndex, 1);
                         }
                         if (thiz.isSelectAll()) {
-                            Dom.removeClass(thiz.container, "SelectAll");
-                            Dom.doOnChildRecursively(thiz.table, {
-                                eval: function (n) { return Dom.hasClass(n, "DataTableCheck") && Dom.hasClass(n, "All")}
+                            NDom.removeClass(thiz.container, "SelectAll");
+                            NDom.doOnChildRecursively(thiz.table, {
+                                eval: function (n) { return NDom.hasClass(n, "DataTableCheck") && NDom.hasClass(n, "All")}
                             }, function (c) {
                                 c.checked = false;
                             })
@@ -462,7 +462,7 @@ lwidget.DataTable = function () {
         return this;
     }
     DataTable.prototype.sumarizerSelectionItem = function(data) {
-        return Dom.htmlEncode(data);
+        return NDom.htmlEncode(data);
     }
     DataTable.prototype.setSelectionInfoVisible = function (visible) {
         if (!this._selectionPane) return;
@@ -483,14 +483,14 @@ lwidget.DataTable = function () {
 
         var indicatorContainer = this.leftOverflowIndicator.parentNode;
         if (overflowLeft) {
-            Dom.addClass(indicatorContainer, "DTOverflowLeft");
+            NDom.addClass(indicatorContainer, "DTOverflowLeft");
         } else {
-            Dom.removeClass(indicatorContainer, "DTOverflowLeft");
+            NDom.removeClass(indicatorContainer, "DTOverflowLeft");
         }
         if (overflowRight) {
-            Dom.addClass(indicatorContainer, "DTOverflowRight");
+            NDom.addClass(indicatorContainer, "DTOverflowRight");
         } else {
-            Dom.removeClass(indicatorContainer, "DTOverflowRight");
+            NDom.removeClass(indicatorContainer, "DTOverflowRight");
         }
     };
     DataTable.prototype.setHeight = function(height) {
@@ -526,15 +526,15 @@ lwidget.DataTable = function () {
         }
     };
     DataTable.prototype.selectAll = function () {
-        Dom.addClass(this.container, "SelectAll");
+        NDom.addClass(this.container, "SelectAll");
         this.selectCurrentPageItems(true);
         this.fireSelectionChangedEvent(true);
     };
     DataTable.prototype.selectCurrentPageItems = function (selected) {
         var all = this.isSelectAll();
         var thiz = this;
-        Dom.doOnChildRecursively(this.table, {
-            eval: function (n) { return Dom.hasClass(n, "DataTableCheck") && Dom.hasClass(n, "Item")}
+        NDom.doOnChildRecursively(this.table, {
+            eval: function (n) { return NDom.hasClass(n, "DataTableCheck") && NDom.hasClass(n, "Item")}
         }, function (c) {
             c.checked = selected;
             c.disabled = typeof(thiz.disabledWhenCheckAll) == "undefined" ? all : thiz.disabledWhenCheckAll;
@@ -547,8 +547,8 @@ lwidget.DataTable = function () {
         var allChecked = true;
         var checkAllElement = null;
 
-        Dom.doOnChildRecursively(this.table, {
-            eval: function (n) { return Dom.hasClass(n, "DataTableCheck") && Dom.hasClass(n, "Item")}
+        NDom.doOnChildRecursively(this.table, {
+            eval: function (n) { return NDom.hasClass(n, "DataTableCheck") && NDom.hasClass(n, "Item")}
         }, function (c) {
             var index = parseInt(c.getAttribute("data-index"), 10);
             var item = thiz.items[index]
@@ -560,8 +560,8 @@ lwidget.DataTable = function () {
             }
         });
 
-        Dom.doOnChildRecursively(this.table, {
-            eval: function (n) { return Dom.hasClass(n, "DataTableCheck") && Dom.hasClass(n, "All")}
+        NDom.doOnChildRecursively(this.table, {
+            eval: function (n) { return NDom.hasClass(n, "DataTableCheck") && NDom.hasClass(n, "All")}
         }, function (c) {
             if (!thiz.items || thiz.items.length == 0) {
                 allChecked = false;
@@ -573,8 +573,8 @@ lwidget.DataTable = function () {
             c.checked = allChecked;
         });
 
-        Dom.doOnChildRecursively(this.table, {
-            eval: function (n) { return Dom.hasClass(n, "DataTableCheck") && Dom.hasClass(n, "Item")}
+        NDom.doOnChildRecursively(this.table, {
+            eval: function (n) { return NDom.hasClass(n, "DataTableCheck") && NDom.hasClass(n, "Item")}
         }, function (c) {
             c.disabled = allChecked;
         });
@@ -584,14 +584,14 @@ lwidget.DataTable = function () {
         this.fireSelectionChangedEvent(fromUserActions);
     };
     DataTable.prototype._updateCheckedRowIndicator = function () {
-        Dom.doOnChildRecursively(this.table, {
+        NDom.doOnChildRecursively(this.table, {
             eval: function (n) {
-                return Dom.hasClass(n, "DataTableCheck") && Dom.hasClass(n, "Item");
+                return NDom.hasClass(n, "DataTableCheck") && NDom.hasClass(n, "Item");
             }
         }, function (c) {
-            var tr = Dom.findParentByTagName(c, "tr");
+            var tr = NDom.findParentByTagName(c, "tr");
             if (tr) {
-                Dom.toggleClass(tr, "DTCheckedItemRow",  c.checked);
+                NDom.toggleClass(tr, "DTCheckedItemRow",  c.checked);
             }
         })
 
@@ -599,7 +599,7 @@ lwidget.DataTable = function () {
     DataTable.prototype.highlightItems = function (items, styleClass) {
         var thiz = this;
 
-        Dom.doOnAllChildren(this.body, function (tr) {
+        NDom.doOnAllChildren(this.body, function (tr) {
             var dataIndex = tr.getAttribute("data-index");
             if (!dataIndex) return;
 
@@ -608,16 +608,16 @@ lwidget.DataTable = function () {
             if (!item) return;
 
             if (contains(items, item, thiz.comparer)) {
-                Dom.addClass(tr, styleClass ? styleClass : "Highlighted");
+                NDom.addClass(tr, styleClass ? styleClass : "Highlighted");
             } else {
-                Dom.removeClass(tr, styleClass ? styleClass : "Highlighted");
+                NDom.removeClass(tr, styleClass ? styleClass : "Highlighted");
             }
         })
     };
     DataTable.prototype.removeHighlightItems = function (items, styleClass) {
         var thiz = this;
 
-        Dom.doOnAllChildren(this.body, function (tr) {
+        NDom.doOnAllChildren(this.body, function (tr) {
             var dataIndex = tr.getAttribute("data-index");
             if (!dataIndex) return;
 
@@ -626,23 +626,23 @@ lwidget.DataTable = function () {
             if (!item) return;
 
             if (contains(items, item, thiz.comparer)) {
-                Dom.removeClass(tr, styleClass ? styleClass : "Highlighted");
+                NDom.removeClass(tr, styleClass ? styleClass : "Highlighted");
             }
         })
     };
     DataTable.prototype.selectNone = function () {
-        Dom.removeClass(this.container, "SelectAll");
+        NDom.removeClass(this.container, "SelectAll");
         this.selectCurrentPageItems(false);
         this.fireSelectionChangedEvent();
         this.fireSelectNoneActionEvent();
     };
     DataTable.prototype.isSelectAll = function () {
-        return Dom.hasClass(this.container, "SelectAll");
+        return NDom.hasClass(this.container, "SelectAll");
     };
     DataTable.prototype.reset = function () {
         this.selectNone();
-        Dom.doOnChildRecursively(this.table, {
-            eval: function (n) { return Dom.hasClass(n, "DataTableCheck") && Dom.hasClass(n, "All")}
+        NDom.doOnChildRecursively(this.table, {
+            eval: function (n) { return NDom.hasClass(n, "DataTableCheck") && NDom.hasClass(n, "All")}
         }, function (c) {
             c.checked = false;
         })
@@ -676,7 +676,7 @@ lwidget.DataTable = function () {
 
     DataTable.prototype.setDefaultSelectionHandler = function (handler) {
         this.defaultSelectionHandler = handler;
-        Dom.addClass(this.table, "WithSelectionHandler");
+        NDom.addClass(this.table, "WithSelectionHandler");
     };
 
     DataTable.prototype.withColumnBuilder = function (builder) {
@@ -750,7 +750,7 @@ lwidget.DataTable = function () {
     };
     DataTable.prototype.invalidateSizing = function() {
     	var thiz = this;
-    	if (!Dom.isElementExistedInDocument(this.container)) {
+    	if (!NDom.isElementExistedInDocument(this.container)) {
     	    return;
     	}
         var selected = this.getSelectedItems();
@@ -767,7 +767,7 @@ lwidget.DataTable = function () {
         this.tableId = "table" + random;
         this.headerId = "header" + random;
         this.bodyId = "body" + random;
-        this.lastContainerWidth = Dom.getOffsetWidth(this.container);
+        this.lastContainerWidth = NDom.getOffsetWidth(this.container);
         var totalWidth = this.lastContainerWidth - 1;
         var remainingWidth = totalWidth;
 
@@ -853,7 +853,7 @@ lwidget.DataTable = function () {
             style += "width: " + col._width + "px; height: 25px; overflow: hidden;";
             var margin = 1;
             html +=
-                "<th title=\"" + Dom.htmlEncode(col.getTitleInfo()) + "\" width=\"" + col._width + "\" id=\"" + id + "\" class=\"" + clazz + "\" style=\"" + style +"\"><div" + extra + " style=\"width: " + (col._width - margin) + "px;\">" + col.getTitleContentHtml() + "</div></th>";
+                "<th title=\"" + NDom.htmlEncode(col.getTitleInfo()) + "\" width=\"" + col._width + "\" id=\"" + id + "\" class=\"" + clazz + "\" style=\"" + style +"\"><div" + extra + " style=\"width: " + (col._width - margin) + "px;\">" + col.getTitleContentHtml() + "</div></th>";
         }
 
         html += "        </tr>\n" +
@@ -866,20 +866,20 @@ lwidget.DataTable = function () {
 
         this.table = document.getElementById(this.tableId);
         this.header = document.getElementById(this.headerId);
-        this.headerHeight = Dom.getOffsetHeight(this.header);
+        this.headerHeight = NDom.getOffsetHeight(this.header);
         this.body = document.getElementById(this.bodyId);
 
         if (this.defaultSelectionHandler) {
-            Dom.addClass(this.table, "WithSelectionHandler");
+            NDom.addClass(this.table, "WithSelectionHandler");
         }
 
         this.table._dt = this;
 
         this.overlay = document.createElement("div");
-        Dom.addClass(this.overlay, "BusyOverlay");
+        NDom.addClass(this.overlay, "BusyOverlay");
         this.container.appendChild(this.overlay);
 
-        Dom.addClass(this.container, "DataTableContainer");
+        NDom.addClass(this.container, "DataTableContainer");
 
         var thiz = this;
         if (this.isConfigurable) {
@@ -891,15 +891,15 @@ lwidget.DataTable = function () {
             this.columnSettingButton = document.createElement("div");
             if (this.columnSettingButtonContainer) {
                 this.columnSettingButtonContainer.appendChild(this.columnSettingButton);
-                Dom.addClass(this.columnSettingButtonContainer, "DataTableColumSettingContainer");
+                NDom.addClass(this.columnSettingButtonContainer, "DataTableColumSettingContainer");
             } else {
                 this.container.appendChild(this.columnSettingButton);
-                Dom.addClass(this.container, "DataTableColumSettingContainer");
+                NDom.addClass(this.container, "DataTableColumSettingContainer");
             }
-            Dom.addClass(this.columnSettingButton, "ColumnSetting");
+            NDom.addClass(this.columnSettingButton, "ColumnSetting");
             this.columnSettingButton.innerHTML = "<span><i class=\"fa fa-cog\"></i></span>";
             this.columnSettingButton.setAttribute("title", Messages["change_column_settings_title"]);
-            Dom.registerEvent(this.columnSettingButton, "click", function () {
+            NDom.registerEvent(this.columnSettingButton, "click", function () {
                 if (thiz.columnBuilder) {
                     thiz.columnBuilder.setup(function () {
                         thiz._init();
@@ -917,7 +917,7 @@ lwidget.DataTable = function () {
         if (this.currentOrder) {
            this.setOrder(this.currentOrder);
         }
-        Dom.registerEvent(this.header, "click", columnHeaderClickHandler, false);
+        NDom.registerEvent(this.header, "click", columnHeaderClickHandler, false);
 
     };
     DataTable.prototype.isColumnVisible = function (column) {
@@ -958,12 +958,12 @@ lwidget.DataTable = function () {
             buildContent: function (container) {
                 container.innerHTML = "<strong>" + Messages["select_visible_columns_title"] + "</strong>";
                 var div = document.createElement("div");
-                Dom.addClass(div, "ColumnSelectorContainer");
+                NDom.addClass(div, "ColumnSelectorContainer");
                 container.appendChild(div);
                 this.checkboxContainer = div;
                 for (var i = 0; i < thiz.columns.length; i ++) {
                     var id = "c" + widget.random();
-                    var row = Dom.newDOMElement({
+                    var row = NDom.newDOMElement({
                         _name: "div",
                         _children: [{
                             _name: "input",
@@ -1020,10 +1020,10 @@ lwidget.DataTable = function () {
         var rowHeight = bodyHeight / (this.items ? this.items.length : 1);
 
 
-        var dialog = Dom.findParentWithClass(this.table, "DialogContainer");
+        var dialog = NDom.findParentWithClass(this.table, "DialogContainer");
         if (dialog) {
             //find scrollable container
-            var container = Dom.findParentWithClass(this.table, "MainContainer");
+            var container = NDom.findParentWithClass(this.table, "MainContainer");
             var expectedBodyHeight = container.offsetHeight - headerHeight;
             return Math.floor(expectedBodyHeight);
         } else {
@@ -1066,11 +1066,11 @@ lwidget.DataTable = function () {
 	};
     DataTable.prototype.getPreferredPageSize = function (busy) {
         this.table.style.height = "auto";
-        var headerHeight = Dom.getOffsetHeight(this.table.getElementsByTagName("th")[0]);
-        var bodyHeight = Dom.getOffsetHeight(this.table) - headerHeight;
+        var headerHeight = NDom.getOffsetHeight(this.table.getElementsByTagName("th")[0]);
+        var bodyHeight = NDom.getOffsetHeight(this.table) - headerHeight;
         var rowHeight = bodyHeight / (this.items ? this.items.length : 1);
 
-        var maxBodyHeight = Dom.getOffsetHeight(this.container) - Dom.calculateSystemScrollbarSize().h - headerHeight;
+        var maxBodyHeight = NDom.getOffsetHeight(this.container) - Dom.calculateSystemScrollbarSize().h - headerHeight;
         var rows = Math.floor(maxBodyHeight / rowHeight);
         if (rows <= 0) rows = 1;
         this.lastCalculatedPageSize = rows;
@@ -1084,12 +1084,12 @@ lwidget.DataTable = function () {
 
     DataTable.prototype.showBusy = function (busy) {
         if (busy) {
-            //Dom.addClass(this.container, "Busy");
-            //Dom.addClass(this.container, "DataTableContainerBusy");
+            //NDom.addClass(this.container, "Busy");
+            //NDom.addClass(this.container, "DataTableContainerBusy");
             defaultIndicator.busy(widget.LOADING);
         } else {
-            //Dom.removeClass(this.container, "Busy");
-            //Dom.removeClass(this.container, "DataTableContainerBusy");
+            //NDom.removeClass(this.container, "Busy");
+            //NDom.removeClass(this.container, "DataTableContainerBusy");
             defaultIndicator.done();
         }
     };
@@ -1106,7 +1106,7 @@ lwidget.DataTable = function () {
             for (var j = 0; j < this.actualColumns.length; j ++) {
                 if (!this.isColumnVisible(this.actualColumns[j])) continue;
                 var column = this.actualColumns[j];
-                html += "<td data-title=\"" + Dom.htmlEncode(column.title) + "\"";
+                html += "<td data-title=\"" + NDom.htmlEncode(column.title) + "\"";
                 if (column.getBodyClass) {
                     var c = column.getBodyClass(item, i, j);
                     if (c) {
@@ -1151,9 +1151,9 @@ lwidget.DataTable = function () {
     DataTable.prototype.markedAsPaginated = function (paginated) {
         this.paginated = paginated;
         if (paginated) {
-            Dom.addClass(this.container, "DataTableContainerPaginated");
+            NDom.addClass(this.container, "DataTableContainerPaginated");
         } else {
-            Dom.removeClass(this.container, "DataTableContainerPaginated");
+            NDom.removeClass(this.container, "DataTableContainerPaginated");
         }
     };
     DataTable.prototype._setItems = function(items, notify) {
@@ -1166,7 +1166,7 @@ lwidget.DataTable = function () {
             for (var j = 0; j < this.actualColumns.length; j ++) {
                 if (!this.isColumnVisible(this.actualColumns[j])) continue;
                 var column = this.actualColumns[j];
-                html += "<td data-title=\"" + Dom.htmlEncode(column.title) + "\"";
+                html += "<td data-title=\"" + NDom.htmlEncode(column.title) + "\"";
                 if (column.getBodyClass) {
                     var c = column.getBodyClass(item, i, j);
                     if (c) {
@@ -1215,10 +1215,10 @@ lwidget.DataTable = function () {
         this.invalidateOverflowIndicators();
         if (this.lastCalculatedPageSize && this.items.length == this.lastCalculatedPageSize) {
             var padding = 0;
-            if (Dom.getOffsetWidth(this.table) > Dom.getOffsetWidth(this.container)) {
+            if (NDom.getOffsetWidth(this.table) > NDom.getOffsetWidth(this.container)) {
                 padding = Dom.calculateSystemScrollbarSize().h;
             }
-            this.table.style.height = (Dom.getOffsetHeight(this.container) - padding) + "px";
+            this.table.style.height = (NDom.getOffsetHeight(this.container) - padding) + "px";
         } else {
             this.table.style.height = "auto";
         }
@@ -1246,9 +1246,9 @@ lwidget.DataTable = function () {
     DataTable.prototype.getSelectedItems = function () {
         var selectedItems = [];
         var thiz = this;
-        Dom.doOnChildRecursively(this.table, {
+        NDom.doOnChildRecursively(this.table, {
             eval: function (n) {
-                return Dom.hasClass(n, "DataTableCheck") && Dom.hasClass(n, "Item") && n.checked;
+                return NDom.hasClass(n, "DataTableCheck") && NDom.hasClass(n, "Item") && n.checked;
             }
         }, function (c) {
             var index = parseInt(c.getAttribute("data-index"), 10);
@@ -1264,12 +1264,12 @@ lwidget.DataTable = function () {
             var column = this.actualColumns[i];
             var th = document.getElementById(column.columnId);
             if (!th) continue;
-            Dom.removeClass(th, "DescSort");
-            Dom.removeClass(th, "AscSort");
-            Dom.removeClass(th, "BothSort");
+            NDom.removeClass(th, "DescSort");
+            NDom.removeClass(th, "AscSort");
+            NDom.removeClass(th, "BothSort");
 
             if (order && order.propertyName == column.propertyName) {
-                Dom.addClass(th, order.asc ? "AscSort" : "DescSort");
+                NDom.addClass(th, order.asc ? "AscSort" : "DescSort");
             }
         }
         this.currentOrder = order;
@@ -1286,11 +1286,11 @@ lwidget.DataTable = function () {
     };
 
     DataTable.findInstance = function (event) {
-        var target = Dom.getTarget(event);
+        var target = NDom.getTarget(event);
         return DataTable.findInstanceFromNode(target);
     }
     DataTable.findInstanceFromNode = function (target) {
-        var table = Dom.findUpward(target, {
+        var table = NDom.findUpward(target, {
             eval: function (n) {
                 return n._dt;
             }
@@ -1304,7 +1304,7 @@ lwidget.DataTable = function () {
         var dataTable = DataTable.findInstanceFromNode(node);
         if (!dataTable) return null;
 
-        var row = Dom.findUpward(node, {
+        var row = NDom.findUpward(node, {
             eval: function (n) {
                 return n.getAttribute && n.getAttribute("data-index");
             }
@@ -1359,16 +1359,16 @@ lwidget.DataTable = function () {
     };
     DataTable.PlainTextColumn.prototype = new BaseColumn();
     DataTable.PlainTextColumn.prototype.getTitleContentHtml = function () {
-        return !this.useHtmlTitle() ? Dom.htmlEncode(this.title) : this.title;
+        return !this.useHtmlTitle() ? NDom.htmlEncode(this.title) : this.title;
     };
     DataTable.PlainTextColumn.prototype.useHtmlTitle = function() {
         return false;
     }
     DataTable.PlainTextColumn.prototype.getContentTitle = function (data, row, col) {
-        return Dom.attrEncode(this.getter(data, row, col));
+        return NDom.attrEncode(this.getter(data, row, col));
     };
     DataTable.PlainTextColumn.prototype.getCellContentHtml = function (data, row, col) {
-        return Dom.htmlEncode(this.getter(data, row, col));
+        return NDom.htmlEncode(this.getter(data, row, col));
     };
 
     DataTable.GenericColumn = function (title, renderer, clazz) {
@@ -1382,10 +1382,10 @@ lwidget.DataTable = function () {
         return false;
     }
     DataTable.GenericColumn.prototype.getTitleContentHtml = function () {
-        return !this.useHtmlTitle() ? Dom.htmlEncode(this.title) : this.title;
+        return !this.useHtmlTitle() ? NDom.htmlEncode(this.title) : this.title;
     };
     DataTable.GenericColumn.prototype.getTitleContent = function (data, row, col) {
-        return Dom.htmlEncode(this.renderer(data, row, col));
+        return NDom.htmlEncode(this.renderer(data, row, col));
     };
     DataTable.GenericColumn.prototype.getCellContentHtml = function (data, row, col) {
         return this.renderer(data, row, col);
@@ -1400,15 +1400,15 @@ lwidget.DataTable = function () {
     };
     DataTable.LinkColumn.prototype = new BaseColumn();
     DataTable.LinkColumn.prototype.getTitleContentHtml = function () {
-        return Dom.htmlEncode(this.title);
+        return NDom.htmlEncode(this.title);
     };
     DataTable.LinkColumn.prototype.getCellContentHtml = function (data, row, col) {
         var href = this.linkHrefBuider(data, row, col);
-        var content = Dom.htmlEncode(this.linkContentBuilder(data, row, col));
+        var content = NDom.htmlEncode(this.linkContentBuilder(data, row, col));
         return "<a href=\"" + href + "\" target=\"_blank\">" + content + "</a>";
     };
     DataTable.LinkColumn.prototype.getContentTitle = function (data, row, col) {
-	   var content = Dom.htmlEncode(this.linkContentBuilder(data, row, col));
+	   var content = NDom.htmlEncode(this.linkContentBuilder(data, row, col));
 	   return content;
     };
     DataTable.NVLinkColumn = function (title, fieldName, clazz) {
@@ -1420,18 +1420,18 @@ lwidget.DataTable = function () {
     };
     DataTable.NVLinkColumn.prototype = new BaseColumn();
     DataTable.NVLinkColumn.prototype.getTitleContentHtml = function () {
-        return Dom.htmlEncode(this.title);
+        return NDom.htmlEncode(this.title);
     };
     DataTable.NVLinkColumn.prototype.getCellContentHtml = function (data, row, col) {
         var link = getLinkFromProperty(this.fieldName, data);
         if (!link) return "";
-        var content = Dom.htmlEncode(link.text);
+        var content = NDom.htmlEncode(link.text);
         return "<a href=\"" + link.href + "\" target=\"_blank\">" + content + "</a>";
     };
     DataTable.NVLinkColumn.prototype.getContentTitle = function (data, row, col) {
         var link = getLinkFromProperty(this.fieldName, data);
         if (!link) return "";
-        var content = Dom.htmlEncode(link.text);
+        var content = NDom.htmlEncode(link.text);
         return content;
     };
 

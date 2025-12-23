@@ -11,7 +11,7 @@ MyCollectionPane.prototype.getIconName = function() {
 };
 MyCollectionPane.prototype.initialize = function () {
     this.bind("contextmenu", function (event) {
-        var n = Dom.findUpwardForNodeWithData(Dom.getTarget(event), "_def");
+        var n = NDom.findUpwardForNodeWithData(NDom.getTarget(event), "_def");
         var def = n ? n._def : null;
         var collection = this.last;
         (new PrivateCollectionMenu(this, collection, def)).showMenuAt(event.clientX, event.clientY);

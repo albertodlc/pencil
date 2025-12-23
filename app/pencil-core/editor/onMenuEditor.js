@@ -119,7 +119,7 @@ OnMenuEditor.prototype.attach = function (targetObject) {
         popup.appendChild(item);
 
         popup.addEventListener("command", function (event) {
-                var menuitem = Dom.findUpward(event.originalTarget, function (node) {
+                var menuitem = NDom.findUpward(event.originalTarget, function (node) {
                         return node.localName == "menuitem";
                     });
                 if (!menuitem) return;

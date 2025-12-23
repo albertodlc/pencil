@@ -19,9 +19,9 @@ PrivateCollectionWizard.setup = function () {
 
     //Setup Private Collections
     var collections = PrivateCollectionWizard.dialogData.collections;
-    Dom.empty(PrivateCollectionWizard.collectionList);
+    NDom.empty(PrivateCollectionWizard.collectionList);
 
-    var item = Dom.newDOMElement({
+    var item = NDom.newDOMElement({
         _name: "listitem",
         _uri: PencilNamespaces.xul,
         label: Util.getMessage("create.new.private.collection")
@@ -30,7 +30,7 @@ PrivateCollectionWizard.setup = function () {
     PrivateCollectionWizard.collectionList.appendChild(item);
 
     for (var i = 0; i < collections.length; i++) {
-        item = Dom.newDOMElement({
+        item = NDom.newDOMElement({
             _name: "listitem",
             _uri: PencilNamespaces.xul,
             label: collections[i].displayName

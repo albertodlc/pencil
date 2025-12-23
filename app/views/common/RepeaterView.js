@@ -32,7 +32,7 @@ RepeaterView.prototype.setContentFragment = function (fragment) {
 RepeaterView.prototype.createBinding = function (container) {
     container._binding = {};
     container._binding._node = container;
-    Dom.doOnChildRecursively(container, {
+    NDom.doOnChildRecursively(container, {
         eval: function(n) {
             return n.getAttribute && n.getAttribute("anon-id");
         }
@@ -54,7 +54,7 @@ RepeaterView.prototype.generate = function (container, templateNode, data) {
 };
 RepeaterView.prototype.setItems = function (items) {
     this.items = items;
-    Dom.empty(this.node());
+    NDom.empty(this.node());
     if (!items || items.length <= 0) {
         if (this.emptyTemplate) {
             this.node().appendChild(this.generate(this.node(), this.emptyTemplate));
@@ -70,7 +70,7 @@ RepeaterView.prototype.setItems = function (items) {
     var container = this.node();
     if (this["content-wrapper-tag"]) {
         container = document.createElement(this["content-wrapper-tag"]);
-        Dom.addClass(container, "ContentWrapper");
+        NDom.addClass(container, "ContentWrapper");
 
         this.node().appendChild(container);
     }

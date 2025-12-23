@@ -7,21 +7,21 @@ function StartUpDocumentView() {
         gridViewCheck = true;
     }
     if (!gridViewCheck) {
-        Dom.addClass(this.recentDocumentRepeater.node(), "RowView");
-        Dom.addClass(this.listViewButton, "Active");
+        NDom.addClass(this.recentDocumentRepeater.node(), "RowView");
+        NDom.addClass(this.listViewButton, "Active");
     } else {
-        Dom.addClass(this.gridViewButton, "Active");
+        NDom.addClass(this.gridViewButton, "Active");
     }
     this.recentDocumentRepeater.populator = function (doc, binding) {
         var filePath = doc.filePath;
         var handler = function (error, thumbPath) {
             var stats = fs.statSync(filePath);
             if (stats) {
-                binding.name.innerHTML = Dom.htmlEncode(path.basename(filePath));
-                binding.info.innerHTML = Dom.htmlEncode( TimeUtil.timeFromNow(stats.mtime) );
-                if (!gridViewCheck) binding.path.innerHTML = Dom.htmlEncode(filePath);
+                binding.name.innerHTML = NDom.htmlEncode(path.basename(filePath));
+                binding.info.innerHTML = NDom.htmlEncode( TimeUtil.timeFromNow(stats.mtime) );
+                if (!gridViewCheck) binding.path.innerHTML = NDom.htmlEncode(filePath);
                 var pinDocs = Config.get("pin-documents");
-                if (pinDocs && pinDocs.indexOf(filePath) >= 0) Dom.addClass(binding.pin, "Unpin");
+                if (pinDocs && pinDocs.indexOf(filePath) >= 0) NDom.addClass(binding.pin, "Unpin");
                 if (thumbPath) {
                     window.setTimeout(function () {
                         Util.setupImage(binding.thumbnailImage, ImageData.filePathToURL(thumbPath), "center-top-crop", "allowUpscale");
@@ -43,38 +43,38 @@ function StartUpDocumentView() {
 
     var thiz = this;
     this.bind ("click", function(ev) {
-        var button = Dom.findUpward(ev.target, function(node) {
+        var button = NDom.findUpward(ev.target, function(node) {
             if (node == thiz.listViewButton || node == thiz.gridViewButton) return true;
             return false;
         })
         if (button == thiz.gridViewButton) {
             if (gridViewCheck) return;
             gridViewCheck = true;
-            Dom.removeClass(thiz.recentDocumentRepeater.node(), "RowView");
-            Dom.removeClass(thiz.listViewButton, "Active");
-            Dom.addClass(thiz.gridViewButton, "Active");
+            NDom.removeClass(thiz.recentDocumentRepeater.node(), "RowView");
+            NDom.removeClass(thiz.listViewButton, "Active");
+            NDom.addClass(thiz.gridViewButton, "Active");
             Config.set("view.startupscreen.gridview.enabled", true);
             thiz.recentDocumentRepeater.setItems(thiz.startDocs);
         } else {
             if (!gridViewCheck) return;
             gridViewCheck = false;
-            Dom.addClass(thiz.recentDocumentRepeater.node(), "RowView");
-            Dom.removeClass(thiz.gridViewButton, "Active");
-            Dom.addClass(thiz.listViewButton, "Active");
+            NDom.addClass(thiz.recentDocumentRepeater.node(), "RowView");
+            NDom.removeClass(thiz.gridViewButton, "Active");
+            NDom.addClass(thiz.listViewButton, "Active");
             Config.set("view.startupscreen.gridview.enabled", false);
             thiz.recentDocumentRepeater.setItems(thiz.startDocs);
         }
     }, this.changeViewButtons);
 
     this.bind("click", function (event) {
-        var node = Dom.findUpward(event.target, function(node) {
+        var node = NDom.findUpward(event.target, function(node) {
             if (node.getAttribute("command") == "pinDocument") return true;
             return false;
         })
 
-        var filePath = Dom.findUpwardForData(event.target, "_filePath");
+        var filePath = NDom.findUpwardForData(event.target, "_filePath");
         if (!filePath) return;
-        //var pinCheck = Dom.findUpwardForData(event.target, "_pin");
+        //var pinCheck = NDom.findUpwardForData(event.target, "_pin");
 
         if (node) {
             var pinFiles = Config.get("pin-documents") || [];
@@ -90,11 +90,11 @@ function StartUpDocumentView() {
                 if (recentMap) {
                     pinMaps[filePath] = recentMap[filePath];
                 }
-                Dom.addClass(node, "Unpin");
+                NDom.addClass(node, "Unpin");
             } else {
                 pinFiles.splice(index, 1);
                 delete pinMaps[filePath];
-                Dom.removeClass(node, "Unpin");
+                NDom.removeClass(node, "Unpin");
             }
             Config.set("pin-documents", pinFiles);
             Config.set("pin-documents-thumb-map", pinMaps);
@@ -111,7 +111,7 @@ function StartUpDocumentView() {
 
     }, this.recentDocumentRepeater);
 
-    Dom.doOnAllChildRecursively(this.node(), function (n) {
+    NDom.doOnAllChildRecursively(this.node(), function (n) {
         if (!n.getAttribute || !n.getAttribute("command")) return;
         var command = n.getAttribute("command");
         UICommandManager.installControl(command, n);

@@ -17,7 +17,7 @@ ShapeXferHelper.prototype.handleData = function (dom) {
     }
 
     shape = this.canvas.ownerDocument.importNode(shape, true);
-    Dom.renewId(shape);
+    NDom.renewId(shape);
     if (Config.get("edit.cutAndPasteAtTheSamePlace") == null ){
         Config.set("edit.cutAndPasteAtTheSamePlace", false);
     }

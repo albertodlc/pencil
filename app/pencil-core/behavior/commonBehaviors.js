@@ -76,7 +76,7 @@ Pencil.behaviors.CustomStyle = function (name, value) {
     Svg.setStyle(this, name, value);
 };
 Pencil.behaviors.InnerText = function (text) {
-    Dom.empty(this);
+    NDom.empty(this);
     this.appendChild(this.ownerDocument.createTextNode(text));
 };
 Pencil.behaviors._createUnderline = function(text) {
@@ -86,7 +86,7 @@ Pencil.behaviors._createUnderline = function(text) {
         underline = text.ownerDocument.createElementNS(PencilNamespaces.svg, "path");
         underline.setAttribute("id", id);
         underline.setAttribute("style", "fill: none; stroke-width: 1px;");
-        Dom.appendAfter(underline, text);
+        NDom.appendAfter(underline, text);
     }
 
     return underline;
@@ -362,7 +362,7 @@ Pencil.behaviors.TextContent = function (text, stripAccel, keepExistingRootEleme
     var isText = (this.localName == "text");
 
     if (isText) {
-        Dom.empty(this);
+        NDom.empty(this);
         var value = text.value ? text.value : text.html;
         this.appendChild(this.ownerDocument.createTextNode(value ? (stripAccel ? value.replace(/&/, "") : value) : " "));
     } else {
@@ -371,23 +371,23 @@ Pencil.behaviors.TextContent = function (text, stripAccel, keepExistingRootEleme
             content = content.replace(/[\r\n]+/gi, "").replace(/<br[^>]*>/gi, "\n").replace(/<[^>]+>/gi, "");
             var thiz = this;
             window.setTimeout(function () {
-                    Dom.empty(thiz);
+                    NDom.empty(thiz);
                     thiz.appendChild(thiz.ownerDocument.createTextNode(content));
                 }, 1);
         } else {
             var html = (text.constructor == RichText) ? text.html : text.value;
             var divHTML = "<div xmlns=\"" + PencilNamespaces.html + "\">" + html + "</div>";
-            var div = Dom.parseToNode(divHTML, this.ownerDocument);
+            var div = NDom.parseToNode(divHTML, this.ownerDocument);
             if (!div) return;
 
             if (!keepExistingRootElement) {
-                Dom.empty(this);
+                NDom.empty(this);
                 this.appendChild(div);
             } else {
                 var root = NDom.getSingle("./html:div", this);
                 if (!root) return;
 
-                Dom.empty(root);
+                NDom.empty(root);
                 root.appendChild(div);
             }
         }
@@ -395,7 +395,7 @@ Pencil.behaviors.TextContent = function (text, stripAccel, keepExistingRootEleme
 };
 Pencil.behaviors.PlainTextContent = function (text, bound, alignment) {
     var domContent = F.buildTextWrapDomContent(F._target, text.value, bound.w, alignment);
-    Dom.empty(this);
+    NDom.empty(this);
     this.appendChild(domContent);
 
     Pencil.behaviors.BoxFit.apply(this, [bound, alignment]);
@@ -417,19 +417,19 @@ Pencil.behaviors.RichTextContent = function (text, bound, alignment) {
     });
 };
 Pencil.behaviors.DomContent = function (xmlText) {
-    Dom.empty(this);
+    NDom.empty(this);
 
-    var domNode = xmlText.nodeType ? xmlText : Dom.parseToNode(xmlText.value, this.ownerDocument);
+    var domNode = xmlText.nodeType ? xmlText : NDom.parseToNode(xmlText.value, this.ownerDocument);
 
     if (domNode) this.appendChild(domNode);
 };
 Pencil.behaviors.AttachmentContent = function (attachment) {
 
-    Dom.empty(this);
+    NDom.empty(this);
 
     if (!attachment.defId) return;
 
-    var canvas = Dom.findUpward(this, function (node) {
+    var canvas = NDom.findUpward(this, function (node) {
         return node.namespaceURI == PencilNamespaces.xul && node.localName == "pcanvas";
     });
 
@@ -449,7 +449,7 @@ Pencil.behaviors.AttachmentContent = function (attachment) {
         Svg.ensureCTM(g, ctm);
 
         targetSVG.parentNode.removeChild(targetSVG);
-        Dom.renewId(g);
+        NDom.renewId(g);
         g.setAttribute("id", attachment.targetId);
 
         this.appendChild(g);
@@ -521,7 +521,7 @@ Pencil.behaviors.Disabled = function (disabled) {
 
 Pencil.behaviors.MaintainGlobalDef = function (id, contentFragement) {
     debug("MaintainGlobalDef");
-    var pcanvas = Dom.findUpward(this, function (node) {
+    var pcanvas = NDom.findUpward(this, function (node) {
         return (node.localName == "pcanvas") && node.drawingLayer;
     });
 
@@ -630,7 +630,7 @@ function buildNPatchDomFragment(np, dim) {
         if (scaledY) accumulatedScaleH += lastH;
     }
 
-    return Dom.newDOMFragment(specs);
+    return NDom.newDOMFragment(specs);
 }
 
 function getNPatchBound(np, dim) {
@@ -640,7 +640,7 @@ function getNPatchBound(np, dim) {
 Util.importSandboxFunctions(buildNPatchDomFragment, imageNodeForPatch, getNPatchBound);
 
 Pencil.behaviors.NPatchDomContent = function (nPatch, dim) {
-    Dom.empty(this);
+    NDom.empty(this);
     this.appendChild(buildNPatchDomFragment(nPatch, dim));
 };
 Pencil.behaviors.NPatchDomContentFromImage = function (imageData, dim, xAnchorMaps, yAnchorMaps) {
@@ -649,13 +649,13 @@ Pencil.behaviors.NPatchDomContentFromImage = function (imageData, dim, xAnchorMa
     var yCells = imageData.yCells;
 
     if ((!xCells || xCells.length == 0) && (!yCells || yCells.length == 0)) {
-        Dom.empty(this);
+        NDom.empty(this);
 
         this.setAttribute("width", dim.w)
         this.setAttribute("height", dim.h)
         this.setAttribute("style", "line-height: 1px;");
 
-        this.appendChild(Dom.newDOMElement({
+        this.appendChild(NDom.newDOMElement({
             _name: "img",
             _uri: PencilNamespaces.html,
             style: new CSS().set("width", dim.w + "px").set("height", dim.h + "px").toString(),
@@ -781,7 +781,7 @@ Pencil.behaviors.NPatchDomContentFromImage = function (imageData, dim, xAnchorMa
     }
 
 
-    Dom.empty(this);
+    NDom.empty(this);
 
     this.setAttribute("width", dim.w)
     this.setAttribute("height", dim.h)
@@ -793,6 +793,6 @@ Pencil.behaviors.NPatchDomContentFromImage = function (imageData, dim, xAnchorMa
         _children: rowSpecs
     }
 
-    this.appendChild(Dom.newDOMElement(outerSpec));
+    this.appendChild(NDom.newDOMElement(outerSpec));
 };
 Pencil.behaviors.NPatchDomContentFromImage._offScreenSupport = true;

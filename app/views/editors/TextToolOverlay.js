@@ -7,7 +7,7 @@ function TextToolOverlay() {
     };
 
     this.bind("click", function (event) {
-        var node = Dom.findUpward(event.target, function (n) {
+        var node = NDom.findUpward(event.target, function (n) {
             return n.getAttribute && n.getAttribute("command");
         });
 
@@ -29,7 +29,7 @@ function TextToolOverlay() {
         // if (node == thiz.medCleanUpButton) {
         //     var v = thiz._richTextEditor.getRichtextValue();
         //     try {
-        //         v = NDom.getText(Dom.parseToNode(v));
+        //         v = NDom.getText(NDom.parseToNode(v));
         //         thiz._richTextEditor.setRichtextValue(v);
         //     } catch (e) { }
         //
@@ -43,7 +43,7 @@ function TextToolOverlay() {
     window.document.body.addEventListener("mouseup", selectListener, false);
 
     this.bind("click", function (event) {
-        var node = Dom.findUpward(event.target, function (n) {
+        var node = NDom.findUpward(event.target, function (n) {
             return n.getAttribute && n.getAttribute("command");
         });
 
@@ -56,14 +56,14 @@ function TextToolOverlay() {
     }, this.textFormatContainer);
 
     this.bind("click", function (event) {
-        var node = Dom.findUpward(event.target, function (n) {
+        var node = NDom.findUpward(event.target, function (n) {
             return n.getAttribute && n.getAttribute("command");
         });
 
         if (!node) return;
         node.setAttribute("checked", "true");
 
-        Dom.doOnAllChildren(thiz.malignContainer, function (child) {
+        NDom.doOnAllChildren(thiz.malignContainer, function (child) {
             if (child != node && child.removeAttribute) {
                 child.removeAttribute("checked");
             }
@@ -136,11 +136,11 @@ function TextToolOverlay() {
         thiz.selector._control = control;
 
         thiz.selectorContainer.show(control, "left-inside", "bottom", 0, 5);
-        Dom.addClass(thiz._richTextEditor.textEditorWrapper, "ChoosingColor");
+        NDom.addClass(thiz._richTextEditor.textEditorWrapper, "ChoosingColor");
         // thiz.selector.focus();
     };
     this.selectorContainer.addEventListener("p:PopupHidden", function() {
-        Dom.removeClass(thiz._richTextEditor.textEditorWrapper, "ChoosingColor");
+        NDom.removeClass(thiz._richTextEditor.textEditorWrapper, "ChoosingColor");
     }, false)
     this.mtextColorButton.addEventListener("click", function (event) {
         changeColorListener(thiz.mtextColorButton, "forecolor");
@@ -187,7 +187,7 @@ for (var fontMap of TextToolOverlay.FONT_SIZES) {
 
 TextToolOverlay.prototype.fixFontSize = function () {
     var container = this._richTextEditor.textEditor;
-    Dom.doOnAllChildRecursively(container, function (node) {
+    NDom.doOnAllChildRecursively(container, function (node) {
         if (node.style && node.style.fontSize) {
             var em = TextToolOverlay.FONT_SIZE_MAP[node.style.fontSize];
             if (em) {
@@ -278,10 +278,10 @@ TextToolOverlay.prototype.updateButtonColor = function (control, color) {
     var value = color.toRGBString();
     if (control == this.mhilightColorButton) {
         this.mhilightColorButton.style.color = value;
-        Dom.toggleClass(this.mhilightColorButton, "LowContrast", lowContrast);
+        NDom.toggleClass(this.mhilightColorButton, "LowContrast", lowContrast);
     } else if (control == this.mtextColorButton) {
         this.mtextColorButton.style.color = value;
-        Dom.toggleClass(this.mtextColorButton, "LowContrast", lowContrast);
+        NDom.toggleClass(this.mtextColorButton, "LowContrast", lowContrast);
     }
 };
 TextToolOverlay.prototype.updateButtonByCommandState = function (commandName, control) {
@@ -310,7 +310,7 @@ TextToolOverlay.prototype.showToolBarAt = function (target, x, y) {
 
 TextToolOverlay.prototype.dontCloseUpward = function (event) {
     var thiz = this;
-    var node = Dom.findUpward(event.target, function (n) {
+    var node = NDom.findUpward(event.target, function (n) {
         return thiz.relatedPopup && n == thiz.relatedPopup.popupContainer;
     });
     return node;

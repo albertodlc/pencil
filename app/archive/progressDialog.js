@@ -18,12 +18,12 @@ function handleOnload() {
     //setup
     document.title = Util.getMessage("progress.dialog.title");
 
-    Dom.empty(titleText);
+    NDom.empty(titleText);
     titleText.appendChild(document.createTextNode(jobName + "..."));
     if (callback) {
         callback(jobName + "...");
     }
-    Dom.empty(detailText);
+    NDom.empty(detailText);
 
     var dialog = document.documentElement;
 
@@ -31,7 +31,7 @@ function handleOnload() {
         debug("about to call starter");
         jobStarter({
             onProgressUpdated: function (currentTask, done, total) {
-                Dom.empty(detailText);
+                NDom.empty(detailText);
                 detailText.appendChild(document.createTextNode(currentTask));
                 var p = Math.round(done * 100 / total);
                 percent.setAttribute("value", p);

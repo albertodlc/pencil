@@ -174,7 +174,7 @@ function ColorSelector() {
     }
 
     this.gridSelectorContainer.addEventListener("click", function (event) {
-        var colorCell = Dom.findUpward(event.target, function (n) {
+        var colorCell = NDom.findUpward(event.target, function (n) {
             return n.hasAttribute("color");
         });
         if (!colorCell) return;
@@ -184,7 +184,7 @@ function ColorSelector() {
     }, false);
 
     function colorListSelectHandler(event) {
-        var colorCell = Dom.findUpward(event.target, function (n) {
+        var colorCell = NDom.findUpward(event.target, function (n) {
             return n.hasAttribute("color");
         });
         if (!colorCell) return;
@@ -195,7 +195,7 @@ function ColorSelector() {
     this.documentPaletteContainer.addEventListener("click", colorListSelectHandler, false);
 
     this.bind("contextmenu", function (event) {
-        var color = Dom.findUpwardForData(event.target, "_color");
+        var color = NDom.findUpwardForData(event.target, "_color");
         if (!color) return;
 
         ColorSelector._handlePaletteMenu(thiz, color, event);
@@ -306,7 +306,7 @@ ColorSelector.prototype._emitChangeEvent = function () {
     this.dispatchEvent(event);
 };
 ColorSelector.prototype._emitCloseEvent = function () {
-    Dom.emitEvent("p:CloseColorSelector", this.node(), {});
+    NDom.emitEvent("p:CloseColorSelector", this.node(), {});
 };
 ColorSelector.prototype._changHS = function (hue, sat) {
     this.hue.value = hue;
@@ -319,7 +319,7 @@ ColorSelector.prototype.setColor = function (color) {
     this.onValueChanged();
     if (!this.selectedCell) {
         var uppercaseVal = this.color.toRGBString().toUpperCase();
-        Dom.doOnAllChildRecursively(this.recentlyUsedColor, function (n) {
+        NDom.doOnAllChildRecursively(this.recentlyUsedColor, function (n) {
             if (n.getAttribute) {
                 if (n.getAttribute("color") == uppercaseVal) {
                     n.setAttribute("selected", "true");
@@ -337,7 +337,7 @@ ColorSelector.prototype.setGridSelectorColor = function () {
     var uppercaseVal = this.color.toRGBString().toUpperCase();
 
     var thiz = this;
-    Dom.doOnAllChildRecursively(this.gridSelectorContainer, function (n) {
+    NDom.doOnAllChildRecursively(this.gridSelectorContainer, function (n) {
         if (n.getAttribute) {
             if (n.getAttribute("color") == uppercaseVal) {
                 n.setAttribute("selected", "true");
@@ -376,19 +376,19 @@ ColorSelector.prototype.addToPalette = function () {
     this.loadDocumentColors();
 };
 ColorSelector.prototype.loadDocumentColors = function () {
-    Dom.toggleClass(this.documentPalettePane, "NoDocument", Pencil.controller && Pencil.controller.doc ? false : true);
+    NDom.toggleClass(this.documentPalettePane, "NoDocument", Pencil.controller && Pencil.controller.doc ? false : true);
     if (!Pencil.controller || !Pencil.controller.doc) return;
 
-    Dom.setInnerText(this.paletteTitle, (Pencil.controller.doc.name || "Untitled Document") + " color palette:")
+    NDom.setInnerText(this.paletteTitle, (Pencil.controller.doc.name || "Untitled Document") + " color palette:")
 
     var colors = Pencil.controller.getDocumentColorPalette();
     if (!colors || colors.length == 0) {
-        Dom.addClass(this.documentPalettePane, "Empty");
+        NDom.addClass(this.documentPalettePane, "Empty");
     } else {
-        Dom.removeClass(this.documentPalettePane, "Empty");
+        NDom.removeClass(this.documentPalettePane, "Empty");
     }
 
-    Dom.empty(this.documentPaletteContainer);
+    NDom.empty(this.documentPaletteContainer);
     colors.forEach(function (c) {
         var cell = document.createElement("div");
         cell.setAttribute("class", "colorpickertile");
@@ -405,7 +405,7 @@ ColorSelector.prototype.initializeGridSelector = function () {
 
     var thiz = this;
     this.recentlyUsedColorElements = [];
-    Dom.doOnAllChildren(this.recentlyUsedColor, function (n) {
+    NDom.doOnAllChildren(this.recentlyUsedColor, function (n) {
         if (n.hasAttribute && n.hasAttribute("color")) {
             thiz.recentlyUsedColorElements.push(n);
         }
@@ -458,7 +458,7 @@ ColorSelector.prototype.reloadRecentlyUsedColors = function () {
     this.clearSelectedColor(this.recentlyUsedColor);
 };
 ColorSelector.prototype.clearSelectedColor = function (parentNode) {
-    Dom.doOnAllChildren(parentNode, function (n) {
+    NDom.doOnAllChildren(parentNode, function (n) {
         if (n.removeAttribute) n.removeAttribute("selected");
     });
 };

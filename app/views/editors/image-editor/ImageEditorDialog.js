@@ -15,7 +15,7 @@ function ImageEditorDialog () {
 __extend(Dialog, ImageEditorDialog);
 
 ImageEditorDialog.prototype.__init = function () {
-    Dom.addClass(this.dialogFrame, "EditImageDialog");
+    NDom.addClass(this.dialogFrame, "EditImageDialog");
     this.bind("mousedown", this.handleSelectionMouseDown, this.drawingScollPane);
     this.bind("mouseup", this.handleSelectionMouseUp, document);
     this.bind("mousemove", this.handleSelectionMouseMove, document);
@@ -34,7 +34,7 @@ ImageEditorDialog.prototype.__initTools = function () {
     var nodes = this.toolbarContainer.querySelectorAll(".PopupToggler");
     for (var i = 0; i < nodes.length; i++) {
         nodes[i].addEventListener("click", function (event) {
-            var toggler = Dom.findParentWithClass(event.target, "PopupToggler");
+            var toggler = NDom.findParentWithClass(event.target, "PopupToggler");
             var popup = toggler.parentNode.querySelector(".PopupContainer").__widget;
             if (!popup.isVisible()) {
                 popup.show(toggler, "left-inside", "bottom", 0, 5);
@@ -531,7 +531,7 @@ ImageEditorDialog.prototype._validateSelectionRange = function () {
 
 };
 ImageEditorDialog.prototype.handleSelectionMouseDown = function (event) {
-    Dom.cancelEvent(event);
+    NDom.cancelEvent(event);
     if (event.target.parentNode == this.selectionBox && this.currentRange) {
         this.currentRangeHandle = event.target;
         if (!this.currentRangeHandle._spec) {
@@ -586,13 +586,13 @@ ImageEditorDialog.prototype.handleSelectionHandleMove = function (event) {
 };
 ImageEditorDialog.prototype.handleSelectionMouseMove = function (event) {
     if (this.currentRange && this.currentRangeHandle) {
-        Dom.cancelEvent(event);
+        NDom.cancelEvent(event);
         this.handleSelectionHandleMove(event);
         return;
     }
     
     if (!this.lastMouseDownLocation) return;
-    Dom.cancelEvent(event);
+    NDom.cancelEvent(event);
 
     var end = this.getEventLocation(event);
     

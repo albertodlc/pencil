@@ -32,7 +32,7 @@
 
                 this.addEventListener("click", function (event) {
                     if (event.button != 0) return;
-                    var defNode = Dom.findUpward(event.originalTarget, function (node) { return node._def; });
+                    var defNode = NDom.findUpward(event.originalTarget, function (node) { return node._def; });
                     if (defNode) {
                         var e = document.createEvent("Events");
                         e.initEvent("ShapeSelected", false, false);
@@ -40,9 +40,9 @@
                         this.dispatchEvent(e);
                     }
 
-                    var header = Dom.findUpward(event.originalTarget, function (node) { return node._isHeader; });
+                    var header = NDom.findUpward(event.originalTarget, function (node) { return node._isHeader; });
                     if (header) {
-                        collection = Dom.findUpward(event.originalTarget, function (node) { return node._collection; });
+                        collection = NDom.findUpward(event.originalTarget, function (node) { return node._collection; });
                         if (collection) {
                             if (event.originalTarget.className == "HideCollection") {
                                 CollectionManager.setCollectionVisible(collection, false);
@@ -58,7 +58,7 @@
                     }
                 }, false);
                 this.contentBox.addEventListener("contextmenu", function (event) {
-                    var collection = Dom.findUpward(event.originalTarget, function (node) { return node._collection; });
+                    var collection = NDom.findUpward(event.originalTarget, function (node) { return node._collection; });
                     var hasCollection = false;
                     if (collection) {
                         hasCollection = true;
@@ -75,7 +75,7 @@
 
                     //setup hidden collection
                     var hasHiddenCollections = false;
-                    Dom.empty(thiz.showHiddenMenu.firstChild);
+                    NDom.empty(thiz.showHiddenMenu.firstChild);
                     for (i in CollectionManager.shapeDefinition.collections) {
                         var collection = CollectionManager.shapeDefinition.collections[i];
                         if (!CollectionManager.isCollectionVisible(collection)) {
@@ -95,7 +95,7 @@
                     }
                 }, false);
                 this.showHiddenMenu.addEventListener("command", function (event) {
-                    var menuitem = Dom.findUpward(event.originalTarget, function (node) { return node._hiddenCollection; });
+                    var menuitem = NDom.findUpward(event.originalTarget, function (node) { return node._hiddenCollection; });
                     if (menuitem) {
                         CollectionManager.setCollectionVisible(menuitem._hiddenCollection, true);
                         thiz.reloadCollections();
@@ -104,9 +104,9 @@
                 this.aboutMenuItem.addEventListener("command", function (event) {
                     if (thiz.currentCollection) {
                         var collection = thiz.currentCollection._collection;
-                        var detail = "<div>" + Dom.htmlEncode(collection.description).replace(/[\r\n]+/g, "<br/>") + "</div><ul>";
+                        var detail = "<div>" + NDom.htmlEncode(collection.description).replace(/[\r\n]+/g, "<br/>") + "</div><ul>";
                         if (collection.author) {
-                            detail += "<li><strong>" + Util.getMessage("collectionpane.author.label") + "</strong> " + Dom.htmlEncode(collection.author) + "</li>";
+                            detail += "<li><strong>" + Util.getMessage("collectionpane.author.label") + "</strong> " + NDom.htmlEncode(collection.author) + "</li>";
                         }
                         if (collection.infoUrl) {
                             detail += "<li><strong>" + Util.getMessage("collectionpane.more.information.label") + "</strong> <a href=\"" + collection.infoUrl + "\">" + collection.infoUrl + "</a></li>";
@@ -274,7 +274,7 @@
             <method name="reloadCollections">
                 <body>
                 <![CDATA[
-                    Dom.empty(this.contentBox);
+                    NDom.empty(this.contentBox);
                     for (var i in CollectionManager.shapeDefinition.collections) {
                         var collection = CollectionManager.shapeDefinition.collections[i];
                         if (!CollectionManager.isCollectionVisible(collection)) continue;
@@ -293,7 +293,7 @@
                     if (shapes) {
                         for (var i = 0; i < shapes.length; i++) {
                             var def = shapes[i]._def;
-                            var collectionNode = Dom.findUpward(shapes[i], function (node) { return node._collection; });
+                            var collectionNode = NDom.findUpward(shapes[i], function (node) { return node._collection; });
                             //debug([def.displayName, filter]);
 
                             if (def) {
@@ -342,7 +342,7 @@
 
                     try {
                         //debug("start draging");
-                        var defNode = Dom.findUpward(event.originalTarget, function (node) { return node._def; });
+                        var defNode = NDom.findUpward(event.originalTarget, function (node) { return node._def; });
                         //debug(defNode);
 
                         nsDragAndDrop.startDrag(event, {

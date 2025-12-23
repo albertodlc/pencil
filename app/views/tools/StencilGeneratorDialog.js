@@ -11,7 +11,7 @@ function StencilGeneratorDialog() {
     this.imagePaths = [];
     this.activeImageNode = null;
     var addItem = function (file) {
-        var item = Dom.newDOMElement({
+        var item = NDom.newDOMElement({
             _name: "li",
             _text: file.name,
         });
@@ -25,7 +25,7 @@ function StencilGeneratorDialog() {
         thiz.imagePaths.push(file);
     }
     this.bind("click", function (event) {
-        var top = Dom.findUpwardForNodeWithData(event.target, "_path");
+        var top = NDom.findUpwardForNodeWithData(event.target, "_path");
         if (!top) {
             return;
         }
@@ -36,7 +36,7 @@ function StencilGeneratorDialog() {
         this.activeImageNode = top;
     }, this.imageList)
     var imgCount = 0;
-    Dom.registerEvent(this.imageSelector, "drop", function (event) {
+    NDom.registerEvent(this.imageSelector, "drop", function (event) {
         var files = event.dataTransfer.files;
         if (files.length > 0) {
             for (var i = 0; i < files.length; i++) {
@@ -58,7 +58,7 @@ function StencilGeneratorDialog() {
     this.bind("change", function (event) {
         if (event.target.tagName == "input") {
             var value = event.target.checked;
-            var top = Dom.findUpwardForNodeWithData(event.target, "_item");
+            var top = NDom.findUpwardForNodeWithData(event.target, "_item");
             var item = top._item;
             item.checked = value;
         }
@@ -67,7 +67,7 @@ function StencilGeneratorDialog() {
     var stencilNameNode ;
 
     this.bind("click", function (event) {
-        var top = Dom.findUpwardForNodeWithData(event.target, "_item");
+        var top = NDom.findUpwardForNodeWithData(event.target, "_item");
         if (top && top._item) {
             var item = top._item;
             thiz.stencilName.value = item._stencil.label;
@@ -161,7 +161,7 @@ StencilGeneratorDialog.prototype.initStencils = function () {
             }
             thiz.imagePaths[i].checked = true;
             var holder = {};
-            var item = Dom.newDOMElement({
+            var item = NDom.newDOMElement({
                 _name: "div",
                 class: "ImageItem",
                 _children: [
@@ -481,7 +481,7 @@ StencilGeneratorDialog.prototype.buildShape = function (shapeDef) {
             "    </Shape>");
     } else {
         /*
-        var shortcut = Dom.newDOMElement({
+        var shortcut = NDom.newDOMElement({
             _name: "Shortcut",
             _uri: "http://www.evolus.vn/Namespace/Pencil",
             displayName: shapeDef.label,
@@ -509,7 +509,7 @@ StencilGeneratorDialog.prototype.buildShape = function (shapeDef) {
             ]
         }, document);
 
-        return Dom.serializeNode(shortcut);
+        return NDom.serializeNode(shortcut);
         */
 
         return (

@@ -8,7 +8,7 @@ function CollapseablePanel() {
 
     var thiz = this;
     this.titleContainer.addEventListener("click", function(ev) {
-        var title = Dom.findUpwardForNodeWithData(ev.target, "_child");
+        var title = NDom.findUpwardForNodeWithData(ev.target, "_child");
         if (!title) return;
 
         var closing = (title._child.getAttribute("active") == "true");
@@ -64,7 +64,7 @@ CollapseablePanel.prototype.invalidateChildSize = function (widget, active) {
 CollapseablePanel.globalSplitterMoveListener = function (event) {
     if (!CollapseablePanel.heldInstance) return;
 
-    Dom.cancelEvent(event);
+    NDom.cancelEvent(event);
 
     var dx = event.screenX - CollapseablePanel._originalScreenX;
     var dy = event.screenY - CollapseablePanel._originalScreenY;
@@ -148,7 +148,7 @@ CollapseablePanel.prototype.invalidateUI = function (event) {
     }
 };
 CollapseablePanel.prototype.handleSplitterMouseDown = function (event) {
-    Dom.cancelEvent(event);
+    NDom.cancelEvent(event);
     CollapseablePanel.heldInstance = this;
     CollapseablePanel._originalScreenX = event.screenX;
     CollapseablePanel._originalScreenY = event.screenY;
@@ -196,7 +196,7 @@ CollapseablePanel.prototype.updateTitle = function (titleElement) {
     if (titleElement._child.getIconName) {
         titleElement._icon.innerHTML = titleElement._child.getIconName();
     }
-    Dom.setInnerText(titleElement._textSpan, title);
+    NDom.setInnerText(titleElement._textSpan, title);
     var w = Math.round(titleElement._button.offsetWidth);
     titleElement.style.height = w + "px";
     titleElement._button.style.transform = "rotate(-90deg) translate(-" + w + "px, 0px)";

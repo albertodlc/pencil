@@ -10,14 +10,14 @@ widget.pe.BaseEditor = function () {
 widget.pe.BaseEditor.prototype.init = function (container) {
     this.container = widget.get(container);
     this.container.innerHTML = "";
-    Dom.addClass(this.container, "EditableContainer");
-    Dom.addClass(this.container, "EditableContainerEditable");
+    NDom.addClass(this.container, "EditableContainer");
+    NDom.addClass(this.container, "EditableContainerEditable");
     
     this.editor = this.createEditor();
-    Dom.addClass(this.editor, "Control");
+    NDom.addClass(this.editor, "Control");
     this.container.appendChild(this.editor);
     
-    this.label = Dom.newDOMElement({
+    this.label = NDom.newDOMElement({
         _name: "span",
         "class": this.options && this.options.multiline ? "MLabel" : "ELabel"
     });
@@ -26,9 +26,9 @@ widget.pe.BaseEditor.prototype.init = function (container) {
 };
 widget.pe.BaseEditor.prototype.readOnly = function (readOnly) {
     if (readOnly) {
-        Dom.removeClass(this.container, "EditableContainerEditable");
+        NDom.removeClass(this.container, "EditableContainerEditable");
     } else {
-        Dom.addClass(this.container, "EditableContainerEditable");
+        NDom.addClass(this.container, "EditableContainerEditable");
     }
 };
 widget.pe.BaseEditor.prototype.useHtmlForDisplayText = function () {
@@ -39,7 +39,7 @@ widget.pe.BaseEditor.prototype.updateDisplay = function () {
     if (this.useHtmlForDisplayText()) {
         this.label.innerHTML = s;
     } else {
-        var h = Dom.htmlEncode(s);
+        var h = NDom.htmlEncode(s);
         this.label.innerHTML = h;
     }
 };
@@ -90,7 +90,7 @@ widget.pe.BaseEditor.prototype.listen = function () {
     };
     
     for (var i = 0; i < arguments.length; i ++) {
-        Dom.registerEvent(this.container, arguments[i], f, false);
+        NDom.registerEvent(this.container, arguments[i], f, false);
     }
 };
 
@@ -105,12 +105,12 @@ widget.pe.PlainTextEditor = function (container, options) {
             p.datepicker("hide");
         });
         //this.editor.disabled = true;
-        Dom.addClass(this.editor, "DateEditor");
+        NDom.addClass(this.editor, "DateEditor");
     }
 
     
     if (this.options.multiline) {
-        Dom.addClass(this.container, "EditableContainerMultiLine");
+        NDom.addClass(this.container, "EditableContainerMultiLine");
     }
         
     this.listen("change", "keyup");
@@ -118,14 +118,14 @@ widget.pe.PlainTextEditor = function (container, options) {
 widget.pe.PlainTextEditor.prototype = new widget.pe.BaseEditor();
 widget.pe.PlainTextEditor.prototype.createEditor = function () {
     if (this.options.multiline) {
-        return Dom.newDOMElement({
+        return NDom.newDOMElement({
             _name: "textarea",
             "class": "form-control",
             rows: this.options.rows || "3",
             maxLength: this.options.maxLength ? this.options.maxLength : ""
         });
     } else {
-        return Dom.newDOMElement({
+        return NDom.newDOMElement({
             _name: "input",
             "class": "form-control",
             guid: widget.random(),
@@ -254,13 +254,13 @@ widget.pe.DateTimeEditor = function (container, options) {
     var useSeconds = this.options.useSeconds ? this.options.useSeconds : false;
     var format = this.options.format ? this.options.format : null;
     widget.Util.initDateTimeEditor(this.editor, this.options.withTime, useSeconds, format);
-    Dom.addClass(this.editor, "DateEditor");
+    NDom.addClass(this.editor, "DateEditor");
         
     this.listen("change", "keyup");
 };
 widget.pe.DateTimeEditor.prototype = new widget.pe.BaseEditor();
 widget.pe.DateTimeEditor.prototype.createEditor = function () {
-    return Dom.newDOMElement({
+    return NDom.newDOMElement({
         _name: "input",
         "class": "form-control",
         guid: widget.random(),
@@ -287,7 +287,7 @@ widget.pe.TimeEditor = function(container, options) {
 
 widget.pe.TimeEditor.prototype = new widget.pe.BaseEditor();
 widget.pe.TimeEditor.prototype.createEditor = function () {
-    return Dom.newDOMElement({
+    return NDom.newDOMElement({
         _name: "input",
         "class": "form-control",
         guid: widget.random(),
@@ -310,14 +310,14 @@ widget.pe.NumberEditor = function (container, options) {
     this.options = options || {};
     this.init(container);
     
-    Dom.addClass(this.editor, "NumberEditor");
+    NDom.addClass(this.editor, "NumberEditor");
     Util.enforceNumberInput(this.editor);
     
     this.listen("change", "keyup");
 };
 widget.pe.NumberEditor.prototype = new widget.pe.BaseEditor();
 widget.pe.NumberEditor.prototype.createEditor = function () {
-    return Dom.newDOMElement({
+    return NDom.newDOMElement({
         _name: "input",
         "class": "form-control",
         guid: widget.random(),
@@ -374,7 +374,7 @@ widget.pe.MultiSelectionEditor = function (container, options) {
     if (!this.options.renderer) this.options.renderer = this.options.format;
     
     var thiz = this;
-    Dom.registerEvent(this.editor, "click", function () {
+    NDom.registerEvent(this.editor, "click", function () {
         thiz.options.buildSource(function (source) {
             new MultiSelectionDialog().open(source, thiz.options.renderer, thiz.items, thiz.options,
                     function (newSelectedItems) {
@@ -387,12 +387,12 @@ widget.pe.MultiSelectionEditor = function (container, options) {
         });
     }, false);
     
-    Dom.addClass(this.label, "MultiSelectionEditor");
+    NDom.addClass(this.label, "MultiSelectionEditor");
     this.listen("change", "keyup", "click");
 };
 widget.pe.MultiSelectionEditor.prototype = new widget.pe.BaseEditor();
 widget.pe.MultiSelectionEditor.prototype.createEditor = function () {
-    return Dom.newDOMElement({
+    return NDom.newDOMElement({
         _name: "button",
         "class": "btn btn-default MultiSelectionEditor",
         type: "button",
@@ -417,7 +417,7 @@ widget.pe.MultiSelectionEditor.prototype.setImpl = function (items) {
     if (this.useHtmlForDisplayText() || this.options.useHtml) {
         this.displaySpan.innerHTML = this.getDisplayText(this.items);
     } else {
-        Dom.setInnerText(this.displaySpan, this.getDisplayText(this.items));
+        NDom.setInnerText(this.displaySpan, this.getDisplayText(this.items));
     }
     
     this.label.setAttribute("title", this.getTitleText(this.items));
@@ -455,14 +455,14 @@ widget.pe.AttachmentEditor = function (container, options) {
     this.init(container);
     
     var thiz = this;
-    Dom.registerEvent(this.uploadButton, "click", function () {
+    NDom.registerEvent(this.uploadButton, "click", function () {
         new CommonUploadDialog(function (id) {
             thiz.setValue(id, false);
         }, {
             title: options.title ? (Messages["upload"] + " " + option.dataName) : Messages["upload"]
         }).open();
     }, false);
-    Dom.registerEvent(this.removeButton, "click", function () {
+    NDom.registerEvent(this.removeButton, "click", function () {
         widget.Dialog.confirm(Messages["remove_attachment_confirm_msg"], Messages["remove"], function () {
             thiz.setValue(null, false);
         }, Messages["cancel"],  function () {});
@@ -470,7 +470,7 @@ widget.pe.AttachmentEditor = function (container, options) {
 };
 widget.pe.AttachmentEditor.prototype = new widget.pe.BaseEditor();
 widget.pe.AttachmentEditor.prototype.createEditor = function () {
-    return Dom.newDOMElement({
+    return NDom.newDOMElement({
         _name: "div",
         "class": "AttachmentEditor",
         _children: [{
@@ -517,7 +517,7 @@ widget.pe.AttachmentEditor.prototype.getDisplayText = function (attachmentId) {
             name = RegExp.$1;
         }
         var url = CONTEXT_PATH + "/amw/download?fileName=" + encodeURIComponent(attachmentId);
-        return "<a href=\"" + url + "\" target=\"_blank\">" + Dom.htmlEncode(name) + "</a>";
+        return "<a href=\"" + url + "\" target=\"_blank\">" + NDom.htmlEncode(name) + "</a>";
     }
 };
 widget.pe.StaticLocationEditor = function (container, options) {
@@ -530,7 +530,7 @@ widget.pe.StaticLocationEditor = function (container, options) {
             thiz.setValue(fixedLocation, false);
         }).open();
     };
-    Dom.registerEvent(this.staticCheckBox, "click", function(){
+    NDom.registerEvent(this.staticCheckBox, "click", function(){
        if (thiz.staticCheckBox.checked) {
            if (!thiz.fixedLocation) {
                openStaticLocationDialog();
@@ -539,14 +539,14 @@ widget.pe.StaticLocationEditor = function (container, options) {
            thiz.setValue(null, false);
        }
     });
-    Dom.registerEvent(this.locationLink, "click", function() {
+    NDom.registerEvent(this.locationLink, "click", function() {
         openStaticLocationDialog();
     });
 }
 widget.pe.StaticLocationEditor.prototype = new widget.pe.BaseEditor();
 widget.pe.StaticLocationEditor.prototype.createEditor = function() {
     var id = widget.random();
-    return Dom.newDOMElement({
+    return NDom.newDOMElement({
         _name: "div",
         "class": "LocationEditor",
         _children: [{

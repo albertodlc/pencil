@@ -6,7 +6,7 @@ function PrivateCollectionDialog () {
 
     var thiz = this;
     this.bind("click", function(event) {
-        var top = Dom.findUpwardForNodeWithData(event.target, "collection");
+        var top = NDom.findUpwardForNodeWithData(event.target, "collection");
         if(thiz.activeCollectionNode) {
             thiz.activeCollectionNode.removeAttribute("active");
         }
@@ -20,7 +20,7 @@ function PrivateCollectionDialog () {
      }, this.collectionList)
 
      this.bind("dblclick", function(event) {
-         var top = Dom.findUpwardForNodeWithData(event.target, "collection");
+         var top = NDom.findUpwardForNodeWithData(event.target, "collection");
          if(thiz.activeCollectionNode) {
              thiz.activeCollectionNode.removeAttribute("active");
          }
@@ -80,7 +80,7 @@ PrivateCollectionDialog.prototype.setupUI = function (options) {
     var lastSelectCollectionId = Config.get("PrivateCollection.lastSelectCollection.id");
 
     var addItem = function(collection) {
-        var item = Dom.newDOMElement({
+        var item = NDom.newDOMElement({
             _name: "li",
             _text: collection.displayName
         });

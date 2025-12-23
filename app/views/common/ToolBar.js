@@ -6,7 +6,7 @@ __extend(BaseTemplatedWidget, ToolBar);
 
 ToolBar.prototype.setup = function() {
     if (this.registerCommands) this.registerCommands();
-    Dom.doOnAllChildRecursively(this.commandContainer, function (n) {
+    NDom.doOnAllChildRecursively(this.commandContainer, function (n) {
         if (!n.getAttribute || !n.getAttribute("command")) return;
         var commandKey = n.getAttribute("command");
         UICommandManager.installControl(commandKey, n);
@@ -21,7 +21,7 @@ ToolBar.prototype.setup = function() {
 };
 ToolBar.setupFocusHandling = function (container) {
     container.addEventListener("click", function (event) {
-        var button = Dom.findUpward(event.target, function (n) {
+        var button = NDom.findUpward(event.target, function (n) {
             return n.localName == "button";
         });
         if (button && !button.__is_ComboManager && !button.__is_SharedColorEditor) {
@@ -33,7 +33,7 @@ ToolBar.setupFocusHandling = function (container) {
             && event.keyCode != DOM_VK_ENTER
             && event.keyCode != DOM_VK_ESCAPE) return;
 
-        var input = Dom.findUpward(event.target, function (n) {
+        var input = NDom.findUpward(event.target, function (n) {
             return n.localName == "input";
         });
         if (input) {

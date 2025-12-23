@@ -66,7 +66,7 @@ FontLoader.prototype.loadFonts = function (callback) {
             setName: "allFaces"
         }
         ipcRenderer.once(data.id, function (event, data) {
-            Dom.emitEvent("p:UserFontLoaded", document.documentElement, {});
+            NDom.emitEvent("p:UserFontLoaded", document.documentElement, {});
             if (callback) callback();
         });
 
@@ -210,7 +210,7 @@ FontRepository.prototype.load = function () {
     }
 
     try {
-        var dom = Dom.parseFile(registryFilePath);
+        var dom = NDom.parseFile(registryFilePath);
 
         var thiz = this;
         NDom.workOn("/p:FontRegistry/p:Font", dom, function (node) {
@@ -370,7 +370,7 @@ FontRepository.prototype.save = function () {
 
     var registryFilePath = path.join(this.dirPath, "registry.xml");
     try {
-        var dom = Dom.parser.parseFromString('<FontRegistry xmlns="' + PencilNamespaces.p + '"></FontRegistry>', 'text/xml');
+        var dom = NDom.parser.parseFromString('<FontRegistry xmlns="' + PencilNamespaces.p + '"></FontRegistry>', 'text/xml');
 
         this.fonts.forEach(function (font) {
             var fontNode = dom.createElementNS(PencilNamespaces.p, "Font");
@@ -418,7 +418,7 @@ FontRepository.prototype.save = function () {
             });
         });
 
-        Dom.serializeNodeToFile(dom, registryFilePath);
+        NDom.serializeNodeToFile(dom, registryFilePath);
 
     } catch (e) {
         console.error(e);

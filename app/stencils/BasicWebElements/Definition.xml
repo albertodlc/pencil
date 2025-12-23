@@ -1019,7 +1019,7 @@
                                         + (i == 0 ? ("color: " + $homeColor.toRGBAString() + "; " + $homeCustomStyle) : "")
                                         + (i == items.length - 1 ? ("color: " + $endColor.toRGBAString() + "; " + $endCustomStyle) : "text-decoration: " + $textFont.decor + ";")
                                         + ";\">"
-                                        + Dom.htmlEncode(items[i])
+                                        + NDom.htmlEncode(items[i])
                                         + "</span>";
                             }
                             var html = items.join("<span style=\"color: " + $sepColor.toRGBAString() + "; margin: 0px " + $spaceSize.value + "ex; " + $sepCustomStyle + "\">&gt;</span>");

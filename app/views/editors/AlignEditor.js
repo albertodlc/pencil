@@ -8,7 +8,7 @@ AlignEditor.prototype.setup = function () {
     if (this.hasAttribute("value")) this.setValue(Alignment.fromString(this.getAttribute("value")));
 };
 AlignEditor.prototype._handleClick = function (event) {
-    var button = Dom.findParentByTagName(event.target, "button");
+    var button = NDom.findParentByTagName(event.target, "button");
     if (!button) return;
     
     button.parentNode.querySelectorAll("button").forEach(function (b) {

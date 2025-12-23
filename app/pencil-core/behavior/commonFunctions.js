@@ -2,7 +2,7 @@ var F = {};
 pencilSandbox.F = F;
 
 Pencil.findObjectByName = function (ref, name) {
-    var shape = Dom.findTop(ref, function (node) {
+    var shape = NDom.findTop(ref, function (node) {
                     return node.getAttributeNS && node.getAttributeNS(PencilNamespaces.p, "type") == "Shape";
                 });
 
@@ -11,7 +11,7 @@ Pencil.findObjectByName = function (ref, name) {
     return target;
 };
 Pencil.findObjectById = function (ref, id) {
-    var shape = Dom.findTop(ref, function (node) {
+    var shape = NDom.findTop(ref, function (node) {
         return node.getAttributeNS && node.getAttributeNS(PencilNamespaces.p, "type") == "Shape";
     });
 
@@ -203,7 +203,7 @@ F.buildTextWrapDomContent = function (textElement, text, width, align) {
             if (s.length > 0) s += " ";
             s += words[i];
 
-            Dom.empty(textElement);
+            NDom.empty(textElement);
             textElement.appendChild(textElement.ownerDocument.createTextNode(s));
             var box = textElement.getBBox();
 
@@ -241,7 +241,7 @@ F.buildTextWrapDomContent = function (textElement, text, width, align) {
 
         }
         if (s.length > 0) {
-            Dom.empty(textElement);
+            NDom.empty(textElement);
             textElement.appendChild(textElement.ownerDocument.createTextNode(s));
             var box = textElement.getBBox();
 
@@ -256,7 +256,7 @@ F.buildTextWrapDomContent = function (textElement, text, width, align) {
         }
 
     }
-    var frag = Dom.newDOMFragment(tspans, textElement.ownerDocument);
+    var frag = NDom.newDOMFragment(tspans, textElement.ownerDocument);
 
     return frag;
 };

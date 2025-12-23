@@ -33,7 +33,7 @@
 
                 this.addEventListener("click", function (event) {
                     if (event.button != 0) return;
-                    var defNode = Dom.findUpward(event.originalTarget, function (node) { return node._def; });
+                    var defNode = NDom.findUpward(event.originalTarget, function (node) { return node._def; });
                     if (defNode) {
                         var e = document.createEvent("Events");
                         e.initEvent("ShapeSelected", false, false);
@@ -41,9 +41,9 @@
                         this.dispatchEvent(e);
                     }
 
-                    var header = Dom.findUpward(event.originalTarget, function (node) { return node._isHeader; });
+                    var header = NDom.findUpward(event.originalTarget, function (node) { return node._isHeader; });
                     if (header) {
-                        collection = Dom.findUpward(event.originalTarget, function (node) { return node._collection; });
+                        collection = NDom.findUpward(event.originalTarget, function (node) { return node._collection; });
                         if (collection) {
                             var collapsed = collection.getAttribute("pcollapsed");
                             collapsed = (collapsed == "true");
@@ -54,7 +54,7 @@
                 }, false);
                 this.contentBox.addEventListener("contextmenu", function (event) {
                     try {
-                        var collection = Dom.findUpward(event.originalTarget, function (node) { return node._collection; });
+                        var collection = NDom.findUpward(event.originalTarget, function (node) { return node._collection; });
                         thiz.removeAllCollectionMenuItem.disabled = PrivateCollectionManager.privateShapeDef.collections.length == 0;
                         var hasCollection = false;
                         if (collection && collection._collection) {
@@ -67,7 +67,7 @@
                         thiz.editCollectionMenuItem.disabled = !hasCollection;
                         var hasShapeDef = false;
                         if (collection) {
-                            var defNode = Dom.findUpward(event.originalTarget, function (node) { return node._def; });
+                            var defNode = NDom.findUpward(event.originalTarget, function (node) { return node._def; });
                             if (defNode && defNode._def) {
                                 hasShapeDef = true;
                                 thiz.currentShapeDef = defNode._def;
@@ -172,9 +172,9 @@
                 this.aboutMenuItem.addEventListener("command", function (event) {
                     if (thiz.currentCollection) {
                         var collection = thiz.currentCollection;
-                        var detail = "<div>" + Dom.htmlEncode(collection.description) + "</div><ul>";
+                        var detail = "<div>" + NDom.htmlEncode(collection.description) + "</div><ul>";
                         if (collection.author) {
-                            detail += "<li><strong>" + Util.getMessage("collectionpane.author.label") + "</strong> " + Dom.htmlEncode(collection.author) + "</li>";
+                            detail += "<li><strong>" + Util.getMessage("collectionpane.author.label") + "</strong> " + NDom.htmlEncode(collection.author) + "</li>";
                         }
                         if (collection.infoUrl) {
                             detail += "<li><strong>" + Util.getMessage("collectionpane.more.information.label") + "</strong> <a href=\"" + collection.infoUrl + "\">" + collection.infoUrl + "</a></li>";
@@ -263,7 +263,7 @@
             <method name="reloadCollections">
                 <body>
                 <![CDATA[
-                    Dom.empty(this.contentBox);
+                    NDom.empty(this.contentBox);
                     for (var i in PrivateCollectionManager.privateShapeDef.collections) {
                         var collection = PrivateCollectionManager.privateShapeDef.collections[i];
                         this.addShapeCollection(collection);
@@ -277,7 +277,7 @@
                 <![CDATA[
 
                     try {
-                        var defNode = Dom.findUpward(event.originalTarget, function (node) { return node._def; });
+                        var defNode = NDom.findUpward(event.originalTarget, function (node) { return node._def; });
                         //debug("start draging: " + defNode._def.displayName);
                         nsDragAndDrop.startDrag(event, {
                             onDragStart: function (evt, transferData, action) {

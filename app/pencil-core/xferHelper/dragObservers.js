@@ -367,7 +367,7 @@ RichTextDragObserver.prototype = {
 
         var html = transferData.data;
         try {
-            var xhtml = Dom.toXhtml(html);
+            var xhtml = NDom.toXhtml(html);
             console.log("html: " + xhtml);
             var textPaneDef = CollectionManager.shapeDefinition.locateDefinition(RichTextXferHelper.SHAPE_DEF_ID);
             if (!textPaneDef) return;
@@ -517,7 +517,7 @@ FileDragObserver.handleSVGDOM = function (dom, canvas, loc) {
     if (fromOC) {
         g.setAttributeNS(PencilNamespaces.p, "p:ImageSource", fromOC);
         if (fromOC == "OpenClipart.org") {
-            Dom.renewId(g, /([a-zA-Z0-9]+)/i);
+            NDom.renewId(g, /([a-zA-Z0-9]+)/i);
         }
     }
 
@@ -534,7 +534,7 @@ FileDragObserver.handleSVGDOM = function (dom, canvas, loc) {
     //     FileDragObserver.svgMeasuringNode = svg;
     // }
     //
-    // Dom.empty(FileDragObserver.svgMeasuringNode);
+    // NDom.empty(FileDragObserver.svgMeasuringNode);
     // FileDragObserver.svgMeasuringNode.appendChild(g);
     // FileDragObserver.svgMeasuringNode.removeChild(g);
 
@@ -563,7 +563,7 @@ FileDragObserver.handleSVGDOM = function (dom, canvas, loc) {
         }
 
         var dim = new Dimension(w, h);
-        controller.setProperty("svgXML", new PlainText(Dom.serializeNode(dom.documentElement)));
+        controller.setProperty("svgXML", new PlainText(NDom.serializeNode(dom.documentElement)));
         controller.setProperty("box", dim);
         controller.setProperty("originalDim", new Dimension(width, height));
     }

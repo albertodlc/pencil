@@ -15,10 +15,10 @@ ParamEditorPanel.prototype.setParamContext = function (param) {
     }
 }
 ParamEditorPanel.prototype.init = function () {
-    Dom.addClass(this.container, "ParamEditorPanel");
+    NDom.addClass(this.container, "ParamEditorPanel");
     
     var thiz = this;
-    Dom.registerEvent(this.container, "pe.RerenderRequested", function () {
+    NDom.registerEvent(this.container, "pe.RerenderRequested", function () {
         thiz.invalidate();
     }, false);
 
@@ -65,11 +65,11 @@ ParamEditorPanel.prototype.highlightErrorParam = function (paramKey) {
     var editor = this.editorMap[paramKey];
     if (!editor) return;
     
-    Dom.addClass(this.container, "ErrorHighlightEnabled");
+    NDom.addClass(this.container, "ErrorHighlightEnabled");
     editor.markAsError();
 };
 ParamEditorPanel.prototype.clearErrorParamHighlight = function () {
-    Dom.removeClass(this.container, "ErrorHighlightEnabled");
+    NDom.removeClass(this.container, "ErrorHighlightEnabled");
     
     for (var key in this.editorMap) {
         this.editorMap[key].unmarkAsError();

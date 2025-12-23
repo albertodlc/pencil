@@ -3,15 +3,15 @@ widget.ComboManager = function() {
         var combo = ComboManager.findInstance(event);
         if (!combo) return;
 
-        var target = Dom.getTarget(event);
-        var itemNode = Dom.findUpward(target, {
+        var target = NDom.getTarget(event);
+        var itemNode = NDom.findUpward(target, {
             eval: function(n) {
                 return n.getAttribute && n.getAttribute("role") == "presentation";
             }
         });
 
         if (!itemNode) return;
-        Dom.cancelEvent(event);
+        NDom.cancelEvent(event);
         var index = parseInt(itemNode.getAttribute("item-index"), 10);
         combo.selectItem(combo.items[index]);
         
@@ -39,12 +39,12 @@ widget.ComboManager = function() {
                 return comparerImpl(a, b);
             }
         };
-        Dom.registerEvent(this.container, "click", itemSelectedHandler, false);
+        NDom.registerEvent(this.container, "click", itemSelectedHandler, false);
     }
 
     ComboManager.findInstance = function(event) {
-        var target = Dom.getTarget(event);
-        var node = Dom.findUpward(target, {
+        var target = NDom.getTarget(event);
+        var node = NDom.findUpward(target, {
             eval: function(n) {
                 return n._combo;
             }
@@ -83,7 +83,7 @@ widget.ComboManager = function() {
         for (var index = 0; index < this.items.length; index++) {
             var item = this.items[index];
             var value = this.getItemDisplayText(item);
-            var valueHtml = (this.options && this.options.useHtml) ? value : Dom.htmlEncode(value);
+            var valueHtml = (this.options && this.options.useHtml) ? value : NDom.htmlEncode(value);
 
             html += "<li role=\"presentation\" item-index=\"" + index + "\"><a role=\"menuitem\" tabindex=\"-1\" href=\"#\">"
                     + valueHtml + "</a></li>";
@@ -103,11 +103,11 @@ widget.ComboManager = function() {
             if (!list) return;
             list.style.position = "fixed";
             list.style.zIndex = "999999999";
-            var y = Dom.getOffsetTop(button) + Dom.getOffsetHeight(button) + 1;
+            var y = NDom.getOffsetTop(button) + NDom.getOffsetHeight(button) + 1;
             list.style.top = y + "px";
-            list.style.left = Dom.getOffsetLeft(button) + "px";
+            list.style.left = NDom.getOffsetLeft(button) + "px";
             
-            var h = Dom.getOffsetHeight(list);
+            var h = NDom.getOffsetHeight(list);
             var H = Dom.getWindowHeight();
             
             list.style.position = "absolute";
@@ -120,7 +120,7 @@ widget.ComboManager = function() {
                 list.style.top = (0 - h - 5) + "px";
                 list.style.left = "0px";
             } else {
-                list.style.top = Dom.getOffsetHeight(button) + "px";
+                list.style.top = NDom.getOffsetHeight(button) + "px";
                 list.style.left = "0px";
                 
                 if (y + h > H) {
@@ -132,7 +132,7 @@ widget.ComboManager = function() {
             var li = Dom.findDescendantWithClass(list, "Selected");
             if (li) {
                li.focus(); 
-               var sp = (Dom.getOffsetHeight(list) - Dom.getOffsetHeight(li))/2;
+               var sp = (NDom.getOffsetHeight(list) - NDom.getOffsetHeight(li))/2;
                list.scrollTop = (li.offsetTop - sp);
             }
         });
@@ -207,13 +207,13 @@ widget.ComboManager = function() {
     
     ComboManager.prototype.selectItem = function (selectedItem) {
         var thiz = this;
-        Dom.doOnChildRecursively(this.dropdown, {
+        NDom.doOnChildRecursively(this.dropdown, {
             eval: function(n) {
-                return Dom.hasClass(n, "combo-display");
+                return NDom.hasClass(n, "combo-display");
             }
         }, function(c) {
             var value = thiz.getCurrentItemDisplayText(selectedItem);
-            var html = (thiz.options && thiz.options.useHtml) ? value : Dom.htmlEncode(value);
+            var html = (thiz.options && thiz.options.useHtml) ? value : NDom.htmlEncode(value);
             c.innerHTML = html;
         });
         
@@ -227,16 +227,16 @@ widget.ComboManager = function() {
                 }
             }
             
-            Dom.doOnChildRecursively(this.dropdown, {
+            NDom.doOnChildRecursively(this.dropdown, {
                 eval: function(n) {
                     return n.getAttribute && n.getAttribute("role") == "presentation";
                 }
             }, function(c) {
                 var itemIndex = parseInt(c.getAttribute("item-index"), 10);
                 if (itemIndex == index) {
-                    Dom.addClass(c, "Selected");
+                    NDom.addClass(c, "Selected");
                 } else {
-                    Dom.removeClass(c, "Selected");
+                    NDom.removeClass(c, "Selected");
                 }
             });
         }

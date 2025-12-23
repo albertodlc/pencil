@@ -25,7 +25,7 @@
                 this.box = document.getAnonymousElementByAttribute(this, "aid", "box");
                 var thiz = this;
                 this.box.addEventListener("command", function (event) {
-                    Dom.emitEvent("p:ValueChanged", thiz, {value: thiz.getValue()});
+                    NDom.emitEvent("p:ValueChanged", thiz, {value: thiz.getValue()});
                 }, false);
 
                 //setup font list

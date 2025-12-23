@@ -2175,7 +2175,7 @@ Option5]]></Property>
                         }
 
 
-                        Dom.newDOMFragment(specs);
+                        NDom.newDOMFragment(specs);
                     ]]>
                 </DomContent>
                 <DomContent>
@@ -2199,7 +2199,7 @@ Option5]]></Property>
                         collection._sizes = sizes;
 
                         //I got what I need, cleanup the dom content now :)
-                        Dom.newDOMFragment([]);
+                        NDom.newDOMFragment([]);
                     ]]>
                 </DomContent>
             </For>
@@ -2287,7 +2287,7 @@ Option5]]></Property>
                         top += HEIGHT;
                     }
 
-                    Dom.newDOMFragment(specs);
+                    NDom.newDOMFragment(specs);
                 ]]>
                 </DomContent>
             </For>
@@ -2555,7 +2555,7 @@ Option5]]></Property>
                             });
                         }
                     }
-                    Dom.newDOMFragment(specs);
+                    NDom.newDOMFragment(specs);
                 ]]>
                 </DomContent>
             </For>
@@ -2771,7 +2771,7 @@ Content]]></Property>
                             });
                     }
 
-                    Dom.newDOMFragment(specs);
+                    NDom.newDOMFragment(specs);
                 ]]>
                 </DomContent>
                 <Transform>[translate(48, 16 + $textFont.getPixelHeight())]</Transform>
@@ -2872,7 +2872,7 @@ Content]]></Property>
                             });
                     }
 
-                    Dom.newDOMFragment(specs);
+                    NDom.newDOMFragment(specs);
                 ]]>
                 </DomContent>
                 <Transform>[translate(47, 6 + $textFont.getPixelHeight())]</Transform>

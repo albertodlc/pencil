@@ -26,7 +26,7 @@ CanvasPool.prototype.obtain = function () {
 };
 CanvasPool.prototype.return = function (canvas) {
     canvas.used = false;
-    Dom.empty(canvas.drawingLayer);
+    NDom.empty(canvas.drawingLayer);
     canvas.selectNone();
 };
 CanvasPool.prototype.reset = function () {

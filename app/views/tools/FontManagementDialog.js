@@ -15,7 +15,7 @@ function FontManagementDialog() {
     };
 
     this.bind("click", function (event) {
-        var node = Dom.findUpwardForNodeWithData(event.target, "_font");
+        var node = NDom.findUpwardForNodeWithData(event.target, "_font");
         if (!node) return;
         var font = node._font;
         FontLoader.instance.removeFont(font, function () {
@@ -24,7 +24,7 @@ function FontManagementDialog() {
     }, this.fontRepeater.node());
 
     this.bind("click", function (event) {
-        var checkbox = Dom.findUpwardForNodeWithData(event.target, "_embedFont");
+        var checkbox = NDom.findUpwardForNodeWithData(event.target, "_embedFont");
         if (!checkbox) return;
         var font = checkbox._embedFont;
         FontLoader.instance.setAutoEmbed(font, checkbox.checked, function () {

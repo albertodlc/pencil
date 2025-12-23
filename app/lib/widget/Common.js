@@ -66,9 +66,9 @@ widget.evaluate = function(object, context) {
     return object;
 };
 widget.registerEvent = function (target, event, handlerName, capture) {
-    Dom.registerEvent(target, event, function (e) {
-        var t = Dom.getTarget(e);
-        var node = Dom.findUpward(t, function (n) {
+    NDom.registerEvent(target, event, function (e) {
+        var t = NDom.getTarget(e);
+        var node = NDom.findUpward(t, function (n) {
             return n._widget;
         });
         if (!node) return;
@@ -158,11 +158,11 @@ widget.Util = function() {
             if (!window.Messages) return html;
         	return html.replace(/#\{([^\r\n\}]+)\}/g, function (all, one) {
         		var s = Messages[one] || one;
-        		return Dom.htmlEncode(s);
+        		return NDom.htmlEncode(s);
         	});
         },
         performAutoBinding: function (container, namingContext, ownerTemplateName) {
-            Dom.doOnChildRecursively(container, {
+            NDom.doOnChildRecursively(container, {
                 eval: function(n) {
                     return n.localName == "ui" || (n.namespaceURI == "http://evolus.vn/Namespaces/WebUI/1.0");
                 }
@@ -186,8 +186,8 @@ widget.Util = function() {
                     if (name == "anon-id") {
                         if (namingContext) {
                             namingContext[value] = wg;
-                            Dom.addClass(wg.node(), "AnonId_" + value);
-                            Dom.addClass(wg.node(), "AnonId_" + (ownerTemplateName ? (ownerTemplateName + "_") : "") + value);
+                            NDom.addClass(wg.node(), "AnonId_" + value);
+                            NDom.addClass(wg.node(), "AnonId_" + (ownerTemplateName ? (ownerTemplateName + "_") : "") + value);
 
                         }
                         wg._anonId = value;
@@ -202,7 +202,7 @@ widget.Util = function() {
                     } else if (name == "flex") {
                         wg.node().setAttribute("flex", value);
                     } else if (name == "class") {
-                        Dom.addClass(wg.node(), value);
+                        NDom.addClass(wg.node(), value);
                     } else {
                         wg[name] = value;
                         if (name != "type") {
@@ -239,7 +239,7 @@ widget.Util = function() {
 
             widget.Util.performAutoBinding(dolly, namingContext, templateName);
 
-            Dom.doOnChildRecursively(dolly, {
+            NDom.doOnChildRecursively(dolly, {
                 eval: function(n) {
                     return n.getAttribute && n.getAttribute("anon-id");
                 }
@@ -254,10 +254,10 @@ widget.Util = function() {
                 n.setAttribute("id", newId);
                 n.id = newId;
                 anonIdToIdMap[id] = newId;
-                Dom.addClass(n, "AnonId_" + (templateName ? (templateName + "_") : "") + id);
-                Dom.addClass(n, "AnonId_" + id);
+                NDom.addClass(n, "AnonId_" + (templateName ? (templateName + "_") : "") + id);
+                NDom.addClass(n, "AnonId_" + id);
             });
-            Dom.doOnChildRecursively(dolly, {
+            NDom.doOnChildRecursively(dolly, {
                 eval: function(n) {
                     return n.getAttribute;
                 }
@@ -361,8 +361,8 @@ widget.Util = function() {
                 div = firstElement;
             }
 
-            Dom.addClass(div, className);
-            Dom.addClass(div, templateName);
+            NDom.addClass(div, className);
+            NDom.addClass(div, templateName);
 
             widget.Util._processTemplate(div, namingContext, templateName);
 
@@ -411,7 +411,7 @@ widget.Util = function() {
             if (color) cover.style.background = color;
 
             if (onClose) {
-                Dom.registerEvent(cover, "click", function () {
+                NDom.registerEvent(cover, "click", function () {
                     cover.parentNode.removeChild(cover);
                     onClose();
                 });
@@ -498,7 +498,7 @@ widget.Util = function() {
             document.body.addEventListener("mousedown", function (event) {
                 if (widget.Util.popupStack.length == 0) return;
                 var popup = widget.Util.popupStack[widget.Util.popupStack.length - 1];
-                var node = Dom.findUpward(event.target, function (n) {
+                var node = NDom.findUpward(event.target, function (n) {
                     return n == popup;
                 });
                 if (node) return;
@@ -517,8 +517,8 @@ function initBusyIndicator() {
 
     busyIndicator.overlay = document.createElement("div");
     document.body.appendChild(busyIndicator.overlay);
-    Dom.addClass(busyIndicator.overlay, "Overlay");
-    Dom.addClass(busyIndicator.overlay, "BusyOverlay");
+    NDom.addClass(busyIndicator.overlay, "Overlay");
+    NDom.addClass(busyIndicator.overlay, "BusyOverlay");
 
     document.body.appendChild(busyIndicator.overlay);
     busyIndicator.overlay.style.display = "none";
@@ -527,17 +527,17 @@ function initBusyIndicator() {
     document.body.appendChild(busyIndicator.messageContainer);
     busyIndicator.messageContainer.style.visibility = "hidden";
 
-    Dom.addClass(busyIndicator.messageContainer, "BusyMessage");
+    NDom.addClass(busyIndicator.messageContainer, "BusyMessage");
     var spinner = document.createElement("i");
     busyIndicator.messageContainer.appendChild(spinner);
-    Dom.addClass(spinner, "fa fa-spinner fa-spin");
+    NDom.addClass(spinner, "fa fa-spinner fa-spin");
 
     busyIndicator.message = document.createElement("span");
-    Dom.addClass(busyIndicator.message, "Text");
+    NDom.addClass(busyIndicator.message, "Text");
     busyIndicator.messageContainer.appendChild(busyIndicator.message);
-    Dom.setInnerText(busyIndicator.message, widget.LOADING);
+    NDom.setInnerText(busyIndicator.message, widget.LOADING);
 
-    var w = Dom.getOffsetWidth(busyIndicator.messageContainer);
+    var w = NDom.getOffsetWidth(busyIndicator.messageContainer);
     busyIndicator.messageContainer.style.marginLeft = "-" + (w / 2) + "px";
 }
 
@@ -546,8 +546,8 @@ var defaultIndicator = {
     busy: function(message) {
         initBusyIndicator();
 
-        Dom.setInnerText(busyIndicator.message, message || widget.LOADING);
-        var w = Dom.getOffsetWidth(busyIndicator.messageContainer);
+        NDom.setInnerText(busyIndicator.message, message || widget.LOADING);
+        var w = NDom.getOffsetWidth(busyIndicator.messageContainer);
         busyIndicator.messageContainer.style.marginLeft = "-" + (w / 2) + "px";
 
         busyIndicator.messageContainer.style.visibility = "visible";
@@ -566,10 +566,10 @@ function NodeBusyIndicator(node) {
     this.node = node;
 }
 NodeBusyIndicator.prototype.busy = function (m) {
-    Dom.addClass(this.node, "Busy");
+    NDom.addClass(this.node, "Busy");
 };
 NodeBusyIndicator.prototype.done = function (m) {
-    Dom.removeClass(this.node, "Busy");
+    NDom.removeClass(this.node, "Busy");
 };
 
 function run(task, message, indicator) {

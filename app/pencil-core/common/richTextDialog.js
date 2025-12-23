@@ -49,7 +49,7 @@ RichTextDialog.doCancel = function () {
     return true;
 };
 RichTextDialog.doApply = function () {
-    var html = Dom.serializeNode(RichTextDialog.editor.contentDocument.body);
+    var html = NDom.serializeNode(RichTextDialog.editor.contentDocument.body);
     html = html.replace(/<[\/A-Z0-9]+[ \t\r\n>]/g, function (zero) {
         return zero.toLowerCase();
     });

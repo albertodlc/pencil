@@ -43,7 +43,7 @@ function Canvas(element, options, containerScrollPane) {
     this.focusableBox = this.element.parentNode;
 
     this.addEventListener("mousedown", function (event) {
-        var inDrawing = Dom.findUpward(event.originalTarget, function (node) {
+        var inDrawing = NDom.findUpward(event.originalTarget, function (node) {
 
             return (node == thiz.svg);
         });
@@ -269,13 +269,13 @@ function Canvas(element, options, containerScrollPane) {
             thiz._lastPY = thiz._currentPY;
             thiz._lastScrollX = thiz._scrollPane.scrollLeft || 0;
             thiz._lastScrollY = thiz._scrollPane.scrollTop || 0;
-            Dom.addClass(thiz, "PanDown");
+            NDom.addClass(thiz, "PanDown");
         }
     }, false);
     this.svg.ownerDocument.addEventListener("keyup", function (event) {
         if (event.keyCode == DOM_VK_SPACE && thiz.spaceHeld == true) {
             thiz.spaceHeld = false;
-            Dom.removeClass(thiz, "PanDown");
+            NDom.removeClass(thiz, "PanDown");
         }
 
     }, false);
@@ -331,11 +331,11 @@ function Canvas(element, options, containerScrollPane) {
 
     this.dragOverlay = this.element.ownerDocument.createElement("div");
     this.element.appendChild(this.dragOverlay);
-    Dom.addClass(this.dragOverlay, "DragOverlay");
+    NDom.addClass(this.dragOverlay, "DragOverlay");
 
     this.focusableBox.addEventListener("focus", function (event) {
         Canvas.activeCanvas = thiz;
-        Dom.cancelEvent(event);
+        NDom.cancelEvent(event);
     }, true);
 
     this.setupEventHandlers();
@@ -351,7 +351,7 @@ function Canvas(element, options, containerScrollPane) {
 
     this.resizer = this.element.ownerDocument.createElement("div");
     this.element.appendChild(this.resizer);
-    Dom.addClass(this.resizer, "CanvasResizer");
+    NDom.addClass(this.resizer, "CanvasResizer");
     this.resizeInfoLabel = this.element.ownerDocument.createElement("span");
     this.resizer.appendChild(this.resizeInfoLabel);
 
@@ -428,11 +428,11 @@ Canvas.prototype.__delegateOne = function (name) {
 
 Canvas.prototype.setupEventHandlers = function () {
     var thiz = this;
-    Dom.registerEvent(this.element, "dragenter", function (event) { thiz.__dragenter(event); }, false);
-    Dom.registerEvent(this.dragOverlay, "dragleave", function (event) { thiz.__dragleave(event); }, false);
-    Dom.registerEvent(this.element, "dragend", function (event) { thiz.__dragend(event); }, false);
-    Dom.registerEvent(this.dragOverlay, "dragover", function (event) { thiz.__dragover(event); }, false);
-    Dom.registerEvent(this.dragOverlay, "drop", function (event) { thiz.__drop(event); }, false);
+    NDom.registerEvent(this.element, "dragenter", function (event) { thiz.__dragenter(event); }, false);
+    NDom.registerEvent(this.dragOverlay, "dragleave", function (event) { thiz.__dragleave(event); }, false);
+    NDom.registerEvent(this.element, "dragend", function (event) { thiz.__dragend(event); }, false);
+    NDom.registerEvent(this.dragOverlay, "dragover", function (event) { thiz.__dragover(event); }, false);
+    NDom.registerEvent(this.dragOverlay, "drop", function (event) { thiz.__drop(event); }, false);
 };
 
 Canvas.prototype.getEventLocation = function (event, withoutZoom) {
@@ -472,7 +472,7 @@ Canvas.prototype._invalidateOneSelection = function (rect) {
 };
 Canvas.prototype._sayTargetChanged = function () {
 
-    Dom.emitEvent("p:TargetChanged", this.element, {
+    NDom.emitEvent("p:TargetChanged", this.element, {
         canvas : this
     });
 
@@ -620,10 +620,10 @@ Canvas.prototype.zoomTo = function (factor) {
 
     this.invalidateEditors();
 
-    Dom.emitEvent("p:SizeChanged", this.element, {
+    NDom.emitEvent("p:SizeChanged", this.element, {
         canvas : this
     });
-    Dom.emitEvent("p:ZoomChanged", this.element, {
+    NDom.emitEvent("p:ZoomChanged", this.element, {
         canvas : this
     });
 
@@ -677,7 +677,7 @@ Canvas.prototype.setZoomedGeo = function (target, geo, setter) {
         target.setGeometry(geo);
     }, this, Util.getMessage("action.canvas.zoom"));
 
-    Dom.emitEvent("p:ShapeGeometryModified", this.element, {
+    NDom.emitEvent("p:ShapeGeometryModified", this.element, {
         setter : setter ? setter : null
     });
 
@@ -723,10 +723,10 @@ Canvas.prototype.invalidateShapeContent = function (shape, shapeDef) {
         node.setAttribute("id", uuid);
         node.id = uuid;
 
-        Dom.updateIdRef(shape, name, uuid);
+        NDom.updateIdRef(shape, name, uuid);
     });
 
-    Dom.renewId(shape);
+    NDom.renewId(shape);
 };
 Canvas.prototype.insertShapeImpl_ = function (shapeDef, bound,
         overridingValueMap) {
@@ -883,7 +883,7 @@ Canvas.prototype.finishMoving = function (event) {
         this.snappingHelper.updateSnappingGuide(this.currentController);
         this.snappingHelper.clearSnappingGuide();
 
-        Dom.emitEvent("p:ShapeGeometryModified", this.element, {
+        NDom.emitEvent("p:ShapeGeometryModified", this.element, {
             setter : null
         });
 
@@ -899,7 +899,7 @@ Canvas.prototype.finishMoving = function (event) {
     this.controllerHeld = false;
 
     if (Config.get("quick.editting", false) == true) {
-        Dom.emitEvent("p:ShapeInserted", this.currentController.svg, {
+        NDom.emitEvent("p:ShapeInserted", this.currentController.svg, {
             controller : this.currentController,
             origTarget : event.originalTarget,
             clientX : event.clientX,
@@ -909,7 +909,7 @@ Canvas.prototype.finishMoving = function (event) {
 };
 Canvas.prototype.handleMouseWheel = function(event) {
     if (event.ctrlKey) {
-        Dom.cancelEvent(event);
+        NDom.cancelEvent(event);
 
         const padding = 0;
 
@@ -1007,7 +1007,7 @@ Canvas.prototype.handleMouseUp = function (event) {
         this.invalidateEditors();
 
         if (this.hasMoved) {
-            Dom.emitEvent("p:ShapeGeometryModified", this.element, {
+            NDom.emitEvent("p:ShapeGeometryModified", this.element, {
                 setter : null
             });
         }
@@ -1109,12 +1109,12 @@ Canvas.prototype.handleMouseUp = function (event) {
 
         DockingManager.enableDocking(this.currentController);
 
-        // var canvas = Dom.findUpward(event.originalTarget, function (node) {
+        // var canvas = NDom.findUpward(event.originalTarget, function (node) {
         //     return node.namespaceURI == PencilNamespaces.xul
         //             && node.localName == "pcanvas";
         // });
 
-        var canvasElement = Dom.findTop(event.originalTarget, function (node) {
+        var canvasElement = NDom.findTop(event.originalTarget, function (node) {
             return node.getAttribute && node.getAttribute("pencil-canvas") == "true";
                 });
 
@@ -1146,8 +1146,7 @@ Canvas.prototype.handleMouseUp = function (event) {
 Canvas.prototype.handleClick = function (event) {
 
     // is it from an html:a?
-    var a = Dom
-            .findUpward(
+    var a = NDom.findUpward(
                     event.originalTarget,
                     function (node) {
                         return (node && node.nodeType == 1
@@ -1158,13 +1157,12 @@ Canvas.prototype.handleClick = function (event) {
         return;
 
     // is this html:a inside an svg:foreignObject?
-    var foreignObject = Dom
-            .findUpward(
-                    a,
-                    function (node) {
-                        return (node && node.nodeType == 1
-                                && node.localName == "foreignObject" && node.namespaceURI == PencilNamespaces.svg);
-                    });
+    var foreignObject = NDom.findUpward(
+        a,
+        function (node) {
+            return (node && node.nodeType == 1
+                    && node.localName == "foreignObject" && node.namespaceURI == PencilNamespaces.svg);
+        });
 
     // ok, it is then prevent it
     if (foreignObject) {
@@ -1453,7 +1451,7 @@ Canvas.prototype.handleKeyPress = function (event) {
 
         this.invalidateEditors();
         event.preventDefault();
-        Dom.emitEvent("p:ShapeGeometryModified", this.element, {
+        NDom.emitEvent("p:ShapeGeometryModified", this.element, {
             setter : null
         });
 
@@ -1471,7 +1469,7 @@ Canvas.prototype.handleKeyPress = function (event) {
         }
     } else if (event.keyCode == DOM_VK_F2) {
         if (this.currentController && !event.shiftKey && !event.ctrlKey && !event.altKey && !event.metaKey) {
-            Dom.emitEvent("p:TextEditingRequested", this.element, {
+            NDom.emitEvent("p:TextEditingRequested", this.element, {
                 controller : this.currentController
             });
         }
@@ -1494,15 +1492,8 @@ Canvas.prototype.handleKeyPress = function (event) {
     } else if (event.keyCode == DOM_VK_ESCAPE) {
         this.endFormatPainter();
     }
-    // else if (event.keyCode == DOM_VK_SHIFT) {
-    //     var targets = this.getSelectedTargets();
-    //     if (targets.length > 0) {
-    //         this.duplicateMode = true;
-    //         this.mouseUp = false;
-    //     }
-    // }
-
 };
+
 Canvas.prototype.updateContextMenu = function (currentAction, prevAction) {
 
     this.undoContextMenu.setAttribute("label", Util
@@ -1513,6 +1504,7 @@ Canvas.prototype.updateContextMenu = function (currentAction, prevAction) {
             + prevAction);
 
 };
+
 Canvas.prototype.handleContextMenuShow = function (event) {
     if (this.currentController) {
         // attach now
@@ -1525,7 +1517,7 @@ Canvas.prototype.handleContextMenuShow = function (event) {
         };
 
     } else {
-        var top = Dom.findTop(event.originalTarget, function (node) {
+        var top = NDom.findTop(event.originalTarget, function (node) {
             return node.hasAttributeNS
                     && node.hasAttributeNS(PencilNamespaces.p, "type");
                 });
@@ -1543,113 +1535,6 @@ Canvas.prototype.handleContextMenuShow = function (event) {
 
     ApplicationPane._instance.canvasMenu.showMenuAt(event.clientX, event.clientY);
 };
-/*
-    try {
-        this._lastEvent = event;
-        NDom.workOn("./xul:menuseparator", this.popup, function (sep) {
-            sep.style.display = "";
-        });
-        for (var i = 0; i < this.popup.childNodes.length; i++) {
-            var child = this.popup.childNodes[i];
-            var forAtt = child.getAttributeNS(PencilNamespaces.p, "for");
-            child._canvas = this;
-            if (forAtt) {
-                forAtt = "," + forAtt + ",";
-                var visible = false;
-                if (this.currentController) {
-                    if (forAtt.indexOf(","
-                            + this.currentController.constructor.name + ",") >= 0) {
-                        visible = true;
-                    }
-                }
-
-                child.style.display = visible ? "" : "none";
-                child._controller = this.currentController;
-            }
-        }
-
-        this.lockingMenuItem.style.display = "none";
-        this.lockingStatus = null;
-
-        if (this.currentController) {
-            this.lockingStatus = {
-                controller : this.currentController
-            };
-            this.lockingMenuItem.style.display = "";
-            this.lockingMenuItem.setAttribute("checked", "false");
-        } else {
-            var top = Dom.findTop(event.originalTarget, function (node) {
-                return node.hasAttributeNS
-                        && node.hasAttributeNS(PencilNamespaces.p, "type");
-            });
-            if (top && this.isShapeLocked(top)) {
-                this.lockingStatus = {
-                    node : top
-                };
-                this.lockingMenuItem.style.display = "";
-                this.lockingMenuItem.setAttribute("checked", "true");
-            }
-        }
-
-        // remove all menu items previously created by the on-menu editor
-        var parent = this.popupSeparator.parentNode;
-        var len = parent.childNodes.length;
-        for (var i = len - 1; i >= 0; i--) {
-            var child = parent.childNodes[i];
-            if (child._isEditor)
-                parent.removeChild(child);
-        }
-
-        if (this.currentController) {
-            // attach now
-            if (this.contextMenuEditor) {
-                this.contextMenuEditor.attach(this.currentController);
-            }
-        }
-
-        // this.buildAttachMenuItem();
-        // this.buildDetachMenuItem();
-
-        var childs = this.popup.childNodes;
-        var shouldHideNextSeparator = true;
-        var foundVisibleItem = false;
-
-        for (var i = 0; i < childs.length; i++) {
-            var child = childs[i];
-            if (child.localName == "menuseparator") {
-                if (shouldHideNextSeparator) {
-                    child.style.display = "none";
-                } else {
-                    shouldHideNextSeparator = true;
-                }
-            } else {
-                if (child.style.display != "none") {
-                    shouldHideNextSeparator = false;
-                }
-            }
-
-            if (child.style.display != "none") {
-                foundVisibleItem = true;
-            }
-        }
-
-        for (var i = childs.length - 1; i >= 0; i--) {
-            var child = childs[i];
-            if (child.localName != "menuseparator"
-                    && child.style.display != "none") {
-                break;
-            }
-            child.style.display = "none";
-        }
-        if (!foundVisibleItem) {
-            this.popup.hidePopup();
-            return;
-        }
-    } catch (e) {
-        Console.dumpError(e);
-    }
-
-*/
 
 Canvas.prototype.buildAttachMenuItem = function () {
 
@@ -1701,11 +1586,11 @@ Canvas.prototype.buildAttachMenuItem = function () {
         }
         this.attachToMenu.addEventListener("command", function (event) {
             try {
-                var containerNode = Dom.findUpward(event.originalTarget,
+                var containerNode = NDom.findUpward(event.originalTarget,
                         function (node) {
                             return node._container;
                         });
-                var attachSlotNode = Dom.findUpward(event.originalTarget,
+                var attachSlotNode = NDom.findUpward(event.originalTarget,
                         function (node) {
                             return node._attachSlot;
                         });
@@ -1787,11 +1672,11 @@ Canvas.prototype.buildDetachMenuItem = function () {
                         "command",
                         function (event) {
                             try {
-                                var containerNode = Dom.findUpward(
+                                var containerNode = NDom.findUpward(
                                         event.originalTarget, function (node) {
                                             return node._container;
                                         });
-                                var detachSlotNode = Dom.findUpward(
+                                var detachSlotNode = NDom.findUpward(
                                         event.originalTarget, function (node) {
                                             return node._detachSlot;
                                         });
@@ -1811,10 +1696,9 @@ Canvas.prototype.buildDetachMenuItem = function () {
                                             if (controller) {
                                                 Svg.ensureCTM(controller.svg,
                                                         attachment.ctm);
-                                                var metaNode = Dom
-                                                        .parseToNode(attachment.metaData);
+                                                var metaNode = NDom.parseToNode(attachment.metaData);
                                                 if (metaNode) {
-                                                    Dom
+                                                    NDom
                                                             .workOn(
                                                                     "./p:property",
                                                                     metaNode,
@@ -1822,7 +1706,7 @@ Canvas.prototype.buildDetachMenuItem = function () {
                                                                             node) {
                                                                         var name = node
                                                                                 .getAttribute("name");
-                                                                        var value = Dom
+                                                                        var value = NDom
                                                                                 .getText(node);
                                                                         controller
                                                                                 .setProperty(
@@ -1907,7 +1791,7 @@ Canvas.prototype.handleDblclick = function (event) {
 
     // find the top, get the def
     var thiz = this;
-    var top = Dom.findTop(event.originalTarget, function (node) {
+    var top = NDom.findTop(event.originalTarget, function (node) {
         return node.hasAttributeNS
                 && node.hasAttributeNS(PencilNamespaces.p, "type")
                 && node.getAttributeNS(PencilNamespaces.p, "type") == "Shape"
@@ -1922,7 +1806,7 @@ Canvas.prototype.handleDblclick = function (event) {
     var target = this.createControllerFor(top);
 
     stencilDebug("emitting event p:ShapeDoubleClicked");
-    Dom.emitEvent("p:ShapeDoubleClicked", top, {
+    NDom.emitEvent("p:ShapeDoubleClicked", top, {
         controller : target,
         origTarget : event.originalTarget,
         clientX : event.clientX,
@@ -2128,7 +2012,7 @@ Canvas.prototype.handleMouseDown = function (event) {
     event.preventDefault();
 
     tick("begin");
-    Dom.emitEvent("p:CanvasMouseDown", this.element, {});
+    NDom.emitEvent("p:CanvasMouseDown", this.element, {});
 
     if (this.executeEventHooks(event)) return;
     //if (this.gestureHelper && this.gestureHelper.handleMouseDown(event)) return;
@@ -2145,12 +2029,12 @@ Canvas.prototype.handleMouseDown = function (event) {
     this._button = event.button;
 
     var thiz = this;
-    var isInControlLayer = Dom.findUpward(event.originalTarget, function (node) {
+    var isInControlLayer = NDom.findUpward(event.originalTarget, function (node) {
         return (node == thiz.controlLayer);
     });
     if (isInControlLayer) return;
 
-    var top = Dom.findTop(event.originalTarget, function (node) {
+    var top = NDom.findTop(event.originalTarget, function (node) {
         return node.hasAttributeNS
                 && node.hasAttributeNS(PencilNamespaces.p, "type");
     });
@@ -2466,7 +2350,7 @@ Canvas.prototype.deleteSelectedImpl_ = function () {
 };
 Canvas.prototype._sayContentModified = function () {
 
-    Dom.emitEvent("p:ContentModified", this.element);
+    NDom.emitEvent("p:ContentModified", this.element);
 
 };
 Canvas.prototype._saveMemento = function (actionName) {
@@ -2481,7 +2365,7 @@ Canvas.prototype.getMemento = function (actionName) {
 Canvas.prototype.setMemento = function (memento) {
 
     this.selectNone();
-    Dom.empty(this.drawingLayer);
+    NDom.empty(this.drawingLayer);
 
     // alert("copy back: " + memento.node.childNodes.length + " nodes");
     var fragment = this.drawingLayer.ownerDocument.createDocumentFragment();
@@ -2578,7 +2462,7 @@ Canvas.prototype.setSizeImpl_ = function (width, height) {
         CanvasImpl.setupGrid.apply(thiz);
     }, 50);
 
-    Dom.emitEvent("p:SizeChanged", this.element, {
+    NDom.emitEvent("p:SizeChanged", this.element, {
         canvas : this
     });
 
@@ -2838,10 +2722,10 @@ Canvas.prototype.insertPrivateShapeImpl_ = function (shapeDef, bound) {
         node.setAttribute("id", uuid);
         node.id = uuid;
 
-        Dom.updateIdRef(shape, name, uuid);
+        NDom.updateIdRef(shape, name, uuid);
     });
 
-    Dom.renewId(shape);
+    NDom.renewId(shape);
 
     shape.style.visibility = "hidden";
     this.setAttributeNS(PencilNamespaces.p, "p:holding", "true");

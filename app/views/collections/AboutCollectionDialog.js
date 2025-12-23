@@ -8,7 +8,7 @@ function AboutCollectionDialog(collection) {
     };
 
     //this.title = collection.displayName;
-    var node = Dom.newDOMElement({
+    var node = NDom.newDOMElement({
         _name: "div",
         _children:[
             {

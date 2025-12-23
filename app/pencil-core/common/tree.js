@@ -1,10 +1,10 @@
 function handleEdit(event) {
     return;
-    var tree = Dom.findUpward(event.originalTarget, function (node) {
+    var tree = NDom.findUpward(event.originalTarget, function (node) {
             return node.namespaceURI == PencilNamespaces.xul && node.localName == "tree";
         });
 
-    var treechildren = Dom.findUpward(event.originalTarget, function (node) {
+    var treechildren = NDom.findUpward(event.originalTarget, function (node) {
             return node.namespaceURI == PencilNamespaces.xul && node.localName == "treechildren";
         });
 

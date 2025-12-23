@@ -85,9 +85,9 @@ Dialog.prototype.invalidateElements = function () {
         return a1.order - a2.order;
     });
 
-    Dom.empty(this.dialogFooterStartPane);
-    Dom.empty(this.dialogFooterMiddlePane);
-    Dom.empty(this.dialogFooterEndPane);
+    NDom.empty(this.dialogFooterStartPane);
+    NDom.empty(this.dialogFooterMiddlePane);
+    NDom.empty(this.dialogFooterEndPane);
 
     actions.forEach(function (a) {
         if (a.isApplicable && !a.isApplicable()) return;
@@ -105,10 +105,10 @@ Dialog.prototype.invalidateElements = function () {
     }, this);
 
 
-    Dom.empty(this.dialogTitle);
+    NDom.empty(this.dialogTitle);
     this.dialogTitle.appendChild(document.createTextNode(this.e(this.title)));
 
-    Dom.empty(this.dialogSubTitle);
+    NDom.empty(this.dialogSubTitle);
     this.dialogSubTitle.appendChild(document.createTextNode(this.e(this.subTitle || "")));
 
     this.dialogClose.style.display = this.closeHandler ? "inline-block" : "none";
@@ -141,7 +141,7 @@ Dialog.prototype.show = function () {
     }
 
     this.overlay = this.node().ownerDocument.createElement("div");
-    Dom.addClass(this.overlay, "Sys_DialogOverlay");
+    NDom.addClass(this.overlay, "Sys_DialogOverlay");
 
     this.node().ownerDocument.body.appendChild(this.overlay);
 
@@ -245,7 +245,7 @@ Dialog.prototype.callback = function (callback) {
 };
 
 Dialog.prototype.handleActionClick = function (event) {
-    var action = Dom.findUpwardForData(event.target, "_action");
+    var action = NDom.findUpwardForData(event.target, "_action");
     if (!action) return;
 
     var returnValue = action.run.apply(this);
@@ -254,7 +254,7 @@ Dialog.prototype.handleActionClick = function (event) {
 Dialog.globalMouseMoveHandler = function (event) {
     if (!Dialog.heldInstance) return;
 
-    Dom.cancelEvent(event);
+    NDom.cancelEvent(event);
 
     var dx = event.screenX - Dialog._lastScreenX;
     var dy = event.screenY - Dialog._lastScreenY;
@@ -270,7 +270,7 @@ Dialog.globalFocusHandler = function (event) {
     var closable = BaseWidget.closables[BaseWidget.closables.length - 1];
     if (!__isSubClassOf(closable.constructor, Dialog)) return;
 
-    var frame = Dom.findUpward(event.target, function (node) {
+    var frame = NDom.findUpward(event.target, function (node) {
         return node == closable.dialogFrame;
     });
 
@@ -287,7 +287,7 @@ Dialog.prototype.handleCloseClick = function () {
     if (returnValue) this.close();
 };
 Dialog.prototype.handleHeaderMouseDown = function (event) {
-    Dom.cancelEvent(event);
+    NDom.cancelEvent(event);
     Dialog.heldInstance = this;
     Dialog._lastScreenX = event.screenX;
     Dialog._lastScreenY = event.screenY;
@@ -296,7 +296,7 @@ Dialog.prototype.handleBodyKeyPress = function (event) {
     if (event.keyCode != DOM_VK_RETURN) return;
     if (!this.primaryButton) return;
 
-    let node = Dom.findUpward(event.target, function (node) {
+    let node = NDom.findUpward(event.target, function (node) {
         return node.localName == "input" || node.localName == "select";
     })
 
@@ -365,7 +365,7 @@ Dialog.alert = function (message, extra, onClose) {
         title: "Information",
         size: message.size || "small",
         buildContent: function (container) {
-            container.appendChild(Dom.newDOMElement({
+            container.appendChild(NDom.newDOMElement({
                 _name: "hbox", "class": "MessageDialog",
                 _children: [
                     { _name: "i", "class": "DialogIcon Alert", _text: "info" },
@@ -397,7 +397,7 @@ Dialog.error = function (message, extra, onClose) {
         title: "Error",
         size: "small",
         buildContent: function (container) {
-            container.appendChild(Dom.newDOMElement({
+            container.appendChild(NDom.newDOMElement({
                 _name: "hbox", "class": "MessageDialog",
                 _children: [
                     { _name: "i", "class": "DialogIcon Error", _text: "error" },
@@ -440,7 +440,7 @@ Dialog.prompt = function (message, initialValue, acceptMessage, onInput, cancelM
             p.appendChild(document.createTextNode(message));
             div.appendChild(p);
 
-            this.input = Dom.newDOMElement({
+            this.input = NDom.newDOMElement({
                 _name: "input",
                 type: "text",
                 style: "width: calc(100% - 10px); padding: 5px;",
@@ -480,7 +480,7 @@ Dialog.confirm = function (question, extra, positiveActionTitle, onPositiveAnswe
         title: "Confirm",
         size: "normal",
         buildContent: function (container) {
-            container.appendChild(Dom.newDOMElement({
+            container.appendChild(NDom.newDOMElement({
                 _name: "hbox", "class": "MessageDialog",
                 _children: [
                     { _name: "i", "class": "DialogIcon", _text: "help" },
@@ -540,7 +540,7 @@ Dialog.select = function (items, callback, selectedItems, options) {
         buildContent: function (container) {
             if (options.message) {
                 var i = document.createElement("p");
-                Dom.addClass(i, "fa fa-question-circle");
+                NDom.addClass(i, "fa fa-question-circle");
                 i.setAttribute("style", "float: left; font-size: 2em; color: #428BCA;");
                 container.appendChild(i);
 
@@ -555,12 +555,12 @@ Dialog.select = function (items, callback, selectedItems, options) {
             for (var i = 0; i < items.length; i ++) {
                 var id = "cb_" + widget.random();
                 var holder = {};
-                var span = Dom.newDOMElement({
+                var span = NDom.newDOMElement({
                     _name: "span",
                     style: "display: inline-block",
                     _children: [
                                 {_name: "input", type: "checkbox", _id: "checkbox", id: id, style: "vertical-align: middle;"},
-                                {_name: "label", "for": id, _html: Dom.htmlEncode(formatter(items[i])), style: "padding-left: 1ex; vertical-align: middle;"},
+                                {_name: "label", "for": id, _html: NDom.htmlEncode(formatter(items[i])), style: "padding-left: 1ex; vertical-align: middle;"},
                                 ]
                 }, document, holder);
 

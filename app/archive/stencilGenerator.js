@@ -12,7 +12,7 @@ StencilGenerator.selectIconFile = function () {
 StencilGenerator.onload = function (event) {
     StencilGenerator.wizard = document.getElementById("stencilGenerator");
     StencilGenerator.imageList = document.getElementById("imageList");
-    Dom.empty(StencilGenerator.imageList);
+    NDom.empty(StencilGenerator.imageList);
 
     StencilGenerator.imageList.addEventListener("dragover", function () {
         var dragService = Components.classes["@mozilla.org/widget/dragservice;1"].getService(Components.interfaces.nsIDragService);
@@ -74,7 +74,7 @@ StencilGenerator.onload = function (event) {
                     name = name.substring(index + 1);
                     var ext = Util.getFileExtension(name);
                     if (ext != null && ".jpg|.png|.gif|.bmp|.svg".indexOf(ext.toLowerCase()) != -1 && !StencilGenerator.imageExisted(uris[i].spec)) {
-                        var item = Dom.newDOMElement({
+                        var item = NDom.newDOMElement({
                             _name: "listitem",
                             _uri: PencilNamespaces.xul,
                             label: name
@@ -104,7 +104,7 @@ StencilGenerator.onload = function (event) {
 
     StencilGenerator.stencilList = document.getElementById("stencilList");
     StencilGenerator.stencilList.addEventListener("click", function (event) {
-        var imgNode = Dom.findUpward(event.originalTarget, function (node) { return node._img; });
+        var imgNode = NDom.findUpward(event.originalTarget, function (node) { return node._img; });
         if (imgNode) {
             if (StencilGenerator._lastSelected && StencilGenerator._lastSelected != null) {
                 document.getElementById("_image_" + StencilGenerator._lastSelected).className = "Image";
@@ -192,7 +192,7 @@ StencilGenerator.initStencils = function () {
 
                 StencilGenerator.stencils = stencils;
 
-                Dom.empty(StencilGenerator.stencilList);
+                NDom.empty(StencilGenerator.stencilList);
 
                 var sd = document.createElementNS(PencilNamespaces.html, "div");
                 sd.setAttribute("class", "StencilList");
@@ -235,7 +235,7 @@ StencilGenerator.initStencils = function () {
                         //g.setAttribute("height", item.box.height * scale);
                         g.setAttribute("transform", "translate(2, 2)" + (scale != 1) ? " scale(" + scale + ")" : "");
 
-                        g.appendChild(Dom.parseToNode(item.data));
+                        g.appendChild(NDom.parseToNode(item.data));
                         g1.appendChild(g);
                         m.appendChild(g1);
                         d.appendChild(m);
@@ -349,7 +349,7 @@ StencilGenerator.createSVGStencils = function (item, svgDocument, index) {
                     label: item._label + " " + index + "_"  + id,
                     type: "SVG",
                     box: box,
-                    data: Dom.serializeNode(node),
+                    data: NDom.serializeNode(node),
                     img: item
                 });
                 try {
@@ -372,7 +372,7 @@ StencilGenerator.createSVGStencils = function (item, svgDocument, index) {
                 label: item._label,
                 type: "SVG",
                 box: {x: 0, y: 0, width: Svg.getWidth(svgDocument), height: Svg.getHeight(svgDocument)},
-                data: Dom.serializeNode(g),
+                data: NDom.serializeNode(g),
                 img: item
             });
 
@@ -791,7 +791,7 @@ StencilGenerator.buildShape = function(shapeDef) {
             "    </Shape>");
     } else {
         /*
-        var shortcut = Dom.newDOMElement({
+        var shortcut = NDom.newDOMElement({
             _name: "Shortcut",
             _uri: "http://www.evolus.vn/Namespace/Pencil",
             displayName: shapeDef.label,
@@ -819,7 +819,7 @@ StencilGenerator.buildShape = function(shapeDef) {
             ]
         }, document);
 
-        return Dom.serializeNode(shortcut);
+        return NDom.serializeNode(shortcut);
         */
 
         return (

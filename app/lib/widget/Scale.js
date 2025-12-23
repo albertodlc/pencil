@@ -1,7 +1,7 @@
 widget.Scale = function () {
     function actionBarClickHandler(event) {
-        var target = Dom.getTarget(event);
-        var button = Dom.findUpward(target, {
+        var target = NDom.getTarget(event);
+        var button = NDom.findUpward(target, {
             eval: function (n) {
                 return n._action;
             }
@@ -17,13 +17,13 @@ widget.Scale = function () {
     
     function handleMouseMove(e) {
         if (!Scale.heldData) return;
-        Dom.cancelEvent(e);
-        var event = Dom.getEvent(e);
+        NDom.cancelEvent(e);
+        var event = NDom.getEvent(e);
         var x = event.screenX;
         
         var thiz = Scale.heldData.instance;
         var dx = x - Scale.heldData.x;
-        var dvalue = Math.round(dx * thiz.max / Dom.getOffsetWidth(thiz.track));
+        var dvalue = Math.round(dx * thiz.max / NDom.getOffsetWidth(thiz.track));
         var value = Scale.heldData.value + dvalue;
         value = Math.max(0, Math.min(thiz.max, value));
         thiz.setValue(value);
@@ -31,7 +31,7 @@ widget.Scale = function () {
     }
     function handleMouseUp(e) {
         if (!Scale.heldData) return;
-        var event = Dom.getEvent(e);
+        var event = NDom.getEvent(e);
         var x = event.screenX;
         var thiz = Scale.heldData.instance;
         
@@ -44,9 +44,9 @@ widget.Scale = function () {
         Scale.heldData = null;
     }
     
-    Dom.registerEvent(window, "load", function () {
-        Dom.registerEvent(document, "mousemove", handleMouseMove);
-        Dom.registerEvent(document, "mouseup", handleMouseUp);
+    NDom.registerEvent(window, "load", function () {
+        NDom.registerEvent(document, "mousemove", handleMouseMove);
+        NDom.registerEvent(document, "mouseup", handleMouseUp);
     });
     
     function Scale(container, options) {
@@ -54,7 +54,7 @@ widget.Scale = function () {
         this.options = options || {};
         
         this.container.style.display = "inline-block";
-        this.container.appendChild(Dom.newDOMElement({
+        this.container.appendChild(NDom.newDOMElement({
             _name: "span",
             _id: "wrapper",
             "class": "Scale",
@@ -81,20 +81,20 @@ widget.Scale = function () {
         this.wrapper._scale = this;
         var thiz = this;
         
-        Dom.registerEvent(this.thumb, "mousedown", function (e) {
-            var event = Dom.getEvent(e);
+        NDom.registerEvent(this.thumb, "mousedown", function (e) {
+            var event = NDom.getEvent(e);
             Scale.heldData = {
                     instance: thiz,
                     x: event.screenX,
                     value: thiz.value
             };
-            Dom.cancelEvent(e);
+            NDom.cancelEvent(e);
         }, false);
         var clickHandle = function(e) {
-            var event = Dom.getEvent(e);
-            Dom.cancelEvent(e);
+            var event = NDom.getEvent(e);
+            NDom.cancelEvent(e);
             var offsetX = event.offsetX || event.layerX;
-            var totalWidth = Dom.getOffsetWidth(thiz.total);
+            var totalWidth = NDom.getOffsetWidth(thiz.total);
             var value = Math.round(offsetX * thiz.max / totalWidth);
             thiz.setValue(value);
             if (thiz.options.onValueChangeFinished) {
@@ -102,8 +102,8 @@ widget.Scale = function () {
             }
         };
         
-        Dom.registerEvent(this.total, "click", clickHandle , false);
-        Dom.registerEvent(this.finishedTrack, "click", clickHandle , false);
+        NDom.registerEvent(this.total, "click", clickHandle , false);
+        NDom.registerEvent(this.finishedTrack, "click", clickHandle , false);
         
         this.setMax(100);
         this.setValue(25);
@@ -123,7 +123,7 @@ widget.Scale = function () {
         }
     };
     Scale.prototype.invalidate = function () {
-        var px = Math.round(Dom.getOffsetWidth(this.track) * this.value / this.max);
+        var px = Math.round(NDom.getOffsetWidth(this.track) * this.value / this.max);
         
         this.currentThumbLeft = px;
         this.thumb.style.left = px + "px";

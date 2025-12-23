@@ -13,12 +13,12 @@ function NotificationPopup() {
 __extend(Popup, NotificationPopup);
 
 NotificationPopup.prototype.setup = function (message, actionTitle, actionHandler) {
-    this.messagePane.innerHTML = Dom.htmlEncode(message).replace(/\n/g, "<br/>");
-    Dom.toggleClass(this.node(), "WithAction", actionTitle)
+    this.messagePane.innerHTML = NDom.htmlEncode(message).replace(/\n/g, "<br/>");
+    NDom.toggleClass(this.node(), "WithAction", actionTitle)
 
     if (actionTitle) {
-        Dom.show(this.footer);
-        this.actionButton.innerHTML = Dom.htmlEncode(actionTitle);
+        NDom.show(this.footer);
+        this.actionButton.innerHTML = NDom.htmlEncode(actionTitle);
         this.actionHandler = actionHandler;
     } else {
         this.footer.style.display = "none";
@@ -49,7 +49,7 @@ NotificationPopup.prototype.hide = function (silent) {
     this.popupContainer.style.opacity = 0;
     window.setTimeout(function () {
         this.popupContainer.style.visibility = "hidden";
-        if (!silent) Dom.emitEvent("p:PopupHidden", this.node());
+        if (!silent) NDom.emitEvent("p:PopupHidden", this.node());
         if (this.onHide) this.onHide();
         if (this.e(this.shouldDetach)) this.detach();
     }.bind(this), 300);

@@ -67,13 +67,13 @@ CanvasCareTaker.prototype.getPrevAction = function() {
     return "";
 };
 CanvasCareTaker.prototype.saveState = function (filePath) {
-    var dom = Dom.parser.parseFromString("<p:CareTakerContent xmlns:p=\"" + PencilNamespaces.p + "\"></p:CareTakerContent>", "text/xml");
+    var dom = NDom.parser.parseFromString("<p:CareTakerContent xmlns:p=\"" + PencilNamespaces.p + "\"></p:CareTakerContent>", "text/xml");
     dom.documentElement.setAttribute("index", this.index);
     for (var memento of this.mementos) {
         dom.documentElement.appendChild(memento.serializeAsNode(dom));
     }
 
-    Dom.serializeNodeToFile(dom, filePath);
+    NDom.serializeNodeToFile(dom, filePath);
 };
 CanvasCareTaker.prototype.loadState = function (filePath) {
     var dom = Controller.parser.parseFromString(fs.readFileSync(filePath, "utf8"), "text/xml");

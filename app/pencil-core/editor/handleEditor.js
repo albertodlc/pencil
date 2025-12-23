@@ -3,7 +3,7 @@ function HandleEditor() {
     this.canvas = null;
 }
 HandleEditor.ANCHOR_SIZE = 6;
-HandleEditor.configDoc = Dom.loadSystemXml("pencil-core/editor/handleEditor.config.xml", function (fileContent) {
+HandleEditor.configDoc = NDom.loadSystemXml("pencil-core/editor/handleEditor.config.xml", function (fileContent) {
     if (!fileContent) return "";
     var newContent = fileContent
     .replace("$handle_fill_color", Config.get("handle.fill_color", "#ff0"))
@@ -93,7 +93,7 @@ HandleEditor.prototype.setEditorGeometry = function (geo) {
 };
 HandleEditor.prototype.findHandle = function (element) {
     var thiz = this;
-    var handle = Dom.findUpward(element, function (node) {
+    var handle = NDom.findUpward(element, function (node) {
         return node._isHandle && (node._editor == thiz);
     });
 

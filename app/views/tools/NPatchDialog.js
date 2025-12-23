@@ -17,7 +17,7 @@ function NPatchDialog() {
 
                 thiz.sourceImageContainer.innerHTML="";
                 thiz.parsedImageContainer.innerHTML="";
-                var img = Dom.newDOMElement({
+                var img = NDom.newDOMElement({
                     _name: "img",
                     src: filenames + "?time=" + new Date().getTime()
                 });
@@ -101,7 +101,7 @@ NPatchDialog.prototype.createPatch = function(srcImage, p1, p2, scaleX, scaleY, 
 
 NPatchDialog.prototype.appendResult = function (data, w, h, scaleX, scaleY, container) {
     var result = container ? container : this.parsedImageContainer;
-    var img = Dom.newDOMElement({
+    var img = NDom.newDOMElement({
         _name: "img",
         src: data
     });
@@ -208,7 +208,7 @@ NPatchDialog.prototype.createPatches = function (image) {
        var vs = vWalker.segments[j];
        this.currentRow = [];
        this.data.patches.push(this.currentRow);
-       var hbox = Dom.newDOMElement({_name: "hbox"});
+       var hbox = NDom.newDOMElement({_name: "hbox"});
        parsedImageContainer.appendChild(hbox);
        for (var i = 0; i < hWalker.segments.length; i ++) {
            var hs = hWalker.segments[i];

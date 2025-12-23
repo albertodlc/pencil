@@ -1,13 +1,13 @@
 widget.Tree = function() {
     function treeClickHandler(event) {
-        var target = Dom.getTarget(event);
-        var chevron = Dom.findUpward(target, {
+        var target = NDom.getTarget(event);
+        var chevron = NDom.findUpward(target, {
             eval: function(n) {
-                return Dom.hasClass(n, "Chevron");
+                return NDom.hasClass(n, "Chevron");
             }
         });
 
-        var itemObject = Dom.findUpward(target, {
+        var itemObject = NDom.findUpward(target, {
             eval: function(n) {
                 return n._item;
             }
@@ -17,7 +17,7 @@ widget.Tree = function() {
 
         // check for click on leaf, wth?
         if (itemObject) {
-            var treeContainer = Dom.findUpward(target, {
+            var treeContainer = NDom.findUpward(target, {
                 eval: function(n) {
                     return n._tree;
                 }
@@ -35,18 +35,18 @@ widget.Tree = function() {
             }
 
             if (selectable) {
-                if (tree.listener && Dom.findParentWithClass(target, "ItemText")) {
+                if (tree.listener && NDom.findParentWithClass(target, "ItemText")) {
                     //console.log("calling tree listener on event", event);
                     tree.listener(itemObject._item);
                     var allItemText = tree.container.getElementsByClassName("ItemText");
                     var itemText = itemObject.getElementsByClassName("ItemText")[0];
-                    if (!Dom.hasClass(itemText, "Disabled")) {
+                    if (!NDom.hasClass(itemText, "Disabled")) {
                         for ( var i = 0; i < allItemText.length; i++) {
-                            Dom.removeClass(allItemText[i], "Selected");
+                            NDom.removeClass(allItemText[i], "Selected");
                         }
 
                         if (itemText) {
-                            Dom.addClass(itemText, "Selected");
+                            NDom.addClass(itemText, "Selected");
                         }
                     }
                 }
@@ -57,7 +57,7 @@ widget.Tree = function() {
             return;
         }
 
-        var treeContainer = Dom.findUpward(target, {
+        var treeContainer = NDom.findUpward(target, {
             eval: function(n) {
                 return n._tree;
             }
@@ -67,9 +67,9 @@ widget.Tree = function() {
 
         var tree = treeContainer._tree;
         if (chevron) {
-            var itemNode = Dom.findParentWithClass(chevron, "Item");
+            var itemNode = NDom.findParentWithClass(chevron, "Item");
             //console.log("EXPANDING: itemNode", itemNode);
-            var isExpanded = Dom.hasClass(itemNode, "Expanded");
+            var isExpanded = NDom.hasClass(itemNode, "Expanded");
             //console.log("EXPANDING: isExpanded", isExpanded);
 
             if (!isExpanded) {
@@ -86,13 +86,13 @@ widget.Tree = function() {
     }
 
     function treeCheckBoxListener(event) {
-        var target = Dom.getTarget(event);
-        if (!target || !Dom.hasClass(target, "Checkbox") || target.nodeName.toLowerCase() != "input") return;
+        var target = NDom.getTarget(event);
+        if (!target || !NDom.hasClass(target, "Checkbox") || target.nodeName.toLowerCase() != "input") return;
         if (target.disabled) return;
         
         if (event.which == 2) target.checked = !target.checked;
 
-        var treeContainer = Dom.findUpward(target, {
+        var treeContainer = NDom.findUpward(target, {
             eval: function(n) {
                 return n._tree;
             }
@@ -107,7 +107,7 @@ widget.Tree = function() {
             if (event.which != 2) setItemsCheckedRecursivelyFromNodes(getChildrenContainerFromItemNode(itemNode).childNodes, target.checked);
         }
 
-        Dom.emitEvent("blur", treeContainer, {});
+        NDom.emitEvent("blur", treeContainer, {});
 
     }
 
@@ -126,14 +126,14 @@ widget.Tree = function() {
     }
 
     function setExpandedClasses(itemNode, expanded) {
-        Dom.removeClass(itemNode, expanded ? "Collapsed" : "Expanded");
-        Dom.addClass(itemNode, !expanded ? "Collapsed" : "Expanded");
+        NDom.removeClass(itemNode, expanded ? "Collapsed" : "Expanded");
+        NDom.addClass(itemNode, !expanded ? "Collapsed" : "Expanded");
 
-        Dom.removeClass(itemNode._titleElement, expanded ? "CollapsedTitle" : "ExpandedTitle");
-        Dom.addClass(itemNode._titleElement, !expanded ? "CollapsedTitle" : "ExpandedTitle");
+        NDom.removeClass(itemNode._titleElement, expanded ? "CollapsedTitle" : "ExpandedTitle");
+        NDom.addClass(itemNode._titleElement, !expanded ? "CollapsedTitle" : "ExpandedTitle");
 
-        Dom.removeClass(itemNode._childContainerElement, expanded ? "CollapsedChildren" : "ExpandedChildren");
-        Dom.addClass(itemNode._childContainerElement, !expanded ? "CollapsedChildren" : "ExpandedChildren");
+        NDom.removeClass(itemNode._childContainerElement, expanded ? "CollapsedChildren" : "ExpandedChildren");
+        NDom.addClass(itemNode._childContainerElement, !expanded ? "CollapsedChildren" : "ExpandedChildren");
     }
 
     function Tree(container, source, renderer, options) {
@@ -145,24 +145,24 @@ widget.Tree = function() {
         this.container._tree = this;
         this.init();
 
-        Dom.registerEvent(this.container, "click", treeClickHandler, false);
-        Dom.registerEvent(this.container, "click", treeCheckBoxListener, false);
+        NDom.registerEvent(this.container, "click", treeClickHandler, false);
+        NDom.registerEvent(this.container, "click", treeCheckBoxListener, false);
     }
     Tree.prototype.same = function(a, b) {
         if (this.options.same) return this.options.same(a, b);
         return a == b;
     };
     Tree.prototype.init = function() {
-        Dom.addClass(this.container, "Tree");
+        NDom.addClass(this.container, "Tree");
         if (this.options.checkable) {
-            Dom.addClass(this.container, "CheckableTree");
+            NDom.addClass(this.container, "CheckableTree");
         }
         var fakeTitle = document.createElement("div");
         fakeTitle.style.display = "none";
         this.container.appendChild(fakeTitle);
 
         var div = document.createElement("div");
-        Dom.addClass(div, "Children RootChildren");
+        NDom.addClass(div, "Children RootChildren");
         this.container.appendChild(div);
         this.rootChildrenContainer = div;
         this.uniqueName = "tree" + widget.random();
@@ -182,7 +182,7 @@ widget.Tree = function() {
     Tree.prototype.rebuildItemNodeUI = function(oldItemNode, item) {
         var itemNode = this.buildItemNode(item);
         itemNode._item = item;
-        var expanded = Dom.hasClass(oldItemNode, "Expanded");
+        var expanded = NDom.hasClass(oldItemNode, "Expanded");
 
         oldItemNode.parentNode.replaceChild(itemNode, oldItemNode);
         if (expanded) {
@@ -208,7 +208,7 @@ widget.Tree = function() {
     */
     
     Tree.prototype.loadChildren = function(parentItem, childrenContainer, callback) {
-        Dom.addClass(childrenContainer, "Loading");
+        NDom.addClass(childrenContainer, "Loading");
         var thiz = this;
         
         this.source(parentItem, function(children) {
@@ -221,19 +221,19 @@ widget.Tree = function() {
                 itemNode._item = item;
 
                 if (i == children.length - 1) {
-                    Dom.addClass(itemNode, "LastChild");
-                    Dom.addClass(itemNode._titleElement, "LastChildTitle");
+                    NDom.addClass(itemNode, "LastChild");
+                    NDom.addClass(itemNode._titleElement, "LastChildTitle");
                 }
             }
 
             if (children.length == 0) {
                 var title = childrenContainer.parentNode.firstChild;
-                if (title && Dom.hasClass(title, "Title")) {
-                    Dom.addClass(title, "NoChild");
+                if (title && NDom.hasClass(title, "Title")) {
+                    NDom.addClass(title, "NoChild");
                 }
             }
 
-            Dom.removeClass(childrenContainer, "Loading");
+            NDom.removeClass(childrenContainer, "Loading");
             childrenContainer._items = children;
 
             if (callback) callback(parentItem, childrenContainer, children);
@@ -397,7 +397,7 @@ widget.Tree = function() {
         var itemClass = "Item Collapsed";
         var holder = {};
 
-        var itemNode = Dom.newDOMElement({
+        var itemNode = NDom.newDOMElement({
             _name: "div",
             "class": itemClass,
             _children: [ {
@@ -444,7 +444,7 @@ widget.Tree = function() {
         if (this.options.isForcedChecked && this.options.isForcedChecked(item)) {
             checkbox.setAttribute("checked", "true");
             checkbox.setAttribute("disabled", "true");
-            Dom.addClass(checkbox, "ForcedChecked");
+            NDom.addClass(checkbox, "ForcedChecked");
         }
 
         if (this.options.onItemNodeCreated) {
@@ -461,7 +461,7 @@ widget.Tree = function() {
     
     Tree.prototype.findParentItem = function (contextNode) {
         var thiz = this;
-        var node = Dom.findUpward(contextNode, {
+        var node = NDom.findUpward(contextNode, {
             eval: function (n) {
                 return n._item || n == thiz.container;
             }
@@ -469,7 +469,7 @@ widget.Tree = function() {
         
         if (!node || !node._item) return null;
         
-        node = Dom.findUpward(node.parentNode, {
+        node = NDom.findUpward(node.parentNode, {
             eval: function (n) {
                 return n._item || n == thiz.container;
             }
@@ -482,7 +482,7 @@ widget.Tree = function() {
     Tree.prototype.setSelectedItem = function(selectedItem) {
         var list = this.container.getElementsByClassName("ItemText");
         for ( var i = 0; i < list.length; i++) {
-            var itemObject = Dom.findUpward(list[i], {
+            var itemObject = NDom.findUpward(list[i], {
                 eval: function(n) {
                     return n._item;
                 }
@@ -492,10 +492,10 @@ widget.Tree = function() {
 
                 var itemText = itemObject.getElementsByClassName("ItemText")[0];
                 if (itemText) {
-                    Dom.addClass(itemText, "Selected");
+                    NDom.addClass(itemText, "Selected");
                 }
             } else {
-                Dom.removeClass(list[i], "Selected");
+                NDom.removeClass(list[i], "Selected");
             }
         }
     };
@@ -503,7 +503,7 @@ widget.Tree = function() {
     Tree.prototype.refreshItemDisplay = function(validate, all) {
         var list = this.container.getElementsByClassName("ItemText");
         for ( var i = 0; i < list.length; i++) {
-            var itemObject = Dom.findUpward(list[i], {
+            var itemObject = NDom.findUpward(list[i], {
                 eval: function(n) {
                     return n._item;
                 }

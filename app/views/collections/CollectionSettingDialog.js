@@ -18,12 +18,12 @@ function CollectionSettingDialog (collection) {
 __extend(Dialog, CollectionSettingDialog);
 
 CollectionSettingDialog.prototype.createGroupNode = function (propertyGroup) {
-        var currentGroupNode = Dom.newDOMElement({
+        var currentGroupNode = NDom.newDOMElement({
             _name: "vbox",
             "class": "Group"
         });
         //currentGroupNode._group = property._group;
-        var titleNode = Dom.newDOMElement({
+        var titleNode = NDom.newDOMElement({
             _name: "div",
             _text: propertyGroup.name,
             "class": "Label Group"
@@ -34,7 +34,7 @@ CollectionSettingDialog.prototype.createGroupNode = function (propertyGroup) {
         for(var i = 0; i < propertyGroup.properties.length; i++) {
             var property = propertyGroup.properties[i];
             var propName = property.displayName;
-            var editorWrapper = Dom.newDOMElement({
+            var editorWrapper = NDom.newDOMElement({
                 _name: "hbox",
                 "class": "Wrapper",
                 _children: [

@@ -300,8 +300,8 @@ ImageData.generatePathSVGData = function (svgPathData, size) {
         ]
     }
 
-    var svgDom = Dom.newDOMElement(svg);
-    var svgData = encodeURIComponent(Dom.serializeNode(svgDom));
+    var svgDom = NDom.newDOMElement(svg);
+    var svgData = encodeURIComponent(NDom.serializeNode(svgDom));
     return "data:image/svg+xml," + svgData;
 };
 

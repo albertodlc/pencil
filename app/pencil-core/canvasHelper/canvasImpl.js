@@ -4,7 +4,7 @@ CanvasImpl.setupGrid = function () {
     CanvasImpl.drawMargin.call(this);
 
     if (this.gridContainer) {
-        Dom.empty(this.gridContainer);
+        NDom.empty(this.gridContainer);
     } else {
         this.gridContainer = document.createElementNS(PencilNamespaces.svg, "svg:g");
         this.gridContainer.setAttributeNS(PencilNamespaces.p, "p:name", "grids");
@@ -56,7 +56,7 @@ CanvasImpl.drawMargin = function () {
     var color = Config.get(Config.DEV_PAGE_MARGIN_COLOR);
 
     if (!this.marginPatternDef) {
-        // this.marginPatternDef = Dom.newDOMElement({
+        // this.marginPatternDef = NDom.newDOMElement({
         //
         // });
         // this.bgLayer.appendChild(this.marginPatternDef);

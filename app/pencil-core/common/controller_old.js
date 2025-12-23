@@ -152,7 +152,7 @@ Controller.prototype.duplicatePage = function () {
     for (var i = 0; i < page._view.canvas.drawingLayer.childNodes.length; i ++) {
         var node = page._view.canvas.drawingLayer.childNodes[i];
         newPage._view.canvas.drawingLayer.appendChild(newPage._view.canvas.ownerDocument.importNode(node, true));
-        Dom.renewId(node);
+        NDom.renewId(node);
     }
 
     this.markDocumentModified();
@@ -478,11 +478,11 @@ Controller.prototype._clearView = function () {
             page._view.canvas.passivateEditors();
         }
     }
-    Dom.empty(this.mainViewHeader);
-    Dom.empty(this.mainViewPanel);
+    NDom.empty(this.mainViewHeader);
+    NDom.empty(this.mainViewPanel);
 };
 Controller.prototype._handleContextMenuShow = function (event) {
-    var tab = Dom.findTop(event.originalTarget, function (node) {
+    var tab = NDom.findTop(event.originalTarget, function (node) {
         return node.localName == "tab";
     });
 
@@ -515,7 +515,7 @@ Controller.prototype._handleContextMenuShow = function (event) {
 
     //setup goto tab menu
     var popup = this.gotoTabMenu.firstChild;
-    Dom.empty(popup);
+    NDom.empty(popup);
     if (this.doc.pages.length < 2) {
         this.gotoTabMenu.disabled = true;
     } else {
@@ -1043,7 +1043,7 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, des
         //we have to reparse the provided notes as XHTML and append it directly to the dom
         if (page.properties.note) {
             var xhtml = "<div xmlns=\"http://www.w3.org/1999/xhtml\">" + page.properties.note + "</div>";
-            var node = Dom.parseToNode(xhtml, dom);
+            var node = NDom.parseToNode(xhtml, dom);
 
             this._populateLinkTargetsInNote(node);
 
@@ -1091,7 +1091,7 @@ Controller.prototype._exportDocumentToXML = function (pages, pageExtraInfos, des
     }
 
     var xmlFile = Local.newTempFile("pencil-doc", "xml");
-    Dom.serializeNodeToFile(dom, xmlFile);
+    NDom.serializeNodeToFile(dom, xmlFile);
 
     var exporter = Pencil.getDocumentExporterById(exportSelection.exporterId);
 
@@ -1397,7 +1397,7 @@ Controller.prototype._exportAsLayout = function () {
         dir = dir.parent;
         dir.append("Layout.html");
         if (dir.exists()) dir.remove(true);
-        Dom.serializeNodeToFile(html, dir, "");
+        NDom.serializeNodeToFile(html, dir, "");
     };
 
     var next = function  (listener) {

@@ -3,7 +3,7 @@ function OnScreenTextEditor() {
     this.canvas = null;
 }
 
-OnScreenTextEditor.configDoc = Dom.loadSystemXml("chrome://pencil/content/editor/onScreenTextEditor.config.xml");
+OnScreenTextEditor.configDoc = NDom.loadSystemXml("chrome://pencil/content/editor/onScreenTextEditor.config.xml");
 OnScreenTextEditor._initialized = false;
 OnScreenTextEditor._activeEditor = null;
 

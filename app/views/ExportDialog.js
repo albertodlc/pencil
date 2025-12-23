@@ -39,9 +39,9 @@ __extend(Dialog, ExportDialog);
 ExportDialog.prototype.invalidateUIByExporter = function () {
     var exporter = this.exporterCombo.getSelectedItem();
     if (exporter.linkingSupported) {
-        Dom.addClass(this.optionPane, "LinkingSupported");
+        NDom.addClass(this.optionPane, "LinkingSupported");
     } else {
-        Dom.removeClass(this.optionPane, "LinkingSupported");
+        NDom.removeClass(this.optionPane, "LinkingSupported");
     }
     if (exporter.supportTemplating()) {
         var templates = exporter.getTemplates();
@@ -65,7 +65,7 @@ ExportDialog.prototype.invalidateUIByExporter = function () {
     }
 
     if (exporter.getWarnings && exporter.getWarnings()) {
-        this.warningContent.innerHTML = Dom.htmlEncode(exporter.getWarnings());
+        this.warningContent.innerHTML = NDom.htmlEncode(exporter.getWarnings());
         this.warningBox.removeAttribute("disabled");
     } else {
         this.warningBox.setAttribute("disabled", "true");
@@ -75,14 +75,14 @@ ExportDialog.prototype.invalidateUIByExporter = function () {
 };
 ExportDialog.prototype.invalidateUIByTemplate = function () {
     var template = this.templateCombo.getSelectedItem();
-    Dom.empty(this.optionEditorPane);
-    Dom.toggleClass(this.optionPane, "NoExtraOptions", !template || !template.editableProperties || template.editableProperties.length == 0);
+    NDom.empty(this.optionEditorPane);
+    NDom.toggleClass(this.optionPane, "NoExtraOptions", !template || !template.editableProperties || template.editableProperties.length == 0);
     this.propertyEditors = {};
     if (!template) return;
     for(var i = 0; i < template.editableProperties.length; i++) {
         var property = template.editableProperties[i];
         var propName = property.displayName;
-        var editorWrapper = Dom.newDOMElement({
+        var editorWrapper = NDom.newDOMElement({
             _name: "hbox",
             "class": "Wrapper",
             _children: [
@@ -119,7 +119,7 @@ ExportDialog.prototype.setup = function (options) {
         }
     };
     var renderer = function (page) {
-        return Dom.htmlEncode(page.name);
+        return NDom.htmlEncode(page.name);
     };
 
     this.pageTree.setup(source, renderer, {
@@ -135,7 +135,7 @@ ExportDialog.prototype.setup = function (options) {
         this.exporterCombo.selectItem({id: options.forcedExporterId}, false, true);
         this.exporterCombo.setDisabled(true);
         this.invalidateUIByExporter();
-        Dom.addClass(this.optionPane, "ForcedExporter");
+        NDom.addClass(this.optionPane, "ForcedExporter");
 
         var exporter = this.exporterCombo.getSelectedItem();
         if (exporter) {

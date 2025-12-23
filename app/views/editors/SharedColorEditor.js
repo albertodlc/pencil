@@ -8,13 +8,13 @@ function SharedColorEditor() {
     }, this.selectorContainer.node());
     this.bind("p:PopupHidden", function () {
         this.removeAttribute("active");
-        Dom.emitEvent("p:PopupClosed", this.node(), {});
+        NDom.emitEvent("p:PopupClosed", this.node(), {});
     }, this.selectorContainer.node());
 
     this.selectorContainer.setPopupClass("SharedColorEditorPopup ColorPopup");
     var thiz = this;
     this.selectorContainer.shouldCloseOnBlur = function(event) {
-        var found = Dom.findUpward(event.target, function (node) {
+        var found = NDom.findUpward(event.target, function (node) {
             return node == thiz.node();
         });
         return !found;
@@ -99,15 +99,15 @@ SharedColorEditor.prototype.updateDisplayColor = function (defaultValue) {
     var handler = {
         textColor: function () {
             thiz.colorDisplay.style.color = (thiz.color) ? thiz.color.toRGBAString() : defaultValue;
-            Dom.toggleClass(thiz.colorDisplay, "LowContrast", lowContrast);
+            NDom.toggleClass(thiz.colorDisplay, "LowContrast", lowContrast);
         },
         fillColor: function () {
             thiz.colorDisplay.style.backgroundColor = (thiz.color) ? thiz.color.toRGBAString() : defaultValue;
-            Dom.toggleClass(thiz.colorDisplay, "LowContrast", lowContrast);
+            NDom.toggleClass(thiz.colorDisplay, "LowContrast", lowContrast);
         },
         strokeColor: function () {
             thiz.colorDisplay.style.borderColor = (thiz.color) ? thiz.color.toRGBAString() : defaultValue;
-            Dom.toggleClass(thiz.colorDisplay, "LowContrast", lowContrast);
+            NDom.toggleClass(thiz.colorDisplay, "LowContrast", lowContrast);
         }
     }[this.propertyName];
 

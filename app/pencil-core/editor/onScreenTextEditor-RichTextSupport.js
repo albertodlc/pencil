@@ -191,7 +191,7 @@ OnScreenTextEditor._ensureSupportElementsImpl = function() {
                     OnScreenTextEditor.currentInstance.applyChanges();
                 }
                 OnScreenTextEditor._hide();
-                Dom.cancelEvent(event);
+                NDom.cancelEvent(event);
             } else if (event.keyCode == event.DOM_VK_UP ||
                         event.keyCode == event.DOM_VK_DOWN ||
                         event.keyCode == event.DOM_VK_LEFT ||
@@ -252,7 +252,7 @@ OnScreenTextEditor._ensureSupportElementsImpl = function() {
         OnScreenTextEditor._installSimpleCommandHandler("mclearButton", "removeformat");
 
         document.getElementById("medCleanUpButton").addEventListener("command", function (event) {
-            var html = Dom.serializeNode(OnScreenTextEditor.richTextEditor.contentDocument.body);
+            var html = NDom.serializeNode(OnScreenTextEditor.richTextEditor.contentDocument.body);
             html = html.replace(/(class|style)="[^"]*"/gi, "");
             html = html.replace(/<(\/)?(span|p)[^>]*>/gi, "");
             html = html.replace(/<table[^>]*>/gi, "<table cellspacing=\"0\" cellpadding=\"3\" border=\"1\" style=\"border-collapse: collapse; font-family: Arial, 'Liberation Sans', sans-serif; font-size: 0.9em; width: 45em;\">");
@@ -279,7 +279,7 @@ OnScreenTextEditor._installSimpleCommandHandler = function (id, commandName, val
         if (id == "mclearButton") {
             var v = OnScreenTextEditor.getRichtextValue();
             try {
-                v = NDom.getText(Dom.parseToNode(v));
+                v = NDom.getText(NDom.parseToNode(v));
                 OnScreenTextEditor.richTextEditor.contentDocument.body.innerHTML = v;
             } catch (e) { }
         }
@@ -336,7 +336,7 @@ OnScreenTextEditor._updateButtonByCommandState = function (commandName, controlI
     }
 }
 OnScreenTextEditor._hide = function () {
-    Dom.removeClass(document.documentElement, "RichTextEditActivated");
+    NDom.removeClass(document.documentElement, "RichTextEditActivated");
 
     if (!OnScreenTextEditor.isEditing) return;
     OnScreenTextEditor.isEditing = false;
@@ -368,7 +368,7 @@ OnScreenTextEditor._hide = function () {
     }
 };
 OnScreenTextEditor.getRichtextValue = function () {
-    var html = Dom.serializeNode(OnScreenTextEditor.richTextEditor.contentDocument.body);
+    var html = NDom.serializeNode(OnScreenTextEditor.richTextEditor.contentDocument.body);
     html = html.replace(/<[\/A-Z0-9]+[ \t\r\n>]/g, function (zero) {
         return zero.toLowerCase();
     });
@@ -383,7 +383,7 @@ OnScreenTextEditor.prototype.applyChanges = function () {
         NDom.workOn(".//html:script", OnScreenTextEditor.richTextEditor.contentDocument.body, function (node) {
             node.parentNode.removeChild(node);
         });
-        var html = Dom.serializeNode(OnScreenTextEditor.richTextEditor.contentDocument.body);
+        var html = NDom.serializeNode(OnScreenTextEditor.richTextEditor.contentDocument.body);
         html = html.replace(/<[\/A-Z0-9]+[ \t\r\n>]/g, function (zero) {
             return zero.toLowerCase();
         });
@@ -403,7 +403,7 @@ OnScreenTextEditor.prototype._setupRichTextEditor = function (event) {
         }
     }
 
-    Dom.addClass(document.documentElement, "RichTextEditActivated");
+    NDom.addClass(document.documentElement, "RichTextEditActivated");
 
     OnScreenTextEditor.richTextEditor.contentDocument.body.innerHTML = "";
     OnScreenTextEditor.richTextEditor.contentDocument.body.innerHTML = this.textEditingInfo.value;

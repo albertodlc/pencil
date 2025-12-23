@@ -14,21 +14,21 @@ BaseCompositeParamEditor.prototype.validateEditors = function(e) {
     }
 }
 BaseCompositeParamEditor.prototype.buildBodyUI = function () {
-    Dom.addClass(this.containerElement, "CompositeParamEditorContainer");
-    Dom.addClass(this.bodyElement, "CompositeParamEditorBody");
+    NDom.addClass(this.containerElement, "CompositeParamEditorContainer");
+    NDom.addClass(this.bodyElement, "CompositeParamEditorBody");
     this.childEditors = [];
     var w = 0;
     this.selectionGroupName = "cpgname_" + widget.random();
     
     var thiz = this;
     var selectionHandler = function (e) {
-        var target = Dom.getTarget(e)
+        var target = NDom.getTarget(e)
         thiz.validateEditors(target._editor);
     };
     
     for (var i = 0; i < this.param.params.length; i ++) {
         var holder = {};
-        var row = Dom.newDOMElement({
+        var row = NDom.newDOMElement({
             _name: "div",
             "class": "CompositeBody CompositeBody_Layout_" + this.param.layout,
             _children: [{
@@ -49,7 +49,7 @@ BaseCompositeParamEditor.prototype.buildBodyUI = function () {
         
         var input = this.buildSelectionUI(holder.selectionContainer, editor);
         if (input) {
-            Dom.registerEvent(input, "click", selectionHandler, false);
+            NDom.registerEvent(input, "click", selectionHandler, false);
         }
         
         w = Math.max(w, editor.getPreferredLeadingSize());
@@ -107,7 +107,7 @@ function CompositeOrParamEditor(param) {
 CompositeOrParamEditor.prototype = new BaseCompositeParamEditor();
 CompositeOrParamEditor.prototype.buildSelectionUI = function (selectionContainer, editor) {
     var id = widget.random();
-    var cb = Dom.newDOMElement({
+    var cb = NDom.newDOMElement({
         _name: "input",
         type: "radio",
         id: id,
@@ -172,7 +172,7 @@ function CompositeBooleanParamEditor(param) {
 CompositeBooleanParamEditor.prototype = new BaseCompositeParamEditor();
 CompositeBooleanParamEditor.prototype.buildSelectionUI = function (selectionContainer, editor) {
     var id = widget.random();
-    var cb = Dom.newDOMElement({
+    var cb = NDom.newDOMElement({
         _name: "input",
         type: "checkbox",
         id: id,

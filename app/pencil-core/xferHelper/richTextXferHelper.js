@@ -12,7 +12,7 @@ RichTextXferHelper.prototype.toString = function () {
 RichTextXferHelper.prototype.handleData = function (html) {
 
     try {
-        var xhtml = Dom.toXhtml(html);
+        var xhtml = NDom.toXhtml(html);
 
         var textPaneDef = CollectionManager.shapeDefinition.locateDefinition(RichTextXferHelper.SHAPE_DEF_ID);
         if (!textPaneDef) return;

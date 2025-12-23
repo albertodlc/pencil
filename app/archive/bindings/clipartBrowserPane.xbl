@@ -37,7 +37,7 @@
 
                 this.addEventListener("click", function (event) {
                     //if (event.button != 0) return;
-                    var imgNode = Dom.findUpward(event.originalTarget, function (node) { return node._img; });
+                    var imgNode = NDom.findUpward(event.originalTarget, function (node) { return node._img; });
                     if (imgNode) {
                         if (thiz._lastSelected && thiz._lastSelected != null) {
                             document.getElementById("_image_" + thiz._lastSelected).className = "Image";
@@ -47,7 +47,7 @@
                     }
                 }, false);
                 this.contentBox.addEventListener("contextmenu", function (event) {
-                    var img = Dom.findUpward(event.originalTarget, function (node) { return node._img; });
+                    var img = NDom.findUpward(event.originalTarget, function (node) { return node._img; });
                     var hasImg = false;
                     if (img) {
                         hasImg = true;
@@ -78,7 +78,7 @@
                 <body>
                 <![CDATA[
                     try {
-                        var g = Dom.parseToNode(svg);
+                        var g = NDom.parseToNode(svg);
                         g.setAttributeNS(PencilNamespaces.p, "p:ImageSource", "OpenClipart.org");
                         return new XMLSerializer().serializeToString(g);
                     } catch (e) {
@@ -134,7 +134,7 @@
                     this.searchAborted = false;
                     this.rq = [];
 
-                    Dom.empty(this.contentBox);
+                    NDom.empty(this.contentBox);
 
                     var imageBox = document.createElementNS(PencilNamespaces.xul, "vbox");
                     imageBox._images = images;
@@ -230,7 +230,7 @@
                                     debug(img.thumbnail);
 
                                     var divv = document.getElementById("_image_" + img._id);
-                                    //divv.innerHTML = Dom.serializeNode(svge);
+                                    //divv.innerHTML = NDom.serializeNode(svge);
                                     divv.appendChild(_image);
 
                                     spanInfo = document.createElementNS(PencilNamespaces.html, "span");
@@ -354,7 +354,7 @@
             <method name="clearImages">
                 <body>
                 <![CDATA[
-                    Dom.empty(this.contentBox);
+                    NDom.empty(this.contentBox);
                     for (var i = 0; i < this.rq.length; i++) {
                         if (this.rq[i]) {
                             this.rq[i].abort();
@@ -370,7 +370,7 @@
                 <body>
                 <![CDATA[
                     try {
-                        var imgNode = Dom.findUpward(event.originalTarget, function (node) { return node._img; });
+                        var imgNode = NDom.findUpward(event.originalTarget, function (node) { return node._img; });
                         var thiz = this;
                         nsDragAndDrop.startDrag(event, {
                             onDragStart: function (evt, transferData, action) {

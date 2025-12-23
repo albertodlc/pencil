@@ -5,7 +5,7 @@ function PageListView() {
     this.showFilterBar = false;
 
     var findPageThumbnailView = function (event) {
-        var node = Dom.findUpward(event.target, function (n) {
+        var node = NDom.findUpward(event.target, function (n) {
             return n.__widget && (n.__widget instanceof PageThumbnailView);
         });
         return node;
@@ -25,7 +25,7 @@ function PageListView() {
     }, this.pageListContainer);
 
     // this.bind("mouseover", function (event) {
-    //     var page = Dom.findUpwardForData(event.target, "_page");
+    //     var page = NDom.findUpwardForData(event.target, "_page");
     //     if(!page || page.children.length == 0) return;
     //     // open child pages
     //     var activePage = function (page) {
@@ -37,9 +37,9 @@ function PageListView() {
     // },this.childPageContainer)
 
     this.bind("click", function (event) {
-        var page = Dom.findUpwardForData(event.target, "_page");
+        var page = NDom.findUpwardForData(event.target, "_page");
         if (!page) return;
-        var node = Dom.findParentWithClass(event.target, "button_Down");
+        var node = NDom.findParentWithClass(event.target, "button_Down");
         if (node && node.nodeName != "#document") {
             var childrenListMenu = new ChildPageListMenu(page, function (selectedPage) {
                 thiz.activatePage(selectedPage);
@@ -51,13 +51,13 @@ function PageListView() {
     }, this.childPageContainer);
 
     this.bind("dblclick", function (event) {
-        var page = Dom.findUpwardForData(event.target, "_page");
+        var page = NDom.findUpwardForData(event.target, "_page");
         if (!page) return;
         this.handleDoubleClick(page);
     }, this.childPageContainer);
 
     this.bind("click", function (event) {
-        var node = Dom.findUpward(event.target, function (n) {
+        var node = NDom.findUpward(event.target, function (n) {
             return typeof(n._page) != "undefined";
         });
         if (!node) return;
@@ -74,22 +74,22 @@ function PageListView() {
     var thiz = this;
 
     this.bind("contextmenu", function (event) {
-        var childOfListPage = Dom.isChildOf(this.pageListContainer, event.target);
-        var childOfChildPage = Dom.isChildOf(this.childPageContainer, event.target);
+        var childOfListPage = NDom.isChildOf(this.pageListContainer, event.target);
+        var childOfChildPage = NDom.isChildOf(this.childPageContainer, event.target);
         var page = null;
         var pageNode = null;
         if (childOfChildPage) {
-            pageNode = Dom.findUpwardForNodeWithData(event.target, "_page");
+            pageNode = NDom.findUpwardForNodeWithData(event.target, "_page");
             pageNode.focus();
             page = pageNode["_page"];
         } else if (childOfListPage) {
-            var pageNode = Dom.findUpwardForNodeWithData(event.target, "__widget");
+            var pageNode = NDom.findUpwardForNodeWithData(event.target, "__widget");
             var view = pageNode["__widget"];
             if (!view) return;
             pageNode.focus();
             page = view.page;
-        } else if (Dom.isChildOf(this.pageBreadcrumb, event.target)) {
-            var node = Dom.findUpwardForNodeWithData(event.target, "_page");
+        } else if (NDom.isChildOf(this.pageBreadcrumb, event.target)) {
+            var node = NDom.findUpwardForNodeWithData(event.target, "_page");
             if (node) {
                 node.focus();
                 page = node._page;
@@ -154,7 +154,7 @@ function PageListView() {
 
     this.bind("dragstart", function (event) {
         nsDragAndDrop.dragStart(event);
-        var n = Dom.findUpwardForNodeWithData(Dom.getTarget(event), "_index");
+        var n = NDom.findUpwardForNodeWithData(NDom.getTarget(event), "_index");
         if (!n) return;
 
         event.dataTransfer.setDragImage(this.dndImage, 8, 8);
@@ -189,7 +189,7 @@ function PageListView() {
     this.bind("dragover", function (event) {
         // if (event.dataTransfer.getData("dragType") != "page") return;
         if (nsDragAndDrop.getData("dragType") != "page") return;
-        var container = Dom.findUpwardForNodeWithData(Dom.getTarget(event), "_isDropZone");
+        var container = NDom.findUpwardForNodeWithData(NDom.getTarget(event), "_isDropZone");
         if (!container) return;
 
         var index = 0;
@@ -270,11 +270,11 @@ PageListView.prototype.filterPages = function() {
     if (!value) {
         this.filterValue.innerHTML = "Filter";
         this.nameTextBox.value = "";
-        Dom.removeClass(this.filterButton, "activeFilter");
+        NDom.removeClass(this.filterButton, "activeFilter");
     } else {
         this.nameTextBox.value = value;
-        this.filterValue.innerHTML = Dom.htmlEncode(value);
-        Dom.addClass(this.filterButton, "activeFilter");
+        this.filterValue.innerHTML = NDom.htmlEncode(value);
+        NDom.addClass(this.filterButton, "activeFilter");
     }
     var selectedContainer = this.expanded == true ? this.pageListContainer : this.childPageContainer;
     var hiddenItemCount = 0;
@@ -356,7 +356,7 @@ PageListView.prototype.renderPages = function() {
         }
     }
 
-    var node = Dom.newDOMElement({
+    var node = NDom.newDOMElement({
         _name: "hbox",
         _children: [
             {
@@ -380,7 +380,7 @@ PageListView.prototype.renderPages = function() {
     this.pageBreadcrumb.appendChild(node);
 
     if (parentPages.length > 0) {
-        node = Dom.newDOMElement({
+        node = NDom.newDOMElement({
             _name: "hbox",
             "class": "OverflowIndicator",
             _children: [
@@ -398,7 +398,7 @@ PageListView.prototype.renderPages = function() {
     var index = parentPages.length;
     for (var i in parentPages) {
         var p = parentPages[i];
-        node = Dom.newDOMElement({
+        node = NDom.newDOMElement({
             _name: "hbox",
             _children: [
                 {
@@ -417,7 +417,7 @@ PageListView.prototype.renderPages = function() {
         node._page = p;
         this.pageBreadcrumb.appendChild(node);
 
-        if (index > MAX) Dom.addClass(node, "Overflow");
+        if (index > MAX) NDom.addClass(node, "Overflow");
         index --;
     }
 
@@ -436,7 +436,7 @@ PageListView.prototype.renderPages = function() {
         this.views.push(pageThumbnailView);
         var childNode;
         if( page.children.length == 0 ) {
-            childNode = Dom.newDOMElement({
+            childNode = NDom.newDOMElement({
                 _name: "hbox",
                 draggable: "true",
                 "tabindex": "0",
@@ -448,7 +448,7 @@ PageListView.prototype.renderPages = function() {
                 ]
             });
         }  else {
-            childNode = Dom.newDOMElement({
+            childNode = NDom.newDOMElement({
                 _name: "hbox",
                 draggable: "true",
                 class: "nodeHasChild",
@@ -516,7 +516,7 @@ PageListView.prototype.renderPages = function() {
 };
 
 PageListView.prototype.invalidateExpandedState = function() {
-    Dom.toggleClass(this.node(), "Collapsed", !this.expanded);
+    NDom.toggleClass(this.node(), "Collapsed", !this.expanded);
 };
 
 PageListView.prototype.handlePageInfoChangedEvent = function (event) {
@@ -538,18 +538,18 @@ PageListView.prototype.handleSelectPage = function (page) {
 };
 PageListView.prototype.invalidateSelectedPageView = function (page) {
     if (!page) return;
-    Dom.doOnAllChildren(this.pageBreadcrumb, function (n) {
+    NDom.doOnAllChildren(this.pageBreadcrumb, function (n) {
         if (!n._page) return;
         n.setAttribute("selected", n._page.id == page.id);
     });
-    Dom.doOnAllChildren(this.pageListContainer, function (n) {
+    NDom.doOnAllChildren(this.pageListContainer, function (n) {
         var view = n.__widget;
         if (!view) return;
         var p = view.page;
         view.selectPage(p.id == page.id);
     });
 
-    Dom.doOnAllChildren(this.childPageContainer, function (n) {
+    NDom.doOnAllChildren(this.childPageContainer, function (n) {
         var p = n._page;
         n.setAttribute("selected", p.id == page.id);
     });

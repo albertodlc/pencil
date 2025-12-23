@@ -70,7 +70,7 @@ PageNoteDialog.doCancel = function () {
     return true;
 };
 PageNoteDialog.doApply = function () {
-    var html = Dom.serializeNode(PageNoteDialog.editor.contentDocument.body);
+    var html = NDom.serializeNode(PageNoteDialog.editor.contentDocument.body);
     html = html.replace(/<[\/A-Z0-9]+[ \t\r\n>]/g, function (zero) {
         return zero.toLowerCase();
     });

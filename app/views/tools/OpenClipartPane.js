@@ -5,7 +5,7 @@ function OpenClipartPane() {
 
     function injectSvgInfo (svg) {
         try {
-            var g = Dom.parseToNode(svg);
+            var g = NDom.parseToNode(svg);
             g.setAttributeNS(PencilNamespaces.p, "p:ImageSource", "OpenClipart.org");
             return Controller.serializer.serializeToString(g);
         } catch (e) {
@@ -14,7 +14,7 @@ function OpenClipartPane() {
     }
     this.shapeList.addEventListener("dragstart", function (event) {
         nsDragAndDrop.dragStart(event);
-        var n = Dom.findUpwardForNodeWithData(Dom.getTarget(event), "_def");
+        var n = NDom.findUpwardForNodeWithData(NDom.getTarget(event), "_def");
         var def = n._def;
         if (def._svg) {
             var svg = injectSvgInfo(def._svg);
@@ -86,7 +86,7 @@ OpenClipartPane.prototype.getIconName = function() {
 };
 OpenClipartPane.prototype.search = function () {
     if (this.node().offsetWidth <= 0) return;
-    Dom.empty(this.shapeList);
+    NDom.empty(this.shapeList);
 
     this.goPrevious.disabled = true;
     this.goNext.disabled = true;
@@ -114,7 +114,7 @@ OpenClipartPane.prototype.renderResult = function (result) {
         var def = shapeDefs[i];
         var holder = {};
 
-        var node = Dom.newDOMElement({
+        var node = NDom.newDOMElement({
             _name: "li",
             "type": "ShapeDef",
             "title": def.name,

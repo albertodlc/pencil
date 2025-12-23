@@ -14,22 +14,22 @@ BaseParamEditor.prototype.invalidate = function (valueMap) {
     
 };
 BaseParamEditor.prototype.emitChangeEvent = function (valueMap) {
-    Dom.emitEvent("pe.ValueChange", this.containerElement, {});
+    NDom.emitEvent("pe.ValueChange", this.containerElement, {});
     if (this.param.rerenderPageOnChange) {
-        Dom.emitEvent("pe.RerenderRequested", this.containerElement, {});
+        NDom.emitEvent("pe.RerenderRequested", this.containerElement, {});
     }
     
 };
 BaseParamEditor.prototype.setEnabled = function (enabled) {
     
     if (!enabled) {
-        Dom.addClass(this.containerElement, "Disabled");
+        NDom.addClass(this.containerElement, "Disabled");
     } else {
-        Dom.removeClass(this.containerElement, "Disabled");
+        NDom.removeClass(this.containerElement, "Disabled");
     }
     
     this.enabled = enabled;
-    Dom.doOnChildRecursively(this.containerElement, {
+    NDom.doOnChildRecursively(this.containerElement, {
         eval: function (node) {
                 return node.nodeName && (node.nodeName.toLowerCase() == "input" || node.nodeName.toLowerCase() == "button");
             }
@@ -41,16 +41,16 @@ BaseParamEditor.prototype.setEnabled = function (enabled) {
 };
 BaseParamEditor.prototype.setRendered = function (rendered) {
     this.rendered = rendered;
-    Dom.toggleClass(this.containerElement, "NotRenderedParamEditor", !rendered);
+    NDom.toggleClass(this.containerElement, "NotRenderedParamEditor", !rendered);
     if (this.parentCompositeBodyElement) {
-        Dom.toggleClass(this.parentCompositeBodyElement, "NotRenderedCompositeBody", !rendered);
+        NDom.toggleClass(this.parentCompositeBodyElement, "NotRenderedCompositeBody", !rendered);
     }
 };
 BaseParamEditor.prototype.afterBuild = function() {
 }
 BaseParamEditor.prototype.buildUI = function () {
     var thiz = this;
-    var root = Dom.newDOMElement({
+    var root = NDom.newDOMElement({
         _name: "div",
         "class": "ParamEditorContainer",
         _id: "containerElement",
@@ -69,24 +69,24 @@ BaseParamEditor.prototype.buildUI = function () {
         }]
     }, document, this);
     
-    Dom.toggleClass(this.containerElement, "Required", this.param.required);
+    NDom.toggleClass(this.containerElement, "Required", this.param.required);
     
     var preLabel = this.getPreLabel();
     if (preLabel) {
-        this.preLabelElement.innerHTML = Dom.htmlEncode(preLabel + (this.noBody ? "" : ":"));
-        Dom.toggleClass(this.preLabelElement, "RequiredPreLabel", this.param.required);
+        this.preLabelElement.innerHTML = NDom.htmlEncode(preLabel + (this.noBody ? "" : ":"));
+        NDom.toggleClass(this.preLabelElement, "RequiredPreLabel", this.param.required);
     } else {
-        Dom.addClass(this.containerElement, "NoPreLabel");
+        NDom.addClass(this.containerElement, "NoPreLabel");
     }
     
     var postLabel = this.getPostLabel();
     if (postLabel) {
-        this.postLabelElement.innerHTML = Dom.htmlEncode(postLabel);
+        this.postLabelElement.innerHTML = NDom.htmlEncode(postLabel);
         if (!preLabel) {
-            Dom.toggleClass(this.postLabelElement, "RequiredPostLabel", this.param.required);
+            NDom.toggleClass(this.postLabelElement, "RequiredPostLabel", this.param.required);
         }
     } else {
-        Dom.addClass(this.containerElement, "NoPostLabel");
+        NDom.addClass(this.containerElement, "NoPostLabel");
     }
     
     this.buildBodyUI(); // @abstract @protected
@@ -96,10 +96,10 @@ BaseParamEditor.prototype.getUIElement = function () {
     return this.containerElement;
 };
 BaseParamEditor.prototype.markAsError = function () {
-    Dom.addClass(this.containerElement, "EditorWithError");
+    NDom.addClass(this.containerElement, "EditorWithError");
 }
 BaseParamEditor.prototype.unmarkAsError = function () {
-    Dom.removeClass(this.containerElement, "EditorWithError");
+    NDom.removeClass(this.containerElement, "EditorWithError");
 }
 BaseParamEditor.prototype.getPreLabel = function () {
     var key = this.param.preLabel || ""; //this.param.displayedName;

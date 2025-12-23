@@ -49,7 +49,7 @@ PageThumbnailView.prototype._updateUI = function () {
     if (!this.page.children || this.page.children.length == 0) this.pageActionButton.style.visibility = "hidden";
     if (this.page.thumbPath) Util.setupImage(this.pageThumbnail, this.page.thumbPath + "?time=" + (new Date().getTime()), "center-top-crop", "allowUpscale");
     // this.pageTitle.appendChild(document.createTextNode(this.page.name));
-    this.pageTitle.innerHTML = Dom.htmlEncode(this.page.name);
+    this.pageTitle.innerHTML = NDom.htmlEncode(this.page.name);
     this.node().setAttribute("title", this.page.name);
 };
 

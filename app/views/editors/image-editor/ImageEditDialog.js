@@ -29,7 +29,7 @@ ImageEditDialog.prototype.onShown = function () {
 ImageEditDialog.prototype.addCell = function (from, to, isX) {
     var owner = isX ? this.xCellContainer : this.yCellContainer;
     var holder = {};
-    var div = Dom.newDOMElement({
+    var div = NDom.newDOMElement({
         _name: "div",
         _uri: PencilNamespaces.html,
         "class": "Cell",
@@ -61,11 +61,11 @@ ImageEditDialog.prototype.addCell = function (from, to, isX) {
     return div;
 };
 ImageEditDialog.prototype.handleGlobalMouseDown = function (event) {
-    var cell = Dom.findParentWithClass(event.target, "Cell");
-    var indicator = Dom.findParentWithClass(event.target, "Indicator");
+    var cell = NDom.findParentWithClass(event.target, "Cell");
+    var indicator = NDom.findParentWithClass(event.target, "Indicator");
     //if (indicator) return;
 
-    var container = Dom.findParentWithClass(event.target, "CellContainer");
+    var container = NDom.findParentWithClass(event.target, "CellContainer");
     var horizontal = container == this.xCellContainer;
 
     this.held = {};
@@ -76,13 +76,13 @@ ImageEditDialog.prototype.handleGlobalMouseDown = function (event) {
 
     if (cell) {
         this.held.cell = cell;
-        var resizer = Dom.findParentWithClass(event.target, "Resizer");
+        var resizer = NDom.findParentWithClass(event.target, "Resizer");
 
         if (resizer) {
             this.held.resizing = true;
             this.held.resizeStart = resizer.classList.contains("StartResizer");
         } else {
-            var scaler = Dom.findParentWithClass(event.target, "Scaler");
+            var scaler = NDom.findParentWithClass(event.target, "Scaler");
             if (scaler) {
                 this.held.scaling = true;
                 this.held.scaleStart = scaler.classList.contains("StartScaler");

@@ -1,8 +1,8 @@
 function BaseWidget(definitionNode) {
     var node = this.buildDOMNode(definitionNode);
 
-    Dom.addClass(node, "UIWidget");
-    Dom.addClass(node, "widget_" + this.constructor.name);
+    NDom.addClass(node, "UIWidget");
+    NDom.addClass(node, "widget_" + this.constructor.name);
     this.__node = node;
     node.__widget = this;
     node["__is_" + this.constructor.name] = true;
@@ -129,7 +129,7 @@ BaseWidget.handleClosableEscapeKey = function (event) {
         closable.close();
         BaseWidget.unregisterClosable(closable);
         event.preventDefault();
-        Dom.cancelEvent(event);
+        NDom.cancelEvent(event);
     }
 };
 BaseWidget.getTopClosable = function (event) {
@@ -146,7 +146,7 @@ BaseWidget.handleGlobalMouseDown = function (event) {
 BaseWidget.tryCloseClosableOnBlur = function (closable, event) {
     if (event) {
         var container = closable.getClosableContainer ? closable.getClosableContainer() : closable;
-        var found = Dom.findUpward(event.target, function (node) {
+        var found = NDom.findUpward(event.target, function (node) {
             return node == container;
         });
         if (found) return;
@@ -159,7 +159,7 @@ BaseWidget.tryCloseClosableOnBlur = function (closable, event) {
     closable.close("onBlur", event);
     if (event) {
         event.preventDefault();
-        Dom.cancelEvent(event);
+        NDom.cancelEvent(event);
     }
 
 };

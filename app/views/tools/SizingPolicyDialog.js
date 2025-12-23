@@ -11,7 +11,7 @@ function SizingPolicyDialog() {
     // }, false);
 
     this.policyContainer.addEventListener("click", function (event) {
-        var node = Dom.findUpward(event.target, function (n) {
+        var node = NDom.findUpward(event.target, function (n) {
             return n.getAttribute && n.getAttribute("group");
         });
 
@@ -21,7 +21,7 @@ function SizingPolicyDialog() {
         var groupNode = thiz.getGroupNode(group);
         if (!groupNode) return;
 
-        Dom.doOnAllChildren(groupNode, function (b) {
+        NDom.doOnAllChildren(groupNode, function (b) {
             if (b == node) {
                 b.setAttribute("selected", "true");
             } else if (b.getAttribute && b.getAttribute("selected")) {

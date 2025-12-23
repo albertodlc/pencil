@@ -5,10 +5,10 @@ function Popup(node) {
     this.useZIndex = true;
     this.visible = false;
     this.shouldDetach = true;
-    Dom.addClass(this.popupContainer, "UIWidget");
+    NDom.addClass(this.popupContainer, "UIWidget");
     if (node && node.getAttribute) {
         var popupClass = node.getAttribute("popup-class");
-        if (popupClass) Dom.addClass(this.popupContainer, popupClass);
+        if (popupClass) NDom.addClass(this.popupContainer, popupClass);
     }
 
     this.bind("scroll", function () {
@@ -36,12 +36,12 @@ Popup.registerGlobalListeners = function () {
         var closable = BaseWidget.closables[BaseWidget.closables.length - 1];
         if (!__isAssignableFrom(closable.constructor, Popup)) return;
         if (closable.allowMouseDragging) return;
-        var input = Dom.findUpward(event.target, function (n) {
+        var input = NDom.findUpward(event.target, function (n) {
             return n.localName == "input" || n.localName == "select" || n.localName == "textarea";
         });
         if (input) return;
 
-        Dom.cancelEvent(event);
+        NDom.cancelEvent(event);
     }, false);
 };
 
@@ -56,18 +56,18 @@ Popup.prototype.onAttached = function () {
 	}
 };
 Popup.prototype.setPopupClass = function (clazz) {
-    Dom.addClass(this.popupContainer, clazz);
+    NDom.addClass(this.popupContainer, clazz);
 };
 Popup.prototype.closeUpward = function (event) {
     var thiz = this;
-    var node = !event ? null : Dom.findUpward(event.target, function (n) {
+    var node = !event ? null : NDom.findUpward(event.target, function (n) {
         return n == thiz.popupContainer;
     });
 
     if (node) return;
     if (this.dontCloseUpward && this.dontCloseUpward(event)) return;
     this.hide();
-    if (event) Dom.cancelEvent(event);
+    if (event) NDom.cancelEvent(event);
 
     if (this._parent) this._parent.closeUpward(event);
 };
@@ -79,7 +79,7 @@ Popup.prototype.checkToCloseParent = function (element) {
     var handler = function (popup) {
         if (!popup._parent) return;
 
-        var node = Dom.findUpward(element, function (n) {
+        var node = NDom.findUpward(element, function (n) {
             return n == popup._parent.popupContainer;
         });
 
@@ -139,8 +139,8 @@ Popup.prototype.isVisible = function () {
     return this.visible;
 };
 Popup.prototype.invalidateOverflowIndicators = function () {
-    Dom.toggleClass(this.popupContainer, "ReachedTop", this.popupContainer.scrollTop <= 0);
-    Dom.toggleClass(this.popupContainer, "ReachedBottom", this.popupContainer.scrollTop >= this.popupContainer.scrollHeight - this.popupContainer.offsetHeight);
+    NDom.toggleClass(this.popupContainer, "ReachedTop", this.popupContainer.scrollTop <= 0);
+    NDom.toggleClass(this.popupContainer, "ReachedBottom", this.popupContainer.scrollTop >= this.popupContainer.scrollHeight - this.popupContainer.offsetHeight);
 }
 Popup.prototype.showAt = function (x, y, skipEvent, autoFlip) {
     this.reparent();
@@ -173,13 +173,13 @@ Popup.prototype.showAt = function (x, y, skipEvent, autoFlip) {
                 var height = screenH - 2 * EDGE_MARGIN;
 
                 this.popupContainer.style.height = height + "px";
-                Dom.addClass(this.popupContainer, "Overflowed");
-                this._topOverflowIndicator = Dom.newDOMElement({_name: "div", "class": "Top OverflowIndicator"});
+                NDom.addClass(this.popupContainer, "Overflowed");
+                this._topOverflowIndicator = NDom.newDOMElement({_name: "div", "class": "Top OverflowIndicator"});
                 this.popupContainer.insertBefore(this._topOverflowIndicator, this.popupContainer.firstChild);
                 this._topOverflowIndicator.style.top = `0%`;
                 this._topOverflowIndicator.style.height = INDICATOR_HEIGHT + "px"
 
-                this._bottomOverflowIndicator = Dom.newDOMElement({_name: "div", "class": "Bottom OverflowIndicator"});
+                this._bottomOverflowIndicator = NDom.newDOMElement({_name: "div", "class": "Bottom OverflowIndicator"});
                 this.popupContainer.appendChild(this._bottomOverflowIndicator);
                 this._bottomOverflowIndicator.style.top = `calc(100% - ${INDICATOR_HEIGHT}px)`;
                 this._bottomOverflowIndicator.style.height = INDICATOR_HEIGHT + "px"
@@ -201,7 +201,7 @@ Popup.prototype.showAt = function (x, y, skipEvent, autoFlip) {
     this.popupContainer.style.opacity = this.popupOpacity || 1;
 
     this.visible = true;
-    if (!skipEvent) Dom.emitEvent("p:PopupShown", this.node());
+    if (!skipEvent) NDom.emitEvent("p:PopupShown", this.node());
     if (!this.skipStack) {
         BaseWidget.registerClosable(this);
     }
@@ -321,7 +321,7 @@ Popup.prototype._showImpl = function (anchor, hAlign, vAlign, hPadding, vPadding
     this.popupContainer.style.opacity = this.popupOpacity || 1;
 
     this.visible = true;
-    if (!skipEvent) Dom.emitEvent("p:PopupShown", this.node());
+    if (!skipEvent) NDom.emitEvent("p:PopupShown", this.node());
 
     if (!this.skipStack) {
         BaseWidget.registerClosable(this);
@@ -343,7 +343,7 @@ Popup.prototype.hidePopupContainer = function () {
     this.visible = false;
 
     this.popupContainer.style.removeProperty("height");
-    Dom.removeClass(this.popupContainer, "Overflowed");
+    NDom.removeClass(this.popupContainer, "Overflowed");
     if (this._topOverflowIndicator) {
         this.popupContainer.remove(this._topOverflowIndicator);
         this._topOverflowIndicator = null;
@@ -355,7 +355,7 @@ Popup.prototype.hidePopupContainer = function () {
 }
 Popup.prototype.hide = function (silent, reason, event) {
     this.hidePopupContainer();
-    if (!silent) Dom.emitEvent("p:PopupHidden", this.node());
+    if (!silent) NDom.emitEvent("p:PopupHidden", this.node());
     if (this.onHide) this.onHide(reason, event);
 
     BaseWidget.unregisterClosable(this);

@@ -19,7 +19,7 @@ SharedPropertyEditor.prototype.setup = function () {
 
     this.propertyContainer.addEventListener("p:ValueChanged", function(event) {
         if (!thiz.target) return;
-        var editor = Dom.findUpward(event.target, function (n) {
+        var editor = NDom.findUpward(event.target, function (n) {
             return n._property;
         });
         if (!editor) return;
@@ -173,7 +173,7 @@ SharedPropertyEditor.prototype.attach = function (target) {
         if (!thiz.target || uuid != thiz.currentExecutorUUID) return;
         if (properties.length == 0) {
             if (thiz.target.def && thiz.target.def.collection.propertyGroups && thiz.target.def.collection.propertyGroups.length > 0) {
-                var hbox = Dom.newDOMElement({
+                var hbox = NDom.newDOMElement({
                     _name: "hbox",
                     "class": "FooterActions",
                     _children: [
@@ -189,7 +189,7 @@ SharedPropertyEditor.prototype.attach = function (target) {
             }
 
             if (StencilCollectionBuilder.isDocumentConfiguredAsStencilCollection() && thiz.target.getSymbolName) {
-                thiz.propertyContainer.appendChild(Dom.newDOMElement({
+                thiz.propertyContainer.appendChild(NDom.newDOMElement({
                     _name: "vbox",
                     "class": "SymbolNameContainer",
                     _children: [
@@ -216,14 +216,14 @@ SharedPropertyEditor.prototype.attach = function (target) {
         try {
             var property = properties.shift();
             if (!currentGroupNode || currentGroupNode._group != property._group) {
-                currentGroupNode = Dom.newDOMElement({
+                currentGroupNode = NDom.newDOMElement({
                     _name: "vbox",
                     "class": "Group"
                 });
 
                 currentGroupNode._group = property._group;
                 if (definedGroups.length > 1) {
-                    var titleNode = Dom.newDOMElement({
+                    var titleNode = NDom.newDOMElement({
                         _name: "div",
                         _text: property._group.name,
                         "class": "Label Group"
@@ -244,7 +244,7 @@ SharedPropertyEditor.prototype.attach = function (target) {
                 propName = propName.substring(groupName.length);
             }
 
-            var editorWrapper = Dom.newDOMElement({
+            var editorWrapper = NDom.newDOMElement({
                 _name: "vbox",
                 "class": "Wrapper Type_" + property.type.name,
                 _children: [
@@ -287,7 +287,7 @@ SharedPropertyEditor.prototype.attach = function (target) {
     };
     executor();
     this.properties = this.target.getProperties();
-    Dom.emitEvent("p:TitleChanged", this.node(), {});
+    NDom.emitEvent("p:TitleChanged", this.node(), {});
 };
 
 SharedPropertyEditor.prototype.setDefaultProperties = function() {
@@ -313,7 +313,7 @@ SharedPropertyEditor.prototype.setDefaultProperties = function() {
 }
 
 SharedPropertyEditor.prototype.addPropertyTitle = function (title) {
-    var title = Dom.newDOMElement({
+    var title = NDom.newDOMElement({
         _name: "strong",
         _text: title,
         "class": "ObjectTitle"
@@ -337,7 +337,7 @@ SharedPropertyEditor.prototype.detach = function () {
         this.node().setAttribute("mode", "None");
         this.pagePropertyWidget = null;
     }
-    Dom.emitEvent("p:TitleChanged", this.node(), {});
+    NDom.emitEvent("p:TitleChanged", this.node(), {});
 };
 SharedPropertyEditor.prototype.savePageProperties = function (shouldReloadOnSaved) {
     if (!this.isPagePropertyMode()) return;

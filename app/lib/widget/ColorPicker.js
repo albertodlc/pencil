@@ -9,9 +9,9 @@ widget.ColorPicker = function () {
         if (!colorPicker || !colorPicker.enabled) return;
         
         if (colorPicker.option.editMode) {
-            var editModeObject = Dom.findUpward(Dom.getTarget(event), {
+            var editModeObject = NDom.findUpward(NDom.getTarget(event), {
                 eval: function(n){
-                    return Dom.hasClass(n, "EditModeActivated");
+                    return NDom.hasClass(n, "EditModeActivated");
                 }
             });
             
@@ -20,7 +20,7 @@ widget.ColorPicker = function () {
             }
         }
         
-        var colorInput = Dom.findUpward(Dom.getTarget(event), {
+        var colorInput = NDom.findUpward(NDom.getTarget(event), {
             eval: function(n){
                 return n == colorPicker.colorInput
             }
@@ -40,7 +40,7 @@ widget.ColorPicker = function () {
                 ul.className = "ColorList";
                 for (var i = 1; i <= SIZE; i++) {
                     var li = document.createElement("li");
-                    var li = Dom.newDOMElement({
+                    var li = NDom.newDOMElement({
                         _name: "li",
                         _children: [{
                             _name: "a",
@@ -56,9 +56,9 @@ widget.ColorPicker = function () {
                 var thiz = this;
                 this._colorPicker = colorPicker;
                 container.appendChild(ul);
-                Dom.registerEvent(ul, "click", function(e){
-                    Dom.cancelEvent(e);
-                    var colorObject = Dom.findUpward(Dom.getTarget(e), {
+                NDom.registerEvent(ul, "click", function(e){
+                    NDom.cancelEvent(e);
+                    var colorObject = NDom.findUpward(NDom.getTarget(e), {
                         eval: function(n){
                             return n._color;
                         }
@@ -74,7 +74,7 @@ widget.ColorPicker = function () {
                 basicContainer.className = "BasicContainer";
                 
                 var advancedButton = document.createElement("a");
-                advancedButton = Dom.newDOMElement({
+                advancedButton = NDom.newDOMElement({
                     _name: "a",
                     href: "#",
                     _html: Messages["advanced_color"]
@@ -83,7 +83,7 @@ widget.ColorPicker = function () {
                 basicContainer.appendChild(advancedButton);
                 
                 var noColorContainer = document.createElement("div");
-                var noColorCheckbox = Dom.newDOMElement({
+                var noColorCheckbox = NDom.newDOMElement({
                     _name: "input",
                     type: "checkbox",
                     "class": "Checkbox",
@@ -93,7 +93,7 @@ widget.ColorPicker = function () {
                 if (colorPicker.isNoColor) noColorCheckbox.checked = true;
                 noColorContainer.appendChild(noColorCheckbox);
                 
-                var title = Dom.newDOMElement({
+                var title = NDom.newDOMElement({
                     _name: "label",
                     _html: Messages["color_selection_no_color"],
                     "for": noColorCheckbox.id
@@ -103,7 +103,7 @@ widget.ColorPicker = function () {
                 basicContainer.appendChild(noColorContainer);
                 container.appendChild(basicContainer);
 
-                var advancedContainer = Dom.newDOMElement({
+                var advancedContainer = NDom.newDOMElement({
                     _name: "div",
                     "class": "AdvancedContainer"
                 });
@@ -127,7 +127,7 @@ widget.ColorPicker = function () {
                 var hsvBar = document.createElement("div");
                 hsvBar.className = "HSVBar";
                 this.hsvBar = hsvBar;
-                var hsvBarIndicator = Dom.newDOMElement({
+                var hsvBarIndicator = NDom.newDOMElement({
                     _name: "div",
                     "class": "HsvBarIndicator",
                     _html: "<i class=\"fa fa-caret-right\"></i>"
@@ -148,7 +148,7 @@ widget.ColorPicker = function () {
                 this.advancedColorDisplay = advancedColorDisplay;
                 extraContainer.appendChild(advancedColorDisplay);
                 
-                var basicButton = Dom.newDOMElement({
+                var basicButton = NDom.newDOMElement({
                     _name: "a",
                     href: "#",
                     _html: Messages["basic_color_label"],
@@ -157,7 +157,7 @@ widget.ColorPicker = function () {
                 
                 extraContainer.appendChild(basicButton);
                 
-                var advancedInput = Dom.newDOMElement({
+                var advancedInput = NDom.newDOMElement({
                     _name: "input",
                     type: "text",
                     "class": "form-control Control AdvancedInput"
@@ -169,29 +169,29 @@ widget.ColorPicker = function () {
                 advancedContainer.appendChild(extraContainer);
                 container.appendChild(advancedContainer);
                 
-                Dom.registerEvent(noColorCheckbox, "click", function(){
+                NDom.registerEvent(noColorCheckbox, "click", function(){
                     colorPicker.setNoColor(this.checked);
                     thiz._dialog.quit();
                 });
                 
-                Dom.registerEvent(advancedButton, "click", function(){
-                    Dom.addClass(container, "AdvanceMode");
+                NDom.registerEvent(advancedButton, "click", function(){
+                    NDom.addClass(container, "AdvanceMode");
                     if (!colorPicker.isNoColor) {
                         initColor(colorPicker.value, thiz);
                     }
                 });
                 
-                Dom.registerEvent(basicButton, "click", function(){
-                    Dom.removeClass(container, "AdvanceMode");
+                NDom.registerEvent(basicButton, "click", function(){
+                    NDom.removeClass(container, "AdvanceMode");
                 });
                 
-                Dom.registerEvent(hsvMask, "mousedown", hsvMaskMouseDownHandler, false);
-                Dom.registerEvent(document, "mousemove", hsvMaskMouseMoveHandler, false);
-                Dom.registerEvent(document, "mouseup", hsvMaskMouseUpHandler, false);
+                NDom.registerEvent(hsvMask, "mousedown", hsvMaskMouseDownHandler, false);
+                NDom.registerEvent(document, "mousemove", hsvMaskMouseMoveHandler, false);
+                NDom.registerEvent(document, "mouseup", hsvMaskMouseUpHandler, false);
                 
-                Dom.registerEvent(hsvBar, "mousedown", hsvBarIndicatorMouseDownHandler, false);
-                Dom.registerEvent(document, "mousemove", hsvBarIndicatorMouseMoveHandler, false);
-                Dom.registerEvent(document, "mouseup", hsvBarIndicatorMouseUpHandler, false);
+                NDom.registerEvent(hsvBar, "mousedown", hsvBarIndicatorMouseDownHandler, false);
+                NDom.registerEvent(document, "mousemove", hsvBarIndicatorMouseMoveHandler, false);
+                NDom.registerEvent(document, "mouseup", hsvBarIndicatorMouseUpHandler, false);
             },
             onOpen : function() {
                 if (colorPicker.option.nullValue && colorPicker.option.nullValue == colorPicker.getValue()) {
@@ -235,9 +235,9 @@ widget.ColorPicker = function () {
     }
     
     function hsvMaskMouseDownHandler(e) {
-        Dom.cancelEvent(e);
-        var target = Dom.getTarget(e);
-        var container = Dom.findUpward(target, {
+        NDom.cancelEvent(e);
+        var target = NDom.getTarget(e);
+        var container = NDom.findUpward(target, {
             eval: function(n){
                 return n._dialog;
             }
@@ -276,22 +276,22 @@ widget.ColorPicker = function () {
     }
     
     function hsvMaskMouseMoveHandler(e) {
-        Dom.cancelEvent(e);
+        NDom.cancelEvent(e);
         if (!onHoldPicker) return;
         movePicker(ColorPicker.dialog, e);
         ColorPicker.dialog.builder.hsvMask.style.cursor = "default";
     }
     
     function hsvMaskMouseUpHandler(e) {
-        Dom.cancelEvent(e);
+        NDom.cancelEvent(e);
         onHoldPicker = false;
         ColorPicker.dialog.builder.hsvMask.style.cursor = "crosshair";
     }
     
     function hsvBarIndicatorMouseDownHandler(e) {
-        Dom.cancelEvent(e);
+        NDom.cancelEvent(e);
         onHoldIndicator = true;
-        var container = Dom.findUpward(Dom.getTarget(e), {
+        var container = NDom.findUpward(NDom.getTarget(e), {
             eval: function(n){
                 return n._dialog;
             }
@@ -322,9 +322,9 @@ widget.ColorPicker = function () {
     }
     
     function hsvBarIndicatorMouseMoveHandler(e) {
-        Dom.cancelEvent(e);
+        NDom.cancelEvent(e);
         if (!onHoldIndicator) return;
-        var container = Dom.findUpward(Dom.getTarget(e), {
+        var container = NDom.findUpward(NDom.getTarget(e), {
             eval: function(n){
                 return n._dialog;
             }
@@ -347,7 +347,7 @@ widget.ColorPicker = function () {
     }
     
     function hsvBarIndicatorMouseUpHandler(e) {
-        Dom.cancelEvent(e);
+        NDom.cancelEvent(e);
         onHoldIndicator = false;
     }
     
@@ -452,7 +452,7 @@ widget.ColorPicker = function () {
         this.isNoColor = false;
         this.enabled = true;
         
-        this.wrapper = Dom.newDOMElement({
+        this.wrapper = NDom.newDOMElement({
             _name: "div",
             "class": "ColorPicker"
         });
@@ -460,21 +460,21 @@ widget.ColorPicker = function () {
         this.wrapper._colorPicker = this;
         this.container.appendChild(this.wrapper);
         
-        this.color = Dom.newDOMElement({
+        this.color = NDom.newDOMElement({
             _name: "span",
             "class": "Color"
         });
         
         this.wrapper.appendChild(this.color);
         
-        this.colorTitle = Dom.newDOMElement({
+        this.colorTitle = NDom.newDOMElement({
             _name: "span",
             "class": "ColorTitle"
         });
         
         this.wrapper.appendChild(this.colorTitle);
         
-        this.colorInput = Dom.newDOMElement({
+        this.colorInput = NDom.newDOMElement({
             _name: "input",
             type: "text",
             maxLength: "7",
@@ -484,9 +484,9 @@ widget.ColorPicker = function () {
         this.wrapper.appendChild(this.colorInput);
         
         this.editModeActivated = false;
-        Dom.registerEvent(this.wrapper, "click", colorPickerClickHandler, false);
-        Dom.registerEvent(this.colorInput, "keyup", getColor, false);
-        Dom.registerEvent(this.colorInput, "blur", checkColor, false);
+        NDom.registerEvent(this.wrapper, "click", colorPickerClickHandler, false);
+        NDom.registerEvent(this.colorInput, "keyup", getColor, false);
+        NDom.registerEvent(this.colorInput, "blur", checkColor, false);
         this.setValue(this.value);
         if (this.option.editMode) {
             this.color.style.cursor = "default";
@@ -543,11 +543,11 @@ widget.ColorPicker = function () {
     };
     ColorPicker.prototype.setEnabled = function(enabled) {
         this.enabled = enabled;
-        Dom.toggleClass(this.container, "Disabled", !enabled);
+        NDom.toggleClass(this.container, "Disabled", !enabled);
     };
     ColorPicker.findInstance = function(event) {
-        var target = Dom.getTarget(event);
-        var node = Dom.findUpward(target, {
+        var target = NDom.getTarget(event);
+        var node = NDom.findUpward(target, {
             eval: function(n) {
                 return n._colorPicker;
             }

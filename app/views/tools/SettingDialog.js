@@ -18,7 +18,7 @@ function SettingDialog() {
     };
 
     this.bind("click", function (event) {
-        var node = Dom.findUpward(event.target, function (n) {
+        var node = NDom.findUpward(event.target, function (n) {
             return n.getAttribute && n.getAttribute("configName");
         });
         if (!node) return;
@@ -31,7 +31,7 @@ function SettingDialog() {
     }, this.settingTabPane);
 
     this.bind("input", function (event) {
-        var node = Dom.findUpward(event.target, function (n) {
+        var node = NDom.findUpward(event.target, function (n) {
             return n.getAttribute && n.getAttribute("configName");
         });
         if (!node) return;
@@ -49,7 +49,7 @@ function SettingDialog() {
     }, this.textboxGridSize);
 
     this.bind("change", function (event) {
-        var node = Dom.findUpward(event.target, function (n) {
+        var node = NDom.findUpward(event.target, function (n) {
             return n.getAttribute && n.getAttribute("configName");
         });
         if (!node) return;
@@ -79,7 +79,7 @@ function SettingDialog() {
                     Dialog.confirm("Would you like to keep this configuration?", "",
                         "Restore the previous configuration", function () {
                             this.textScaleInput.value = configValue;
-                            Dom.emitEvent("change", node, {restoreAction: true});
+                            NDom.emitEvent("change", node, {restoreAction: true});
                             return true;
                         }.bind(this), "Keep this configuration");
                 }.bind(this));
@@ -108,26 +108,26 @@ SettingDialog.prototype.updateConfigAndInvalidateUI = function (configName, valu
         var checkBox = this.configElements[configName];
         if (checkBox == this.checkboxEnableGrid) {
             if (value) {
-                Dom.removeClass(this.textboxGridSize.parentNode, "Disabled");
-                Dom.removeClass(this.gridStyleContainer, "Disabled");
+                NDom.removeClass(this.textboxGridSize.parentNode, "Disabled");
+                NDom.removeClass(this.gridStyleContainer, "Disabled");
             } else {
-                Dom.addClass(this.textboxGridSize.parentNode, "Disabled");
-                Dom.addClass(this.gridStyleContainer, "Disabled");
+                NDom.addClass(this.textboxGridSize.parentNode, "Disabled");
+                NDom.addClass(this.gridStyleContainer, "Disabled");
             }
         }
         if (checkBox == this.undoEnabled) {
             if (value) {
-                Dom.removeClass(this.textboxUndoLevel.parentNode, "Disabled");
+                NDom.removeClass(this.textboxUndoLevel.parentNode, "Disabled");
             } else {
-                Dom.addClass(this.textboxUndoLevel.parentNode, "Disabled");
+                NDom.addClass(this.textboxUndoLevel.parentNode, "Disabled");
             }
         }
         if (checkBox == this.enableSnapping) {
             this.enableSnappingBackground.disabled = !this.enableSnapping.checked;
             if (value) {
-                Dom.removeClass(this.enableSnappingBackground.parentNode, "Disabled");
+                NDom.removeClass(this.enableSnappingBackground.parentNode, "Disabled");
             } else {
-                Dom.addClass(this.enableSnappingBackground.parentNode, "Disabled");
+                NDom.addClass(this.enableSnappingBackground.parentNode, "Disabled");
             }
         }
         checkBox.checked = value;
@@ -193,32 +193,32 @@ SettingDialog.prototype.setup = function () {
     this.bitmapEditorUrl.value = bitmapurl;
 
     if (this.checkboxEnableGrid.checked) {
-        Dom.removeClass(this.textboxGridSize.parentNode, "Disabled");
-        Dom.removeClass(this.gridStyleContainer, "Disabled");
+        NDom.removeClass(this.textboxGridSize.parentNode, "Disabled");
+        NDom.removeClass(this.gridStyleContainer, "Disabled");
     } else {
-        Dom.addClass(this.textboxGridSize.parentNode, "Disabled");
-        Dom.addClass(this.gridStyleContainer, "Disabled");
+        NDom.addClass(this.textboxGridSize.parentNode, "Disabled");
+        NDom.addClass(this.gridStyleContainer, "Disabled");
     }
 
     if (this.undoEnabled.checked) {
-        Dom.removeClass(this.textboxUndoLevel.parentNode, "Disabled");
+        NDom.removeClass(this.textboxUndoLevel.parentNode, "Disabled");
     } else {
-        Dom.addClass(this.textboxUndoLevel.parentNode, "Disabled");
+        NDom.addClass(this.textboxUndoLevel.parentNode, "Disabled");
     }
 
     this.enableSnappingBackground.disabled = !this.enableSnapping.checked;
     if (this.enableSnapping.checked) {
-        Dom.removeClass(this.enableSnappingBackground.parentNode, "Disabled");
+        NDom.removeClass(this.enableSnappingBackground.parentNode, "Disabled");
     } else {
-        Dom.addClass(this.enableSnappingBackground.parentNode, "Disabled");
+        NDom.addClass(this.enableSnappingBackground.parentNode, "Disabled");
     }
 
     // if (this.checkboxScaleImage.checked) {
-    //     Dom.removeClass(this.textboxClipartBrowserScaleWidth.parentNode, "Disabled");
-    //     Dom.removeClass(this.textboxClipartBrowserScaleHeight.parentNode, "Disabled");
+    //     NDom.removeClass(this.textboxClipartBrowserScaleWidth.parentNode, "Disabled");
+    //     NDom.removeClass(this.textboxClipartBrowserScaleHeight.parentNode, "Disabled");
     // } else {
-    //     Dom.addClass(this.textboxClipartBrowserScaleWidth.parentNode, "Disabled");
-    //     Dom.addClass(this.textboxClipartBrowserScaleHeight.parentNode, "Disabled");
+    //     NDom.addClass(this.textboxClipartBrowserScaleWidth.parentNode, "Disabled");
+    //     NDom.addClass(this.textboxClipartBrowserScaleHeight.parentNode, "Disabled");
     // }
     this.initializePreferenceTable();
 };

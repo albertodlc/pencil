@@ -481,7 +481,7 @@ GestureHelper.MODES = [
         mouseup: function (event, canvas) {
             canvas.careTaker.resume();
             if (this.active) {
-                Dom.emitEvent("p:TextEditingRequested", canvas.element, {
+                NDom.emitEvent("p:TextEditingRequested", canvas.element, {
                     controller : canvas.currentController
                 });
             }

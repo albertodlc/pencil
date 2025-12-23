@@ -14,7 +14,7 @@ FontDetailDialog.prototype.setup = function (options) {
     this.inputs = {};
     for (var w of FontRepository.SUPPORTED_WEIGHTS) {
         var holder = {};
-        var hbox = Dom.newDOMElement({
+        var hbox = NDom.newDOMElement({
             _name: "hbox",
             "class": "Variant_" + w.id,
             _children: [

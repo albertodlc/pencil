@@ -6,7 +6,7 @@ function GeometryEditor() {
 }
 
 GeometryEditor.ANCHOR_SIZE = 4;
-GeometryEditor.configDoc = Dom.loadSystemXml("pencil-core/editor/geometryEditor.config.xml");
+GeometryEditor.configDoc = NDom.loadSystemXml("pencil-core/editor/geometryEditor.config.xml");
 GeometryEditor.prototype.resetAccomulatedChanges = function () {
     this.adx = 0;
     this.ady = 0;
@@ -222,7 +222,7 @@ GeometryEditor.prototype.setBound = function (bound) {
 }
 GeometryEditor.prototype.findAnchor = function (element) {
     var thiz = this;
-    var anchor = Dom.findUpward(element, function (node) {
+    var anchor = NDom.findUpward(element, function (node) {
         return node._isAnchor && (node._editor == thiz);
     });
 
@@ -302,11 +302,11 @@ GeometryEditor.prototype.handleMouseUp = function (event) {
                         var geo = this.targetObject.getGeometry();
                         if (!geo.dim) return;
                         this.targetObject.scaleTo(geo.dim.w + this.adw / this.canvas.zoom, geo.dim.h + this.adh / this.canvas.zoom);
-                        Dom.emitEvent("p:ShapeGeometryModified", this.canvas, {setter: null});
+                        NDom.emitEvent("p:ShapeGeometryModified", this.canvas, {setter: null});
                     }
                     if (this.ada != 0 && this.targetObject.rotateBy) {
                         this.targetObject.rotateBy(this.ada);
-                        Dom.emitEvent("p:ShapeGeometryModified", this.canvas, {setter: null});
+                        NDom.emitEvent("p:ShapeGeometryModified", this.canvas, {setter: null});
                     }
                 } finally {
                     this.resetAccomulatedChanges();

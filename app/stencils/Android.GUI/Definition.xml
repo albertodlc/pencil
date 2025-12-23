@@ -17,7 +17,7 @@
             collection.FULL_WIDTH = collection.ANDROID_ICS_STANDARD_WIDTH;
             
             collection.ninePatchDom = function (ninePatchName, dim) {
-                Dom.empty(F._target);
+                NDom.empty(F._target);
                 var np = collection.ninePatches[ninePatchName];
                 if (!np) return null;
                 
@@ -38,7 +38,7 @@
                 specs.push(collection._newImageForPatch(np.patches[7], np.patches[6].w, np.patches[0].h + sh, sw, np.patches[7].h));
                 specs.push(collection._newImageForPatch(np.patches[8], np.patches[0].w + sw, np.patches[0].h + sh, np.patches[8].w, np.patches[8].h));
     
-                return Dom.newDOMFragment(specs);
+                return NDom.newDOMFragment(specs);
             };
             collection._newImageForPatch = function (patch, x, y, w, h) {
                 return {
@@ -114,7 +114,7 @@
                     if (scaledY) accumulatedScaleH += lastH;
                 }
                 
-                return Dom.newDOMFragment(specs);
+                return NDom.newDOMFragment(specs);
             };
             collection.nPatchBound = function (nPatchName, dim, px, py) {
                 var np = collection.nPatches[nPatchName];

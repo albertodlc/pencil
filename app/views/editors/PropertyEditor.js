@@ -6,5 +6,5 @@ __extend(BaseTemplatedWidget, PropertyEditor);
 
 PropertyEditor.prototype.fireChangeEvent = function (mask) {
     this.modified = true;
-    Dom.emitEvent("p:ValueChanged", this.node(), {mask: mask});
+    NDom.emitEvent("p:ValueChanged", this.node(), {mask: mask});
 };

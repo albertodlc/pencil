@@ -17,14 +17,14 @@ function ShapeTestCanvasPane() {
 __extend(BaseTemplatedWidget, ShapeTestCanvasPane);
 
 ShapeTestCanvasPane.prototype.init = function (collection, shapeDefId) {
-    Dom.empty(this.canvasContainer);
+    NDom.empty(this.canvasContainer);
     this.node().style.display = "flex";
 
     var w = this.canvasContainer.offsetWidth;
     var h = this.canvasContainer.offsetHeight;
 
     var wrapper = document.createElement("div");
-    Dom.addClass(wrapper, "CanvasWrapper");
+    NDom.addClass(wrapper, "CanvasWrapper");
     wrapper.setAttribute("tabindex", 0);
     this.canvasContainer.appendChild(wrapper);
 
@@ -32,7 +32,7 @@ ShapeTestCanvasPane.prototype.init = function (collection, shapeDefId) {
     wrapper.appendChild(container);
     container.style.width = w + "px";
     container.style.height = h + "px";
-    Dom.addClass(container, "Canvas");
+    NDom.addClass(container, "Canvas");
 
     this.canvas = new Canvas(container, {ignorePageMarging: true});
     this.canvas.setSize(w, h);
@@ -67,7 +67,7 @@ ShapeTestCanvasPane.prototype.startTesting = function (page) {
     this.targetPage = page;
     this.builder = new StencilCollectionBuilder(ApplicationPane._instance.controller);
 
-    Dom.setInnerText(this.title, page.name);
+    NDom.setInnerText(this.title, page.name);
 
     var thiz = this;
     this.builder.buildShapeTest(this.targetPage.id, function () {
@@ -78,7 +78,7 @@ ShapeTestCanvasPane.prototype.startTesting = function (page) {
 ShapeTestCanvasPane.prototype.quitTesting = function (target) {
     if (this.builder) this.builder.cleanupShapeTest();
 
-    Dom.empty(this.canvasContainer);
+    NDom.empty(this.canvasContainer);
     this.node().style.display = "none";
 
     if (this.lastActiveCanvas) {

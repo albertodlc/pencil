@@ -291,7 +291,7 @@ SVGHTMLRenderer.prototype.renderHTML = function (html, container, view) {
     div.parentNode.removeChild(div);
 };
 SVGHTMLRenderer.prototype.render = function (nodes, container, view) {
-    Dom.empty(container);
+    NDom.empty(container);
     var layouts = this.layout(nodes, view);
     if (!layouts || layouts.length == 0) return;
 
@@ -387,7 +387,7 @@ SVGTextLayout.measure = function (node, text, defaultStyle) {
         }
     }
 
-    Dom.empty(SVGTextLayout.tspan);
+    NDom.empty(SVGTextLayout.tspan);
     SVGTextLayout.tspan.appendChild(SVGTextLayout.tspan.ownerDocument.createTextNode(text));
     var box = SVGTextLayout.textNode.getBBox();
 
@@ -456,7 +456,7 @@ SVGTextLayout.prototype.add = function (text, styles, respectNewlinesAndSpaces) 
 
             s += word;
 
-            Dom.empty(SVGTextLayout.tspan);
+            NDom.empty(SVGTextLayout.tspan);
             SVGTextLayout.tspan.appendChild(SVGTextLayout.tspan.ownerDocument.createTextNode(s));
             box = SVGTextLayout.textNode.getBBox();
             // console.log("testing '" + s + "' w: " + box.width + " new line width = " + (box.width + this.currentRow.width), box);

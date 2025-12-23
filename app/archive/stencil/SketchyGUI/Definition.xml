@@ -447,7 +447,7 @@
                                         + (i == 0 ? ("color: " + $homeColor.toRGBAString() + "; " + $homeCustomStyle) : "")
                                         + (i == items.length - 1 ? ("color: " + $endColor.toRGBAString() + "; " + $endCustomStyle) : "text-decoration: " + $textFont.decor + ";")
                                         + ";\">"
-                                        + Dom.htmlEncode(items[i])
+                                        + NDom.htmlEncode(items[i])
                                         + "</span>";
                             }
                             var html = items.join("<span style=\"color: " + $sepColor.toRGBAString() + "; margin: 0px " + $spaceSize.value + "ex; " + $sepCustomStyle + "\">&gt;</span>");
@@ -964,7 +964,7 @@ MenuItem]]></Property>
                             style: css
                         });
                     }
-                    Dom.newDOMFragment(specs);
+                    NDom.newDOMFragment(specs);
                 ]]>
                 </DomContent>
                 <Font>$textFont</Font>
@@ -1816,7 +1816,7 @@ MenuItem]]></Property>
                                 table._children.push(tbody);
                             }
 
-                            fragment = Dom.newDOMFragment([table]);
+                            fragment = NDom.newDOMFragment([table]);
                         } catch (e) {
                             Console.dumpError(e);
                         }

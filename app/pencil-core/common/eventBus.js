@@ -5,7 +5,7 @@ function EventBus() {
 }
 
 EventBus.prototype.broadcast = function (eventName, data) {
-    Dom.emitEvent(eventName, this.node, {busData: data});
+    NDom.emitEvent(eventName, this.node, {busData: data});
 };
 EventBus.prototype.listen = function (eventName, hander) {
     this.node.addEventListener(eventName, function (event) {

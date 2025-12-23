@@ -7,7 +7,7 @@ function boot() {
         var collection = CollectionManager.shapeDefinition.collections[i];
         for (var k = 0; k < collection.shapeDefs.length; k ++) {
             var def = collection.shapeDefs[k];
-            var node = Dom.newDOMElement({
+            var node = NDom.newDOMElement({
                 _name: "div",
                 style: "width: 4em; height: 4em; display: inline-block; padding: 1em;",
                 draggable: "true",
@@ -38,8 +38,8 @@ function boot() {
             node._def = def;
 
             container.appendChild(node);
-            Dom.registerEvent(node, "dragstart", function (event) {
-                var n = Dom.findUpwardForNodeWithData(Dom.getTarget(event), "_def");
+            NDom.registerEvent(node, "dragstart", function (event) {
+                var n = NDom.findUpwardForNodeWithData(NDom.getTarget(event), "_def");
                 var def = n._def;
 
                 event.dataTransfer.setData("pencil/def", def.id);
@@ -51,13 +51,13 @@ function boot() {
         }
     }
 
-//    Dom.registerEvent(container, "click", function (event) {
-//        var def = Dom.findUpwardForData(Dom.getTarget(event), "_def");
+//    NDom.registerEvent(container, "click", function (event) {
+//        var def = NDom.findUpwardForData(NDom.getTarget(event), "_def");
 //        Pencil.activeCanvas.insertShape(def, new Bound(200, 100, null, null));
 //    });
-//    Dom.registerEvent(container, "dragstart", function (event) {
+//    NDom.registerEvent(container, "dragstart", function (event) {
 //        console.log("dragstart");
-//        var def = Dom.findUpwardForData(Dom.getTarget(event), "_def");
+//        var def = NDom.findUpwardForData(NDom.getTarget(event), "_def");
 //        event.dataTransfer.setData("pencil/def", def.id);
 //    });
 }

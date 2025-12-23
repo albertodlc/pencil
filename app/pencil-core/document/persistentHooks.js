@@ -21,7 +21,7 @@ var relativeHRefHook = {
             var relativePath = thiz.uriToRelative(imageData.data);
             if (relativePath) {
                 imageData.data = relativePath;
-                Dom.empty(property);
+                NDom.empty(property);
                 property.appendChild(property.ownerDocument.createCDATASection(imageData.toString()));
             }
         });
@@ -48,7 +48,7 @@ var relativeHRefHook = {
             if (imageData.data.match(/^[a-z]+:.*$/)) return;
 
             imageData.data = thiz.relativeToURI(imageData.data, true);
-            Dom.empty(property);
+            NDom.empty(property);
             property.appendChild(property.ownerDocument.createCDATASection(imageData.toString()));
         });
     },

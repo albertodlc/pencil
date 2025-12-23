@@ -15,7 +15,7 @@ function Shape(canvas, svg, forcedDefinition) {
     }
 
     //locating metadata node
-    this.metaNode = Ndom.getSingle("./p:metadata", this.svg);
+    this.metaNode = NDom.getSingle("./p:metadata", this.svg);
 
     //construct the target node map
     this.setupTargetMap("shouldRepair");
@@ -26,7 +26,7 @@ Shape.prototype.setupTargetMap = function (shouldRepair) {
     this.targetMap = {};
     for (i in this.def.behaviors) {
         var name = this.def.behaviors[i].target;
-        var target = Ndom.getSingle(".//*[@p:name='" + name + "']", this.svg);
+        var target = NDom.getSingle(".//*[@p:name='" + name + "']", this.svg);
         if (!target) {
             if (shouldRepair) {
                 console.error("Target '" + name + "' is not found. Repairing now...");
@@ -388,12 +388,12 @@ Shape.prototype.setProperty = function (name, value, nested, mask) {
     Connector.invalidateInboundConnections(this.canvas, this.svg);
     this.canvas.invalidateEditors();
     if (!nested) {
-        Dom.emitEvent("p:ShapeGeometryModified", this.canvas, {setter: null});
+        NDom.emitEvent("p:ShapeGeometryModified", this.canvas, {setter: null});
         let prop = this.def.getProperty(name);
         try {
             if (prop && (prop.type == PlainText || prop.type == RichText)) {
                 //find top most group
-                var topGroup = Dom.findTop(this.svg, function (node) {
+                var topGroup = NDom.findTop(this.svg, function (node) {
                     return node.getAttributeNS(PencilNamespaces.p, "type") == "Group";
                 });
 
@@ -456,7 +456,7 @@ Shape.prototype.getMetadata = function (name) {
     return Util.getNodeMetadata(this.svg, name);
 };
 Shape.prototype.locatePropertyNode = function (name) {
-    return Ndom.getSingle("./p:property[@name='" + name +"']", this.metaNode);
+    return NDom.getSingle("./p:property[@name='" + name +"']", this.metaNode);
 };
 Shape.prototype.storeProperty = function (name, value) {
     //debug("setting: " + name + " = " + value.toString());
@@ -470,7 +470,7 @@ Shape.prototype.storeProperty = function (name, value) {
     Shape.storePropertyToNode(name, value, propNode);
 };
 Shape.storePropertyToNode = function (name, value, propNode) {
-    Dom.empty(propNode);
+    NDom.empty(propNode);
     var attrs = propNode.attributes;
     for (var i = attrs.length - 1; i >= 0; i --) {
         if (attrs[i].namespaceURI == PencilNamespaces.p) {
@@ -882,7 +882,7 @@ Shape.prototype.getTextEditingInfo = function (editingEvent) {
                                 break;
                             }
                         }
-                        var targetObject = Ndom.getSingle(".//*[@p:name='" + target + "']", this.svg);
+                        var targetObject = NDom.getSingle(".//*[@p:name='" + target + "']", this.svg);
                         if (targetObject) {
                             info = {prop: prop,
                                     value: this.getProperty(name),
@@ -914,7 +914,7 @@ Shape.prototype.getTextEditingInfo = function (editingEvent) {
                         bound = pEval("" + b.items[i].args[1].literal, obj);
                         align = pEval("" + b.items[i].args[2].literal, obj);
 
-                        var targetObject = Ndom.getSingle(".//*[@p:name='" + target + "']", this.svg);
+                        var targetObject = NDom.getSingle(".//*[@p:name='" + target + "']", this.svg);
 
                         info = {prop: prop,
                                 value: this.getProperty(name),
@@ -972,7 +972,7 @@ Shape.prototype.getTextEditingInfo = function (editingEvent) {
 
                         if (font) {
 
-                            var targetObject = Ndom.getSingle(".//*[@p:name='" + target + "']", this.svg);
+                            var targetObject = NDom.getSingle(".//*[@p:name='" + target + "']", this.svg);
                             //checking if the target is ok for use to base the location calculation
                             var ok = true;
                             try {
@@ -1294,8 +1294,8 @@ Shape.prototype.generateShortcutXML = function () {
             }
 
             var next = function () {
-                var shortcutNode = Dom.newDOMElement(spec, dom);
-                var xml = "    " + Dom.serializeNode(shortcutNode).replace(/<PropertyValue/g, "\n        <PropertyValue").replace("</Shortcut>", "\n    </Shortcut>");
+                var shortcutNode = NDom.newDOMElement(spec, dom);
+                var xml = "    " + NDom.serializeNode(shortcutNode).replace(/<PropertyValue/g, "\n        <PropertyValue").replace("</Shortcut>", "\n    </Shortcut>");
 
                 if (this.def.collection.developerStencil) {
                     var defPath = path.join(this.def.collection.installDirPath, "Definition.xml");

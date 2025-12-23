@@ -165,13 +165,13 @@ ExternalEditorSupports.editSVGData = function (originalDim, container, ownerObje
                 svg.appendChild(document.importNode(container.firstChild, true));
             }
 
-            Dom.serializeNodeToFile(svg, file);
+            NDom.serializeNodeToFile(svg, file);
             callback();
         }
     }, {
         update: function (file) {
             debug("Update SVG content from file: " + file);
-            var dom = Dom.parseFile(file);
+            var dom = NDom.parseFile(file);
 
             var node = dom.documentElement.firstChild;
 
@@ -183,7 +183,7 @@ ExternalEditorSupports.editSVGData = function (originalDim, container, ownerObje
                 }
             }
 
-            var content = Dom.serializeNode(node);
+            var content = NDom.serializeNode(node);
 
             debug(content);
 

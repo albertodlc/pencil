@@ -17,7 +17,7 @@ function handleOnload() {
     document.title = "Evolus Pencil";
 
     if (message.title) {
-        Dom.empty(titleText);
+        NDom.empty(titleText);
         titleText.appendChild(document.createTextNode(message.title));
     }
     if (message.description) {
@@ -26,7 +26,7 @@ function handleOnload() {
             descHtml.innerHTML = message.description.html;
         } else {
             descHtml.parentNode.removeChild(descHtml);
-            Dom.empty(descText);
+            NDom.empty(descText);
             descText.appendChild(document.createTextNode(message.description ? message.description : ""));
         }
     } else {

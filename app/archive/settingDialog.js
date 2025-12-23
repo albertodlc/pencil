@@ -11,7 +11,7 @@ handleOnLoad = function () {
     }
 
     if (navigator.userAgent.indexOf("Intel Mac") != -1) {
-        Dom.addClass(document.getElementById("pencil-settings"), "macosx");
+        NDom.addClass(document.getElementById("pencil-settings"), "macosx");
     }
     document.getElementById("undoEnabled").checked = Config.get("view.undoLevel") > 0;
     document.getElementById("labelGridSize").disabled = Config.get("grid.enabled") == false;

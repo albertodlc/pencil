@@ -74,7 +74,7 @@ ShapeDefCollectionParser.getCollectionPropertyConfigName = function (collectionI
             var domParser = new DOMParser();
             var dom = domParser.parseFromString(content, "text/xml");
         } else {
-            dom = Dom.parseFile(url);
+            dom = NDom.parseFile(url);
         }
 
         var collection = this.parse(dom, url);
@@ -157,7 +157,7 @@ ShapeDefCollectionParser.prototype.loadCustomLayout = function (installDirPath, 
         var html = fs.readFileSync(layoutUri, {encoding: "utf8"});
         if (!html) return null;
 
-        var dom = Dom.parseDocument(html);
+        var dom = NDom.parseDocument(html);
 
         var container = NDom.getSingle("/html:html/html:body", dom);
         if (!container) container = dom.documentElement;

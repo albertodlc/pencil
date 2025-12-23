@@ -6,7 +6,7 @@ InstallRemoteCollectionsDialog.collectionsPerPage = 4;
 InstallRemoteCollectionsDialog.collections = [];                    
 InstallRemoteCollectionsDialog.init = function () {
     InstallRemoteCollectionsDialog.manager = window.opener.CollectionManager;
-    Dom.populate(InstallRemoteCollectionsDialog, ["collectionListContent", "backBtn", "nextBtn", "pagingLabel"]);
+    NDom.populate(InstallRemoteCollectionsDialog, ["collectionListContent", "backBtn", "nextBtn", "pagingLabel"]);
     InstallRemoteCollectionsDialog.loadNewData();
 };
 InstallRemoteCollectionsDialog.loadNewData = function() {
@@ -119,8 +119,8 @@ InstallRemoteCollectionsDialog.loadCollections = function() {
         }
         rows.push(row);
     }
-    Dom.empty(InstallRemoteCollectionsDialog.collectionListContent);
-    InstallRemoteCollectionsDialog.collectionListContent.appendChild(Dom.newDOMFragment(rows));
+    NDom.empty(InstallRemoteCollectionsDialog.collectionListContent);
+    InstallRemoteCollectionsDialog.collectionListContent.appendChild(NDom.newDOMFragment(rows));
     InstallRemoteCollectionsDialog.pagingLabel.value = InstallRemoteCollectionsDialog.currentPage + "/" + InstallRemoteCollectionsDialog.totalPages;
     InstallRemoteCollectionsDialog.collectionListContent.addEventListener("click", InstallRemoteCollectionsDialog.downloadAndInstallRemoteCollection, true);
 };

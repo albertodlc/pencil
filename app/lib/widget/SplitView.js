@@ -6,25 +6,25 @@ widget.SplitView = function () {
         return container._splitView;
     }
     function handleMouseDown(event) {
-        Dom.cancelEvent(event);
-        var target = Dom.getTarget(event);
+        NDom.cancelEvent(event);
+        var target = NDom.getTarget(event);
         currentSplitView = getSplitView(target);
 
         if (!currentSplitView) return;
         currentSplitView.ox = event.screenX;
         currentSplitView.originalSplitViewX = currentSplitView.splitViewPos;
         currentSplitView.moved = false;
-        Dom.addClass(currentSplitView.container, "SplitViewHeld");
+        NDom.addClass(currentSplitView.container, "SplitViewHeld");
     }
 
     function handleMouseMove(event) {
-        var target = Dom.getTarget(event);
+        var target = NDom.getTarget(event);
         if (!currentSplitView) return;
-        Dom.cancelEvent(event);
+        NDom.cancelEvent(event);
 
         var x = event.screenX;
         var p = currentSplitView.originalSplitViewX + x - currentSplitView.ox;
-        var W = Dom.getOffsetWidth(currentSplitView.container);
+        var W = NDom.getOffsetWidth(currentSplitView.container);
         var margin = Math.round(W / 10);
         p = Math.min(Math.max(p, margin), W - margin);
         currentSplitView.setSplitViewPosition(p);
@@ -34,14 +34,14 @@ widget.SplitView = function () {
     }
 
     function handleMouseUp(event) {
-        Dom.cancelEvent(event);
+        NDom.cancelEvent(event);
         if (!currentSplitView) return;
         if (!currentSplitView.moved) return;
         currentSplitView.moved = false;
-        var r = (currentSplitView.splitViewPos / Dom.getOffsetWidth(currentSplitView.container));
+        var r = (currentSplitView.splitViewPos / NDom.getOffsetWidth(currentSplitView.container));
         currentSplitView.ratio = r;
         currentSplitView.updateView();
-        Dom.removeClass(currentSplitView.container, "SplitViewHeld");
+        NDom.removeClass(currentSplitView.container, "SplitViewHeld");
         currentSplitView = null;
     }
 
@@ -71,11 +71,11 @@ widget.SplitView = function () {
             }
         }
 
-        Dom.registerEvent(this.splitter, "mousedown", handleMouseDown);
-        Dom.registerEvent(document, "mousemove", handleMouseMove);
-        Dom.registerEvent(document, "mouseup", handleMouseUp);
+        NDom.registerEvent(this.splitter, "mousedown", handleMouseDown);
+        NDom.registerEvent(document, "mousemove", handleMouseMove);
+        NDom.registerEvent(document, "mouseup", handleMouseUp);
 
-        Dom.addClass(this.splitter, "SplitViewSplitter");
+        NDom.addClass(this.splitter, "SplitViewSplitter");
         this.splitter.innerHTML = "<div></div>";
 
         this.container.style.position = "relative";
@@ -114,8 +114,8 @@ widget.SplitView = function () {
 
     SplitView.prototype.updateView = function () {
         this.container.className = "SplitView";
-        Dom.addClass(this.container, "SplitView" + this.mode);
-        var w = Dom.getOffsetWidth(this.container);
+        NDom.addClass(this.container, "SplitView" + this.mode);
+        var w = NDom.getOffsetWidth(this.container);
         if (this.mode == SplitView.MODE_LEFT) {
             this.left.style.left = "0px";
             this.left.style.right = "0px";

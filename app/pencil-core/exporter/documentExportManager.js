@@ -275,7 +275,7 @@ DocumentExportManager._cleanupParseError = function (node) {
 DocumentExportManager.prototype._exportDocumentToXML = function (doc, pages, pageExtraInfos, destFile, exportSelection, callback) {
     var exporter = Pencil.getDocumentExporterById(exportSelection.exporterId);
 
-    var dom = Dom.parseDocument("<Document xmlns=\"" + PencilNamespaces.p + "\"></Document>", "text/xml");
+    var dom = NDom.parseDocument("<Document xmlns=\"" + PencilNamespaces.p + "\"></Document>", "text/xml");
 
     //properties
     var propertyContainerNode = dom.createElementNS(PencilNamespaces.p, "Properties");
@@ -352,7 +352,7 @@ DocumentExportManager.prototype._exportDocumentToXML = function (doc, pages, pag
         //we have to reparse the provided notes as XHTML and append it directly to the dom
         if (page.note) {
             var xhtml = "<div xmlns=\"http://www.w3.org/1999/xhtml\">" + page.note + "</div>";
-            var node = Dom.parseToNode(xhtml, dom);
+            var node = NDom.parseToNode(xhtml, dom);
 
             this._populateLinkTargetsInNote(node);
 
@@ -403,7 +403,7 @@ DocumentExportManager.prototype._exportDocumentToXML = function (doc, pages, pag
     DocumentExportManager._cleanupParseError(dom);
 
     var xmlFile = tmp.fileSync({postfix: ".xml", keep: false});
-    Dom.serializeNodeToFile(dom, xmlFile.name);
+    NDom.serializeNodeToFile(dom, xmlFile.name);
 
     var exporter = Pencil.getDocumentExporterById(exportSelection.exporterId);
 

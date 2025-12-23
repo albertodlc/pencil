@@ -13,7 +13,7 @@ MainMenu.prototype.getTemplatePath = function () {
 MainMenu.prototype.shouldCloseOnBlur = function(event) {
     var thiz = this;
 
-    var found = Dom.findUpward(event.target, function (node) {
+    var found = NDom.findUpward(event.target, function (node) {
         return node == thiz.anchorView;
     });
 

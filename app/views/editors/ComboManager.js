@@ -24,12 +24,12 @@ function ComboManager() {
     this.bind("p:PopupHidden", function () {
         this.button.removeAttribute("active");
         this.popup.popupContainer.scrollTop = 0;
-        Dom.emitEvent("p:PopupClosed", this.node(), {});
+        NDom.emitEvent("p:PopupClosed", this.node(), {});
         // this.popup.removePopup();
         // this.popup.popupContainer.scrollTop = 0;
     }, this.popup);
     this.popup.shouldCloseOnBlur = function (event) {
-        var found = Dom.findUpward(event.target, function (node) {
+        var found = NDom.findUpward(event.target, function (node) {
             return node == thiz.button;
         });
         return !found;
@@ -44,7 +44,7 @@ ComboManager.DEFAULT_RENDERER = function (item) {
 __extend(BaseTemplatedWidget, ComboManager);
 
 ComboManager.prototype.onItemClick = function (event) {
-    var item = Dom.findUpwardForData(event.target, "_data");
+    var item = NDom.findUpwardForData(event.target, "_data");
     if (typeof(item) == "undefined") return;
 
     this.selectItem(item, true);
@@ -53,7 +53,7 @@ ComboManager.prototype.ensureSelectedItemVisible = function() {
     var comparer = this.comparer || function (a, b) { return a == b};
     for (var i = 0; i < this.list.childNodes.length; i ++) {
         var node = this.list.childNodes[i];
-        var data = Dom.findUpwardForData(node, "_data");
+        var data = NDom.findUpwardForData(node, "_data");
         if (comparer(this.selectedItem, data)) {
             node.setAttribute("selected", "true");
             this.scrollTo(i);
@@ -65,9 +65,9 @@ ComboManager.prototype.ensureSelectedItemVisible = function() {
 }
 ComboManager.prototype.scrollTo = function(index) {
     var node = this.list.childNodes[index];
-    var oT = Dom.getOffsetTop(node);
+    var oT = NDom.getOffsetTop(node);
     var oH = node.offsetHeight;
-    var pT = Dom.getOffsetTop(this.list.parentNode) + 10;
+    var pT = NDom.getOffsetTop(this.list.parentNode) + 10;
     var pH = this.list.parentNode.offsetHeight - 20;
 
     if (oT < pT) {
@@ -86,7 +86,7 @@ ComboManager.prototype.setItems = function (items) {
         var element = this.renderer(item);
         var node = null;
         if (element.getAttribute) {
-            node = Dom.newDOMElement({
+            node = NDom.newDOMElement({
                 _name: "div",
                 "class": "Item",
             });
@@ -98,7 +98,7 @@ ComboManager.prototype.setItems = function (items) {
             };
             spec[this.useHtml ? "_html" : "_text"] = element;
 
-            node = Dom.newDOMElement(spec);
+            node = NDom.newDOMElement(spec);
         }
         if (this.decorator) this.decorator(node, item);
 
@@ -129,18 +129,18 @@ ComboManager.prototype.selectItem = function (item, fromUserAction, whenMatched)
     if (!element) return;
 
     if (element.getAttribute) {
-        Dom.empty(this.buttonDisplay);
+        NDom.empty(this.buttonDisplay);
         this.buttonDisplay.appendChild(element);
     } else {
-        this.buttonDisplay.innerHTML = this.useHtml ? element : Dom.htmlEncode(element);
-        this.button.setAttribute("title", this.useHtml ? Dom.htmlStrip(element) : element);
+        this.buttonDisplay.innerHTML = this.useHtml ? element : NDom.htmlEncode(element);
+        this.button.setAttribute("title", this.useHtml ? NDom.htmlStrip(element) : element);
     }
     if (this.decorator != null) {
         this.decorator(this.buttonDisplay, item);
     }
     this.selectedItem = item;
     if (fromUserAction) {
-        Dom.emitEvent("p:ItemSelected", this.node(), {});
+        NDom.emitEvent("p:ItemSelected", this.node(), {});
         if (this.popup.isVisible()) {
             this.popup.hide();
         }
@@ -149,7 +149,7 @@ ComboManager.prototype.selectItem = function (item, fromUserAction, whenMatched)
     for (var i = 0; i < this.list.childNodes.length; i ++) {
         var c = this.list.childNodes[i];
         if (c.setAttribute) {
-            var item = Dom.findUpwardForData(c, "_data");
+            var item = NDom.findUpwardForData(c, "_data");
             var selected =  comparer(item, this.selectedItem);
             c.setAttribute("selected", selected);
             if (selected) {

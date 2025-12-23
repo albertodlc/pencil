@@ -279,18 +279,18 @@ UICommandManager.handleKeyEvent = function (event) {
 };
 UICommandManager.isApplicable = function (command, node) {
     if (command.applyWhenType) {
-        var widget = Dom.findUpwardForData(node, "__widget");
+        var widget = NDom.findUpwardForData(node, "__widget");
         if (!widget) return false;
         return widget.constructor.name == command.applyWhenType;
     }
     if (command.applyWhenAttributeName) {
-        var n = Dom.findUpward(node, function (x) {
+        var n = NDom.findUpward(node, function (x) {
             return x.getAttribute(command.applyWhenAttributeName) == command.applyWhenAttributeValue;
         });
         return n ? true : false;
     }
     if (command.applyWhenClass) {
-        var n = Dom.findParentWithClass(node, command.applyWhenClass);
+        var n = NDom.findParentWithClass(node, command.applyWhenClass);
         return n ? true : false;
     }
 

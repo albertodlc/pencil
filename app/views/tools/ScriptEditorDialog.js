@@ -3,7 +3,7 @@ function ScriptEditorDialog(large) {
     this.title = "Script Editor";
     
     if (large) {
-        Dom.addClass(this.scriptInputContainer, "Large");
+        NDom.addClass(this.scriptInputContainer, "Large");
     }
 }
 __extend(Dialog, ScriptEditorDialog);

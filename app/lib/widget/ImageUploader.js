@@ -26,7 +26,7 @@ widget.ImageUploader = function () {
                  primary: true,
                  run: function () {
                      var thiz = this;
-                     Dom.registerEvent(this.iframe, "load", function(data) {
+                     NDom.registerEvent(this.iframe, "load", function(data) {
                          var response = Dom.getIframeDocument(thiz.iframe);
                          if (response.indexOf("OK") != -1) {
                              imageUploader.isModified = true;
@@ -82,7 +82,7 @@ widget.ImageUploader = function () {
                     this.iframe = object.iframe;
                     this.form.submit();
                     var thiz = this;
-                    Dom.registerEvent(this.iframe, "load", function(data) {
+                    NDom.registerEvent(this.iframe, "load", function(data) {
                         var response = Dom.getIframeDocument(this);
                         if (response.indexOf("OK") != -1) {
                             imageUploader.isModified = true;
@@ -160,9 +160,9 @@ widget.ImageUploader = function () {
         this.wrapper.className = "ImageUploader";
         this.wrapper._imageUploader = this;
         if (this.option.editable) {
-            Dom.addClass(this.wrapper, "Editable");
+            NDom.addClass(this.wrapper, "Editable");
         } else {
-            Dom.addClass(this.wrapper, "NonEditable");
+            NDom.addClass(this.wrapper, "NonEditable");
         }
         
         this.imagePicker = document.createElement("div");
@@ -178,7 +178,7 @@ widget.ImageUploader = function () {
         this.imageEditor = document.createElement("div");
         this.imageEditor.className = "ImageEditor";
         if (this.option.smallArea) {
-            Dom.addClass(this.imageEditor, "Small");
+            NDom.addClass(this.imageEditor, "Small");
         }
         this.imageReplacer = document.createElement("a");
         this.imageReplacer.href = "#";
@@ -194,12 +194,12 @@ widget.ImageUploader = function () {
         this.wrapper.appendChild(this.imageEditor);
         
         this.container.appendChild(this.wrapper);
-        Dom.registerEvent(this.imagePicker, "click", imageUploaderClickHandler, false);
-        Dom.registerEvent(this.imageReplacer, "click", imageUploaderClickHandler, false);
-        Dom.registerEvent(this.imageRemover, "click", imageRemoverClickHandler, false);
+        NDom.registerEvent(this.imagePicker, "click", imageUploaderClickHandler, false);
+        NDom.registerEvent(this.imageReplacer, "click", imageUploaderClickHandler, false);
+        NDom.registerEvent(this.imageRemover, "click", imageRemoverClickHandler, false);
         this.centerPicker();
         if (this.option.fallbackUrl) {
-            Dom.addClass(this.wrapper, "Fallback");
+            NDom.addClass(this.wrapper, "Fallback");
         }
     }
     
@@ -221,28 +221,28 @@ widget.ImageUploader = function () {
         this.imageRemover.style.display = "inline";
         var thiz = this;
         this.imageDisplay.onload = function(){
-            Dom.addClass(thiz.wrapper, "Display");
+            NDom.addClass(thiz.wrapper, "Display");
             centerCrop(this);
         };
         
         this.imageDisplay.onerror = function(e){
             if (thiz.option.fallbackUrl) thiz.imageRemover.style.display = "none";
-            Dom.removeClass(thiz.wrapper, "Display");
+            NDom.removeClass(thiz.wrapper, "Display");
             showFallback(this);
         };
     };
     
     ImageUploader.prototype.enableEditMode = function() {
-        Dom.addClass(this.wrapper, "Editable");
+        NDom.addClass(this.wrapper, "Editable");
     };
     
     ImageUploader.prototype.disableEditMode = function() {
-        Dom.removeClass(this.wrapper, "Editable");
+        NDom.removeClass(this.wrapper, "Editable");
     };
     
     ImageUploader.findInstance = function(event) {
-        var target = Dom.getTarget(event);
-        var node = Dom.findUpward(target, {
+        var target = NDom.getTarget(event);
+        var node = NDom.findUpward(target, {
             eval: function(n) {
                 return n._imageUploader;
             }

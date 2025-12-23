@@ -223,7 +223,7 @@ Controller.prototype.duplicatePage = function (pageIn, onDone) {
     for (var i = 0; i < page.canvas.drawingLayer.childNodes.length; i++) {
         var node = page.canvas.drawingLayer.childNodes[i];
         newPage.canvas.drawingLayer.appendChild(newPage.canvas.ownerDocument.importNode(node, true));
-        Dom.renewId(node);
+        NDom.renewId(node);
     }
 
     if (this.activePage && this.activePage.id != page.id) {
@@ -737,7 +737,7 @@ Controller.prototype.swapIn = function (page, canvas) {
     var dom = Controller.parser.parseFromString(fs.readFileSync(page.tempFilePath, "utf8"), "text/xml");
     var content = NDom.getSingle("/p:Page/p:Content", dom);
 
-    Dom.empty(canvas.drawingLayer);
+    NDom.empty(canvas.drawingLayer);
     if (content) {
         while (content.hasChildNodes()) {
             var c = content.firstChild;
@@ -832,7 +832,7 @@ Controller.prototype.invalidatePageContent = function (page, callback) {
             page.canvas.drawingLayer.removeChild(c);
         }
 
-        Dom.empty(page.canvas.drawingLayer);
+        NDom.empty(page.canvas.drawingLayer);
 
         while (children.length > 0) {
             var c = children.shift();
@@ -964,12 +964,12 @@ Controller.prototype.deletePage = function (page) {
 };
 Controller.prototype.sayDocumentChanged = function () {
     this.modified = true;
-    Dom.emitEvent("p:DocumentChanged", this.applicationPane.node(), {
+    NDom.emitEvent("p:DocumentChanged", this.applicationPane.node(), {
         controller : this
     });
 };
 Controller.prototype.sayControllerStatusChanged = function () {
-    Dom.emitEvent("p:ControllerStatusChanged", this.applicationPane.node(), {
+    NDom.emitEvent("p:ControllerStatusChanged", this.applicationPane.node(), {
         controller : this
     });
 };
@@ -1131,7 +1131,7 @@ Controller.prototype.updatePageThumbnail = function (page, done) {
     this.applicationPane.rasterizer.postBitmapGeneratingTask(page, scale, thumbPath, function (p) {
         page.thumbPath = p;
         page.thumbCreated = new Date();
-        Dom.emitEvent("p:PageInfoChanged", thiz.applicationPane, {page: page});
+        NDom.emitEvent("p:PageInfoChanged", thiz.applicationPane, {page: page});
         if (done) done();
     });
 };
@@ -1674,7 +1674,7 @@ Controller.prototype.exportAsLayout = function () {
             div.appendChild(img);
         }
 
-        Dom.serializeNodeToFile(html, outputPath, "");
+        NDom.serializeNodeToFile(html, outputPath, "");
         CollectionManager.reloadDeveloperStencil();
     };
 

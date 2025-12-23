@@ -37,7 +37,7 @@
                     if (thiz.type == "preview") {
                         //thiz.button.style.backgroundColor = thiz.picker.getValue().toRGBString();
                     }
-                    Dom.emitEvent("change", thiz, {});
+                    NDom.emitEvent("change", thiz, {});
                 }, false);
             ]]>
             </constructor>

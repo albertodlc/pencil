@@ -3,8 +3,8 @@ function TabHeader() {
 
     var thiz = this;
     this.container.addEventListener("click", function (event) {
-        var tab = Dom.findUpward(event.target, function (n) {
-            return Dom.hasClass(n, "Tab");
+        var tab = NDom.findUpward(event.target, function (n) {
+            return NDom.hasClass(n, "Tab");
         });
 
         if (!tab) return;
@@ -52,7 +52,7 @@ TabHeader.prototype.invalidateSizing = function () {
 TabHeader.prototype.addTab = function (name, node) {
     var view = document.createElement("div");
     view.appendChild(document.createTextNode(name));
-    Dom.addClass(view, "Tab");
+    NDom.addClass(view, "Tab");
     this.container.appendChild(view);
     view._node = node;
 
@@ -74,8 +74,8 @@ TabHeader.prototype.addTab = function (name, node) {
 
 
 TabHeader.prototype.setSelectedTab = function (tab) {
-    Dom.doOnChild(this.container, {eval: function (n) {
-        if (Dom.hasClass(n, "Tab")) {
+    NDom.doOnChild(this.container, {eval: function (n) {
+        if (NDom.hasClass(n, "Tab")) {
             if (n == tab) {
                 n.setAttribute("selected", "true");
                 n._node.style.visibility = "inherit";
@@ -86,14 +86,14 @@ TabHeader.prototype.setSelectedTab = function (tab) {
         }
     }});
 
-    Dom.emitEvent("p:TabChanged", this.node(), {});
+    NDom.emitEvent("p:TabChanged", this.node(), {});
 };
 TabHeader.prototype.getSelectedTab = function () {
     var result = {
         tab: null
     };
-    Dom.doOnChild(this.container, {eval: function (n) {
-        if (Dom.hasClass(n, "Tab") && n.getAttribute && n.getAttribute("selected") == "true") {
+    NDom.doOnChild(this.container, {eval: function (n) {
+        if (NDom.hasClass(n, "Tab") && n.getAttribute && n.getAttribute("selected") == "true") {
             result.tab = n;
         }
     }});

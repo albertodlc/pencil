@@ -9,7 +9,7 @@ function EditPageNoteDialog () {
 
 
     this.bind("click", function (event) {
-        var node = Dom.findUpward(event.target, function (n) {
+        var node = NDom.findUpward(event.target, function (n) {
             return n.getAttribute && n.getAttribute("command");
         });
 
@@ -22,14 +22,14 @@ function EditPageNoteDialog () {
     }, this.textFormatContainer);
 
     this.bind("click", function (event) {
-        var node = Dom.findUpward(event.target, function (n) {
+        var node = NDom.findUpward(event.target, function (n) {
             return n.getAttribute && n.getAttribute("command");
         });
 
         if (!node) return;
         node.setAttribute("checked", "true");
 
-        Dom.doOnAllChildren(thiz.malignContainer, function (child) {
+        NDom.doOnAllChildren(thiz.malignContainer, function (child) {
             if (child != node && child.removeAttribute) {
                 child.removeAttribute("checked");
             }
@@ -102,7 +102,7 @@ function EditPageNoteDialog () {
     this.fontSizeCombo.setItems([1, 2, 3, 4, 5, 6, 7]);
 
     this.bind("click", function (event) {
-        var node = Dom.findUpward(event.target, function (n) {
+        var node = NDom.findUpward(event.target, function (n) {
             return n.getAttribute && n.getAttribute("command");
         });
         if (!node) return;

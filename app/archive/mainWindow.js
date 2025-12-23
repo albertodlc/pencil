@@ -1,6 +1,6 @@
 Pencil.buildRecentFileMenu = function (files) {
     var menu = document.getElementById("recentDocumentMenu");
-    Dom.empty(menu);
+    NDom.empty(menu);
 
     if (!files) {
         files = Config.get("recent-documents");
@@ -150,12 +150,12 @@ Pencil.insertPNGImage = function (url, w, h, x, y) {
 };
 
 Pencil.toggleFullscreen = function () {
-    var isFullscreen = Dom.hasClass(document.documentElement, "Fullscreen");
+    var isFullscreen = NDom.hasClass(document.documentElement, "Fullscreen");
     if (isFullscreen) {
-        Dom.removeClass(document.documentElement, "Fullscreen");
+        NDom.removeClass(document.documentElement, "Fullscreen");
         window.fullScreen = false;
     } else {
-        Dom.addClass(document.documentElement, "Fullscreen");
+        NDom.addClass(document.documentElement, "Fullscreen");
         window.fullScreen = true;
     }
 
@@ -164,7 +164,7 @@ Pencil.toggleFullscreen = function () {
     }
 };
 Pencil.exitFullscreen = function () {
-    var isFullscreen = Dom.hasClass(document.documentElement, "Fullscreen");
+    var isFullscreen = NDom.hasClass(document.documentElement, "Fullscreen");
     if (isFullscreen) {
         Pencil.toggleFullscreen();
     }
@@ -203,17 +203,17 @@ function invalidateToolbars() {
         var info = registeredToolbars[i];
         var toolbar = document.getElementById(info.id + "Toolbar");
         if (isToolbarVisible(info.id)) {
-            Dom.addClass(toolbar, "Visible");
-            Dom.removeClass(toolbar, "Hidden");
+            NDom.addClass(toolbar, "Visible");
+            NDom.removeClass(toolbar, "Hidden");
         } else {
-            Dom.addClass(toolbar, "Hidden");
-            Dom.removeClass(toolbar, "Visible");
+            NDom.addClass(toolbar, "Hidden");
+            NDom.removeClass(toolbar, "Visible");
         }
     }
 };
 function setupToolbarContextMenu() {
     var menu = document.getElementById("toolbarContextMenu");
-    Dom.empty(menu);
+    NDom.empty(menu);
     for (var i = 0; i < registeredToolbars.length; i ++) {
         var info = registeredToolbars[i];
         var menuItem = document.createElementNS(PencilNamespaces.xul, "menuitem");

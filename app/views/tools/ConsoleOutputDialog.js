@@ -14,7 +14,7 @@ ConsoleOutputDialog.prototype.setup = function () {
 
 ConsoleOutputDialog.prototype.append = function (message, type, important) {
     var div = document.createElement("div");
-    if (important) Dom.addClass(div, "Important");
+    if (important) NDom.addClass(div, "Important");
     div.appendChild(document.createTextNode(message));
     div.setAttribute("type", type || "");
     

@@ -404,7 +404,7 @@ var nsDragAndDrop = {
           
           /*
           try {
-              var defNode = Dom.findUpward(aEvent.originalTarget, function (node) { return node._def; });
+              var defNode = NDom.findUpward(aEvent.originalTarget, function (node) { return node._def; });
               if (defNode && defNode.firstChild && defNode.firstChild.localName == "img") {
                 imageNode = defNode.firstChild;
               }

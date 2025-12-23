@@ -51,14 +51,14 @@ SnappingHelper.prototype.clearSnappingGuideX = function () {
     if (!this.isSnappingEnabled()) return;
     if (!this._snappingGuideContainerXEmpty) {
         this._snappingGuideContainerXEmpty = true;
-        Dom.empty(this.snappingGuideContainerX);
+        NDom.empty(this.snappingGuideContainerX);
     }
 };
 SnappingHelper.prototype.clearSnappingGuideY = function () {
     if (!this.isSnappingEnabled()) return;
     if (!this._snappingGuideContainerYEmpty) {
         this._snappingGuideContainerYEmpty = true;
-        Dom.empty(this.snappingGuideContainerY);
+        NDom.empty(this.snappingGuideContainerY);
     }
 };
 SnappingHelper.prototype.updateSnappingDataFromBackground = function (page, remove) {

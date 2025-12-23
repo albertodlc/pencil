@@ -18,8 +18,8 @@ widget.Dialog = function() {
         var dialog = Dialog.findInstance(event);
         if (!dialog) return;
 
-        var target = Dom.getTarget(event);
-        var button = Dom.findUpward(target, {
+        var target = NDom.getTarget(event);
+        var button = NDom.findUpward(target, {
             eval: function (n) {
                 return n.getAttribute && n.getAttribute("action-index");
             }
@@ -62,7 +62,7 @@ widget.Dialog = function() {
     function globalMouseMoveHandler(event) {
         if (!Dialog.heldInstance) return;
 
-        Dom.cancelEvent(event);
+        NDom.cancelEvent(event);
 
         var dx = event.screenX - Dialog._lastScreenX;
         var dy = event.screenY - Dialog._lastScreenY;
@@ -73,10 +73,10 @@ widget.Dialog = function() {
         Dialog.heldInstance.moveBy(dx, dy);
     }
 
-    Dom.registerEvent(window, "load", function () {
-        Dom.registerEvent(document, "keyup", globalKeyHandler, false);
-        Dom.registerEvent(document, "mousemove", globalMouseMoveHandler, false);
-        Dom.registerEvent(document, "mouseup", function (event) {
+    NDom.registerEvent(window, "load", function () {
+        NDom.registerEvent(document, "keyup", globalKeyHandler, false);
+        NDom.registerEvent(document, "mousemove", globalMouseMoveHandler, false);
+        NDom.registerEvent(document, "mouseup", function (event) {
             if (Dialog.heldInstance) {
                 Dialog.heldInstance.bodyOverlay.style.display = "none";
             }
@@ -97,8 +97,8 @@ widget.Dialog = function() {
         if (!host) {
             this.overlay = document.createElement("div");
             document.body.appendChild(this.overlay);
-            Dom.addClass(this.overlay, "Overlay");
-            Dom.addClass(this.overlay, "DialogOverlay");
+            NDom.addClass(this.overlay, "Overlay");
+            NDom.addClass(this.overlay, "DialogOverlay");
         }
 
         //sort actions to make sure primaries are to the right
@@ -149,7 +149,7 @@ widget.Dialog = function() {
 
                 ) +
                 "        <h4 class=\"modal-title\">" + (!builder.image ? ("<span class=\"fa " + builder.icon + "\"></span>")
-                        : ("<img class=\"fa Icon\" width=\"16\" src=\"" + builder.image + "\"/>")) + Dom.htmlEncode(builder.title) + "</h4>\n" +
+                        : ("<img class=\"fa Icon\" width=\"16\" src=\"" + builder.image + "\"/>")) + NDom.htmlEncode(builder.title) + "</h4>\n" +
                 "      </div>\n";
         }
 
@@ -173,7 +173,7 @@ widget.Dialog = function() {
                         (widget.evaluate(action.extra, this.builder) ? " btn-extra " : "") +
                         (widget.evaluate(action.isImportant, this.builder) ? " btn-danger" : "") +
                         "\">" +
-                            Dom.htmlEncode(widget.evaluate(action.title, this.builder)) +
+                            NDom.htmlEncode(widget.evaluate(action.title, this.builder)) +
                     "</button>\n";
 
             if (widget.evaluate(action.primary, this.builder)) {
@@ -190,14 +190,14 @@ widget.Dialog = function() {
         var dialogDivContainer = host ? host.container : document.body;
 
         dialogDivContainer.appendChild(this.dialogDiv);
-        Dom.addClass(this.dialogDiv, "DialogContainer modal-dialog");
+        NDom.addClass(this.dialogDiv, "DialogContainer modal-dialog");
 
         if (host) {
-            Dom.addClass(this.dialogDiv, "EmbeddedDialogContainer");
+            NDom.addClass(this.dialogDiv, "EmbeddedDialogContainer");
         }
 
         if (this.builder.extraClass) {
-            Dom.addClass(this.dialogDiv, this.builder.extraClass);
+            NDom.addClass(this.dialogDiv, this.builder.extraClass);
         }
 
         this.dialogDiv.innerHTML = html;
@@ -214,8 +214,8 @@ widget.Dialog = function() {
         }
 
         if (!host) {
-            Dom.registerEvent(this.header, "mousedown", function (event) {
-                Dom.cancelEvent(event);
+            NDom.registerEvent(this.header, "mousedown", function (event) {
+                NDom.cancelEvent(event);
                 Dialog.heldInstance = Dialog.findInstance(event);
                 Dialog._lastScreenX = event.screenX;
                 Dialog._lastScreenY = event.screenY;
@@ -238,7 +238,7 @@ widget.Dialog = function() {
 
             if (this.closeHandlerAction) {
                 var closeButton = document.getElementById(closeId);
-                Dom.registerEvent(closeButton, "click", closeClickHandler, false);
+                NDom.registerEvent(closeButton, "click", closeClickHandler, false);
             }
         }
 
@@ -249,7 +249,7 @@ widget.Dialog = function() {
         if (builder.buildExtraContent) {
            builder.buildExtraContent(this.extraView);
         }
-        Dom.registerEvent(this.footer, "click", actionClickHandler, false);
+        NDom.registerEvent(this.footer, "click", actionClickHandler, false);
 
         if (this.overlay) this.overlay.style.visibility = "hidden";
         this.dialogDiv.style.visibility = "hidden";
@@ -260,8 +260,8 @@ widget.Dialog = function() {
 
         if (host) {
             host.container.style.overflow = "hidden";
-            W = Dom.getOffsetWidth(host.container);
-            H = Dom.getOffsetHeight(host.container);
+            W = NDom.getOffsetWidth(host.container);
+            H = NDom.getOffsetHeight(host.container);
         }
 
         var requestWidth = builder.size ? (isNaN(builder.size) ? SIZE_SPECS[builder.size] : parseInt(builder.size, 10)) : 600;
@@ -331,17 +331,17 @@ widget.Dialog = function() {
             var id = action._buttonId;
             var button = document.getElementById(id);
             if (action.isApplicable) {
-                Dom.toggleClass(button, "AlwaysVisible", action.alwaysVisible);
+                NDom.toggleClass(button, "AlwaysVisible", action.alwaysVisible);
                 if (widget.evaluate(action.isApplicable, this.builder)) {
-                    Dom.removeClass(button, "disabled");
+                    NDom.removeClass(button, "disabled");
                     button.removeAttribute("disabled");
                 } else {
-                    Dom.addClass(button, "disabled");
+                    NDom.addClass(button, "disabled");
                     button.setAttribute("disabled", "true");
                 }
             }
 
-            Dom.setInnerText(button, widget.evaluate(action.title, this.builder));
+            NDom.setInnerText(button, widget.evaluate(action.title, this.builder));
         }
     };
 
@@ -367,15 +367,15 @@ widget.Dialog = function() {
             this.overlay.style.zIndex = BASE_ZINDEX + visibleInstanceCount;
             this.dialogDiv.style.zIndex = BASE_ZINDEX + visibleInstanceCount;
 
-            Dom.addClass(this.overlay, "DialogOverlayLevel" + visibleInstanceCount);
+            NDom.addClass(this.overlay, "DialogOverlayLevel" + visibleInstanceCount);
 
             dialogs.push(this);
 
             visibleInstanceCount ++;
             if (visibleInstanceCount == 1) {
-                Dom.addClass(document.body, "WithModalDialog");
+                NDom.addClass(document.body, "WithModalDialog");
                 if (document.body.scrollHeight > document.body.parentNode.clientHeight) {
-                    Dom.addClass(document.body, "WithModalDialogOverflowFix");
+                    NDom.addClass(document.body, "WithModalDialogOverflowFix");
                 }
             }
         }
@@ -398,7 +398,7 @@ widget.Dialog = function() {
             this.builder.onAfterOpen.apply(this.builder, args);
         }
 
-        var newHeight = Dom.getOffsetHeight(this.body);
+        var newHeight = NDom.getOffsetHeight(this.body);
         this.body.style.height = newHeight + "px";
 
         var focusable = Dom.findDescendantWithClass(this.dialogDiv, "Focusable");
@@ -414,7 +414,7 @@ widget.Dialog = function() {
             return;
         }
         try {
-            Dom.emitEvent("dialog.quit", this.dialogDiv, {});
+            NDom.emitEvent("dialog.quit", this.dialogDiv, {});
         } catch (e) {
             //console.log(e);
         }
@@ -427,8 +427,8 @@ widget.Dialog = function() {
         if (!this.host) {
             visibleInstanceCount --;
             if (visibleInstanceCount == 0) {
-                Dom.removeClass(document.body, "WithModalDialog");
-                Dom.removeClass(document.body, "WithModalDialogOverflowFix");
+                NDom.removeClass(document.body, "WithModalDialog");
+                NDom.removeClass(document.body, "WithModalDialogOverflowFix");
             }
 
             //find me
@@ -453,9 +453,9 @@ widget.Dialog = function() {
         } catch (e) {
             //console.log("Error on onQuit", e);
         }
-        Dom.doOnChildRecursively(document, {
+        NDom.doOnChildRecursively(document, {
             eval: function (node) {
-                return Dom.hasClass(node, "bootstrap-datetimepicker-widget");
+                return NDom.hasClass(node, "bootstrap-datetimepicker-widget");
             }
         },
             function (control) {
@@ -473,8 +473,8 @@ widget.Dialog = function() {
     };
 
     Dialog.findInstance = function (event) {
-        var target = Dom.getTarget(event);
-        var node = Dom.findUpward(target, {
+        var target = NDom.getTarget(event);
+        var node = NDom.findUpward(target, {
             eval: function(n) {
                 return n._dialog;
             }
@@ -485,7 +485,7 @@ widget.Dialog = function() {
         return node._dialog;
     };
     Dialog.findDialog = function (node) {
-        var div = Dom.findUpward(node, {
+        var div = NDom.findUpward(node, {
             eval: function(n) {
                 return n._dialog;
             }
@@ -503,7 +503,7 @@ widget.Dialog = function() {
             size: message.size || "small",
             buildContent: function (container) {
                 var i = document.createElement("p");
-                Dom.addClass(i, "fa fa-info-circle");
+                NDom.addClass(i, "fa fa-info-circle");
                 i.setAttribute("style", "float: left; font-size: 2em; color: #428BCA;");
                 container.appendChild(i);
 
@@ -535,7 +535,7 @@ widget.Dialog = function() {
             size: "small",
             buildContent: function (container) {
                 var i = document.createElement("p");
-                Dom.addClass(i, "fa fa-times-circle");
+                NDom.addClass(i, "fa fa-times-circle");
                 i.setAttribute("style", "float: left; font-size: 2em; color: #700;");
                 container.appendChild(i);
 
@@ -563,7 +563,7 @@ widget.Dialog = function() {
             size: "small",
             buildContent: function (container) {
                 var i = document.createElement("p");
-                Dom.addClass(i, "fa fa-question-circle");
+                NDom.addClass(i, "fa fa-question-circle");
                 i.setAttribute("style", "float: left; font-size: 2em; color: #428BCA;");
                 container.appendChild(i);
 
@@ -573,7 +573,7 @@ widget.Dialog = function() {
                 p.appendChild(document.createTextNode(message));
                 div.appendChild(p);
 
-                this.input = Dom.newDOMElement({
+                this.input = NDom.newDOMElement({
                     _name: "input",
                     style: "width: 20em;",
                     "class": "Focusable"
@@ -613,7 +613,7 @@ widget.Dialog = function() {
             size: "normal",
             buildContent: function (container) {
                 var i = document.createElement("p");
-                Dom.addClass(i, "fa fa-question-circle");
+                NDom.addClass(i, "fa fa-question-circle");
                 i.setAttribute("style", "float: left; font-size: 2em; color: #428BCA;");
                 container.appendChild(i);
 
@@ -657,7 +657,7 @@ widget.Dialog = function() {
             buildContent: function (container) {
                 if (options.message) {
                     var i = document.createElement("p");
-                    Dom.addClass(i, "fa fa-question-circle");
+                    NDom.addClass(i, "fa fa-question-circle");
                     i.setAttribute("style", "float: left; font-size: 2em; color: #428BCA;");
                     container.appendChild(i);
 
@@ -673,12 +673,12 @@ widget.Dialog = function() {
                 for (var i = 0; i < items.length; i ++) {
                     var id = "cb_" + widget.random();
                     var holder = {};
-                    var span = Dom.newDOMElement({
+                    var span = NDom.newDOMElement({
                         _name: "span",
                         style: "display: inline-block",
                         _children: [
                                     {_name: "input", type: "checkbox", _id: "checkbox", id: id, style: "vertical-align: middle;"},
-                                    {_name: "label", "for": id, _html: Dom.htmlEncode(formatter(items[i])), style: "padding-left: 1ex; vertical-align: middle;"},
+                                    {_name: "label", "for": id, _html: NDom.htmlEncode(formatter(items[i])), style: "padding-left: 1ex; vertical-align: middle;"},
                                     ]
                     }, document, holder);
 

@@ -6,12 +6,12 @@ function CollectionRepoBrowserView (collectionPanel, managerDialog, repo) {
     this.repo = repo;
 
     this.collectionRepeater.populator = function (collection, binding) {
-        binding.collectionTitle.innerHTML = Dom.htmlEncode(collection.displayName);
-        binding.collectionDescription.innerHTML = Dom.htmlEncode(collection.description);
-        binding.collectionAuthor.innerHTML = Dom.htmlEncode(collection.author);
+        binding.collectionTitle.innerHTML = NDom.htmlEncode(collection.displayName);
+        binding.collectionDescription.innerHTML = NDom.htmlEncode(collection.description);
+        binding.collectionAuthor.innerHTML = NDom.htmlEncode(collection.author);
         binding.collectionAuthor.parentNode.setAttribute("href", collection.website);
 
-        binding.collectionVersion.innerHTML = "v" + Dom.htmlEncode(collection.version);
+        binding.collectionVersion.innerHTML = "v" + NDom.htmlEncode(collection.version);
         binding.collectionThumb.style.backgroundImage = `url(${collection.thumbnail})`;
         binding._node._collection = collection;
         binding._node.setAttribute("installed", collection._installed);
@@ -26,7 +26,7 @@ function CollectionRepoBrowserView (collectionPanel, managerDialog, repo) {
     };
 
     this.bind("click", function (event) {
-        var node = Dom.findUpwardForNodeWithData(event.target, "_role");
+        var node = NDom.findUpwardForNodeWithData(event.target, "_role");
         if (!node) { return; }
 
         this.handleItemClick(node);
@@ -43,8 +43,8 @@ CollectionRepoBrowserView.prototype.setup = function() {
 };
 
 CollectionRepoBrowserView.prototype.handleItemClick = function (control) {
-    var view = Dom.findUpward(control, (node) => {
-        return Dom.hasClass(node, "CollectionView");
+    var view = NDom.findUpward(control, (node) => {
+        return NDom.hasClass(node, "CollectionView");
     });
     if (!view || !view._collection) { return; }
 

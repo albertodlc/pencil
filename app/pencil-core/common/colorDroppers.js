@@ -70,7 +70,7 @@ var ColorDropper = function () {
         begin: function (callback, node) {
             colorCallback = callback;
 
-            currentPanel = Dom.findUpward(node, function (n) {
+            currentPanel = NDom.findUpward(node, function (n) {
                 return n.localName == "panel" && n.namespaceURI == PencilNamespaces.xul;
             });
 

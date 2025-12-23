@@ -12,7 +12,7 @@ var PencilOverlay = {};
 PencilOverlay.updateToolMenuEntry = function () {
     try {
         var sendToMenuPopup = document.getElementById("pencil_sendToMenuPopup");
-        Dom.empty(sendToMenuPopup);
+        NDom.empty(sendToMenuPopup);
 
         var found = false;
         var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"]
@@ -39,7 +39,7 @@ PencilOverlay.updateToolMenuEntry = function () {
     }
 };
 PencilOverlay.onSendToCommand = function (event) {
-    var item = Dom.findUpward(event.originalTarget, function (node) {
+    var item = NDom.findUpward(event.originalTarget, function (node) {
         return node._pencilWindow;
     });
     try {

@@ -23,7 +23,7 @@ ExportWizard.setup = function () {
 
     // Setup exporters
     var exporters = ExportWizard.Pencil.documentExporters;
-    Dom.empty(ExportWizard.exporterRadioGroup);
+    NDom.empty(ExportWizard.exporterRadioGroup);
 
     var selectedExporterRadioItem = null;
     
@@ -58,9 +58,9 @@ ExportWizard.setup = function () {
 
     //Setup Pages
     var pages = ExportWizard.Pencil.controller.doc.pages;
-    Dom.empty(ExportWizard.pageList);
+    NDom.empty(ExportWizard.pageList);
     for (var i = 0; i < pages.length; i++) {
-        var item = Dom.newDOMElement({
+        var item = NDom.newDOMElement({
             _name: "listitem",
             _uri: PencilNamespaces.xul,
             label: pages[i].properties.name,
@@ -128,7 +128,7 @@ ExportWizard.onExporterChanged = function () {
     var warnings = exporter.getWarnings();
     var warningPane = document.getElementById("exporterWarningPane");
 
-    Dom.empty(warningPane);
+    NDom.empty(warningPane);
     if (!warnings) {
         warningPane.style.visibility = "hidden";
     } else {
@@ -137,8 +137,8 @@ ExportWizard.onExporterChanged = function () {
     }
 
     //templates
-    Dom.empty(ExportWizard.templateMenu.firstChild);
-    Dom.empty(ExportWizard.templateDescription);
+    NDom.empty(ExportWizard.templateMenu.firstChild);
+    NDom.empty(ExportWizard.templateDescription);
     var popup = ExportWizard.templateMenu.firstChild;
     if (!exporter.supportTemplating()) {
         ExportWizard.templateMenu.disabled = true;

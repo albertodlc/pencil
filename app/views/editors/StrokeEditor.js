@@ -29,7 +29,7 @@ StrokeEditor.prototype.setup = function () {
     this.items = strokeItems;
     var thiz = this;
     this.styleCombo.renderer = function (style) {
-        var svg = Dom.newDOMElement({
+        var svg = NDom.newDOMElement({
             _name: "div",
             "class": "StrokeStyleComboItem",
             style: "width: 100px; height: 1em; position: relative;",

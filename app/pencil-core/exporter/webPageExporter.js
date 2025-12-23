@@ -52,12 +52,12 @@ WebPageExporter.prototype.export = function (doc, options, destDir, xmlFile, cal
     });
 
     //transform the xml to HTML
-    var sourceDOM = Dom.parseFile(xmlFile);
+    var sourceDOM = NDom.parseFile(xmlFile);
 
     //changing rasterized path to relative
     this.fixAbsoluteRasterizedPaths(sourceDOM, destDir);
 
-    var xsltDOM = Dom.parseFile(template.styleSheetFile);
+    var xsltDOM = NDom.parseFile(template.styleSheetFile);
 
     var xsltProcessor = new XSLTProcessor();
     xsltProcessor.importStylesheet(xsltDOM);
@@ -66,7 +66,7 @@ WebPageExporter.prototype.export = function (doc, options, destDir, xmlFile, cal
 
     var htmlFile = path.join(destDir, WebPageExporter.HTML_FILE);
 
-    Dom.serializeNodeToFile(result, htmlFile);
+    NDom.serializeNodeToFile(result, htmlFile);
 
     callback();
 };

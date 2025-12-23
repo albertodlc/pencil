@@ -21,7 +21,7 @@ PlainTextEditor.prototype.setValue = function (plainText) {
     } else {
         this.textarea.setAttribute("rows", "1");
     }
-    this.textarea.innerHTML = Dom.htmlEncode(plainText.value);
+    this.textarea.innerHTML = NDom.htmlEncode(plainText.value);
     this.textarea.value = plainText.value;
 };
 PlainTextEditor.prototype.getValue = function () {

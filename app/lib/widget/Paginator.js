@@ -1,7 +1,7 @@
 widget.Paginator = function () {
     function paginatorClickHandler(event) {
-        var target = Dom.getTarget(event);
-        var node = Dom.findUpward(target, {
+        var target = NDom.getTarget(event);
+        var node = NDom.findUpward(target, {
             eval: function (n) {
                 return n.getAttribute && n.getAttribute("role") != null;
             }
@@ -10,7 +10,7 @@ widget.Paginator = function () {
         if (!node) return;
         var role = node.getAttribute("role");
         
-        var list = Dom.findUpward(target, {
+        var list = NDom.findUpward(target, {
             eval: function (n) {
                 return n._p;
             }
@@ -19,7 +19,7 @@ widget.Paginator = function () {
         if (!list) return;
         var paginator = list._p;
         
-        Dom.cancelEvent(event);
+        NDom.cancelEvent(event);
         
         if (role == "prev" && paginator.currentPage > 0) {
             paginator.gotoPage(paginator.currentPage - 1);
@@ -82,7 +82,7 @@ widget.Paginator = function () {
             return;
         }
         //console.log("add load more event " + showPaginator);
-        Dom.registerEvent(this.renderer.container, "scroll", function(e){
+        NDom.registerEvent(this.renderer.container, "scroll", function(e){
             var position = this.scrollTop + this.offsetHeight;
             var percent = position / this.scrollHeight * 100;
             //console.log(percent);
@@ -340,7 +340,7 @@ widget.Paginator = function () {
         this.container.innerHTML = html;
         this.list = document.getElementById(id);
         this.list._p = this;
-        Dom.registerEvent(this.list, "click", paginatorClickHandler, false);
+        NDom.registerEvent(this.list, "click", paginatorClickHandler, false);
     };
     Paginator.prototype._updateButtonUI = function () {
         var id = widget.random();
@@ -368,7 +368,7 @@ widget.Paginator = function () {
         this.container.innerHTML = html;
         this.list = document.getElementById(id);
         this.list._p = this;
-        Dom.registerEvent(this.list, "click", paginatorClickHandler, false);
+        NDom.registerEvent(this.list, "click", paginatorClickHandler, false);
     };
     Paginator.prototype.getSelectionCount = function () {
         if (!this.renderer) return 0;

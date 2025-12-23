@@ -253,7 +253,7 @@ Pencil.setPainterCommandChecked = function (v) {
             document.body.removeAttribute("format-painter");
             // var canvasList = Pencil.getCanvasList();
             // for (var i = 0; i < canvasList.length; i++) {
-            //     Dom.removeClass(canvasList[i], "Painter");
+            //     NDom.removeClass(canvasList[i], "Painter");
             // }
             painterButton.removeAttribute("checked");
         } else {

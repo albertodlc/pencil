@@ -153,7 +153,7 @@ widget.MapView = function() {
                 || !MapView.heldInstance.p2z.originals){
             return;
         }
-        Dom.cancelEvent(event);
+        NDom.cancelEvent(event);
         
         var thiz = MapView.heldInstance;
         
@@ -205,7 +205,7 @@ widget.MapView = function() {
             //console..log("click indicator");
             return;
         }
-        Dom.cancelEvent(event);
+        NDom.cancelEvent(event);
         if (MapView.heldIndicator) {
             var dx = Dom.getEventScreenX(event) - MapView.navigatorViewIndicator._lastScreenX;
             var dy = Dom.getEventScreenY(event) - MapView.navigatorViewIndicator._lastScreenY;
@@ -249,8 +249,8 @@ widget.MapView = function() {
     }
     
     function clickHandler(event) {
-        var target = Dom.getTarget(event);
-        var container = Dom.findParentWithClass(target, "MapView");
+        var target = NDom.getTarget(event);
+        var container = NDom.findParentWithClass(target, "MapView");
         if (!container) return;
         
         var mapView = container._mapView;
@@ -259,12 +259,12 @@ widget.MapView = function() {
             mapView.focus(mapView.focusedObjectView, false);
         }
         
-        var objectView = Dom.findParentWithClass(target, "Object");
+        var objectView = NDom.findParentWithClass(target, "Object");
         if (!objectView) return;
         
         var groupedItemLink = Dom.findParentWithAttribute(target, "object-id");
         if (groupedItemLink && groupedItemLink.nodeName.toLowerCase() == "a") {
-            Dom.cancelEvent(event);
+            NDom.cancelEvent(event);
             var id = groupedItemLink.getAttribute("object-id");
             var targetView = mapView.getViewById(id);
             objectView._object._showingGroupOverview = false;
@@ -280,7 +280,7 @@ widget.MapView = function() {
     
     function globalMouseUpHandler(event) {
         if (MapView.heldInstance) {
-            Dom.removeClass(MapView.heldInstance.container, "Held");
+            NDom.removeClass(MapView.heldInstance.container, "Held");
         }          
 
         MapView.heldIndicator = null;
@@ -288,18 +288,18 @@ widget.MapView = function() {
         
         if (MapView.heldMovableObject && MapView.heldInstance.movableMoved) {
             MapView.heldInstance.movableMoved = false;
-            Dom.emitEvent("moved", MapView.heldMovableObject, {});
+            NDom.emitEvent("moved", MapView.heldMovableObject, {});
         }
         
         MapView.heldInstance = null;
         MapView.heldMovableObject = null;
     }
-    Dom.registerEvent(window, "load", function () {
-        Dom.registerEvent(document, "mousemove", globalMouseMoveHandler, false);
-        Dom.registerEvent(document, "touchmove", globalMouseMoveHandler, false);
+    NDom.registerEvent(window, "load", function () {
+        NDom.registerEvent(document, "mousemove", globalMouseMoveHandler, false);
+        NDom.registerEvent(document, "touchmove", globalMouseMoveHandler, false);
         
-        Dom.registerEvent(document, "mouseup", globalMouseUpHandler, false);
-        Dom.registerEvent(document, "touchend", globalMouseUpHandler, false);
+        NDom.registerEvent(document, "mouseup", globalMouseUpHandler, false);
+        NDom.registerEvent(document, "touchend", globalMouseUpHandler, false);
     }, false);
     
     
@@ -324,19 +324,19 @@ widget.MapView = function() {
         //shadow overlay
         var shadowOverlay = document.createElement("div");
         this.container.appendChild(shadowOverlay);
-        Dom.addClass(shadowOverlay, "ShadowOverlay");
+        NDom.addClass(shadowOverlay, "ShadowOverlay");
         
         this.imageContainer.appendChild(this.image);
         this.container.appendChild(this.canvas);
         this.mode = this.options.mode ? this.options.mode : null; 
-        Dom.addClass(this.canvas, "Canvas");
-        Dom.addClass(this.imageContainer, "Canvas");
-        Dom.addClass(this.container, "MapView");
+        NDom.addClass(this.canvas, "Canvas");
+        NDom.addClass(this.imageContainer, "Canvas");
+        NDom.addClass(this.container, "MapView");
         
         this._isAnimateXDone = true;
         this._isAnimateYDone = true;
-        Dom.addClass(this.image, "Image");
-        Dom.addClass(this.image, "Unselectable");
+        NDom.addClass(this.image, "Image");
+        NDom.addClass(this.image, "Unselectable");
         this.image.setAttribute("draggable", false);
         this.image.ondragstart = function() {return false;}
         
@@ -344,7 +344,7 @@ widget.MapView = function() {
         this.originalImageHeight = this.image.height;
 
         this.targetContainer = document.createElement("div");
-        Dom.addClass(this.targetContainer, "ObjectContainer");
+        NDom.addClass(this.targetContainer, "ObjectContainer");
         this.canvas.appendChild(this.targetContainer);
         
         this.svgCanvas.setAttribute("width", "100%");
@@ -357,7 +357,7 @@ widget.MapView = function() {
         var ARROW_PAN_DISTANCE = 20;
         var thiz = this;
         
-        this.navigationControlContainer = Dom.newDOMElement({
+        this.navigationControlContainer = NDom.newDOMElement({
             _name: "div",
             "class": "NavigationControlContainer",
             _children: [{
@@ -412,22 +412,22 @@ widget.MapView = function() {
             }]
         }, document, this);
         
-        Dom.registerEvent(this.leftNavButton, "click", function () {
+        NDom.registerEvent(this.leftNavButton, "click", function () {
             thiz.panBy(ARROW_PAN_DISTANCE, 0);
         });
-        Dom.registerEvent(this.rightNavButton, "click", function () {
+        NDom.registerEvent(this.rightNavButton, "click", function () {
             thiz.panBy(0 - ARROW_PAN_DISTANCE, 0);
         });
-        Dom.registerEvent(this.upNavButton, "click", function () {
+        NDom.registerEvent(this.upNavButton, "click", function () {
             thiz.panBy(0, ARROW_PAN_DISTANCE);
         });
-        Dom.registerEvent(this.downNavButton, "click", function () {
+        NDom.registerEvent(this.downNavButton, "click", function () {
             thiz.panBy(0, 0 - ARROW_PAN_DISTANCE);
         });
-        Dom.registerEvent(this.zoomInNavButton, "click", function () {
+        NDom.registerEvent(this.zoomInNavButton, "click", function () {
             thiz.tryZoomBy(1.2, true);
         });        
-        Dom.registerEvent(this.zoomOutNavButton, "click", function () {
+        NDom.registerEvent(this.zoomOutNavButton, "click", function () {
             thiz.tryZoomBy(1 / 1.2, true);
         });        
         this.container.appendChild(this.navigationControlContainer);
@@ -436,19 +436,19 @@ widget.MapView = function() {
         
         this.p2z = {};
         
-        Dom.registerEvent(this.container, "wheel", function wheelHandler(event) { thiz.onWheel(event); }, false);
+        NDom.registerEvent(this.container, "wheel", function wheelHandler(event) { thiz.onWheel(event); }, false);
         
         var handleMouseDown = function (event) {
             if (!event.touches || event.touches.length == 1) {
-                //Dom.cancelEvent(event);
+                //NDom.cancelEvent(event);
                 //console..log("Set held instance", event);
                 MapView.heldInstance = thiz;
-                Dom.addClass(thiz.container, "Held");
+                NDom.addClass(thiz.container, "Held");
                 MapView._lastScreenX = Dom.getEventScreenX(event);
                 MapView._lastScreenY = Dom.getEventScreenY(event);
                 
-                var target = Dom.getTarget(event);
-                var movableObject = Dom.findParentWithClass(target, "MovableObject");
+                var target = NDom.getTarget(event);
+                var movableObject = NDom.findParentWithClass(target, "MovableObject");
                 MapView.heldMovableObject = movableObject;
                 if (movableObject) {
                     movableObject._ox = movableObject._object.x;
@@ -465,7 +465,7 @@ widget.MapView = function() {
         };
         
         var handleKeyPress = function (event) {
-            var event = Dom.getEvent(event);
+            var event = NDom.getEvent(event);
             var panDistance = ARROW_PAN_DISTANCE;
             if (event.shiftKey) panDistance *= 5;
             var handled = true;
@@ -492,21 +492,21 @@ widget.MapView = function() {
                 handled = false;
             }
             
-            if (handled) Dom.cancelEvent(event);
+            if (handled) NDom.cancelEvent(event);
         };
         
-        Dom.registerEvent(this.container, "mousedown", handleMouseDown, false);
-        Dom.registerEvent(this.container, "touchstart", handleMouseDown, false);
-        Dom.registerEvent(this.container, "keydown", handleKeyPress, false);
+        NDom.registerEvent(this.container, "mousedown", handleMouseDown, false);
+        NDom.registerEvent(this.container, "touchstart", handleMouseDown, false);
+        NDom.registerEvent(this.container, "keydown", handleKeyPress, false);
         
-        Dom.registerEvent(this.container, "mousemove", function (event) {
-            Dom.cancelEvent(event);
+        NDom.registerEvent(this.container, "mousemove", function (event) {
+            NDom.cancelEvent(event);
             var pos = Dom.getEventOffset(event, thiz.container);
             thiz._lastOffsetX = pos.x;
             thiz._lastOffsetY = pos.y;
         }, false);
         
-        Dom.registerEvent(this.container, "click", clickHandler, false);
+        NDom.registerEvent(this.container, "click", clickHandler, false);
         
         //creating the navigator view
         var nw = 80;
@@ -515,20 +515,20 @@ widget.MapView = function() {
         this.navigatorViewIndicatorHeight = nh;
         
         this.navigatorViewContainerWrapper = document.createElement("div");
-        Dom.addClass(this.navigatorViewContainerWrapper, "NavigatorViewContainerWrapper");
+        NDom.addClass(this.navigatorViewContainerWrapper, "NavigatorViewContainerWrapper");
         this.container.appendChild(this.navigatorViewContainerWrapper);
         this.navigatorViewContainerWrapper.style.width = (nw + 20) + "px";
         this.navigatorViewContainerWrapper.style.height = (nh + 20) + "px";
         
         this.navigatorViewContainer = document.createElement("div");
         MapView.navigatorViewContainer = this.navigatorViewContainer;
-        Dom.addClass(this.navigatorViewContainer, "NavigatorViewContainer");
+        NDom.addClass(this.navigatorViewContainer, "NavigatorViewContainer");
         this.navigatorViewContainerWrapper.appendChild(this.navigatorViewContainer);
         this.navigatorViewContainer.style.width = nw + "px";
         this.navigatorViewContainer.style.height = nh + "px";
         this.navigatorViewContainer.appendChild(this.image.cloneNode());
-        Dom.registerEvent(this.navigatorViewContainer, "mousedown", function(event) {
-            Dom.cancelEvent(event);
+        NDom.registerEvent(this.navigatorViewContainer, "mousedown", function(event) {
+            NDom.cancelEvent(event);
             if (MapView.heldIndicator) return;
             MapView.clickIndicator = thiz;
         }, false);
@@ -537,11 +537,11 @@ widget.MapView = function() {
         this.navigatorViewIndicator.style.position = "absolute";
         
         MapView.navigatorViewIndicator = this.navigatorViewIndicator;
-        Dom.addClass(this.navigatorViewIndicator, "NavigatorViewIndicator");
+        NDom.addClass(this.navigatorViewIndicator, "NavigatorViewIndicator");
         this.navigatorViewContainer.appendChild(this.navigatorViewIndicator);
-        Dom.registerEvent(this.navigatorViewIndicator, "mousedown", function(event){
+        NDom.registerEvent(this.navigatorViewIndicator, "mousedown", function(event){
             
-            Dom.cancelEvent(event);
+            NDom.cancelEvent(event);
             
             thiz.navigatorViewIndicator._lastScreenX = Dom.getEventScreenX(event);
             thiz.navigatorViewIndicator._lastScreenY = Dom.getEventScreenY(event);
@@ -568,15 +568,15 @@ widget.MapView = function() {
         $(this.targetContainer).on('shown.bs.popover', function (event) {
             //console.log("popup show on target container..")
             var popup = $(event.target).data("bs.popover").$tip[0];
-            var px = Dom.getOffsetLeft(popup);
-            var py = Dom.getOffsetTop(popup);
-            var pw = Dom.getOffsetWidth(popup);
-            var ph = Dom.getOffsetHeight(popup) + 25; //including the object icon below it
+            var px = NDom.getOffsetLeft(popup);
+            var py = NDom.getOffsetTop(popup);
+            var pw = NDom.getOffsetWidth(popup);
+            var ph = NDom.getOffsetHeight(popup) + 25; //including the object icon below it
             
-            var cx = Dom.getOffsetLeft(thiz.container);
-            var cy = Dom.getOffsetTop(thiz.container);
-            var cw = Dom.getOffsetWidth(thiz.container);
-            var ch = Dom.getOffsetHeight(thiz.container);
+            var cx = NDom.getOffsetLeft(thiz.container);
+            var cy = NDom.getOffsetTop(thiz.container);
+            var cw = NDom.getOffsetWidth(thiz.container);
+            var ch = NDom.getOffsetHeight(thiz.container);
             
             var PADDING = 30;
             
@@ -768,10 +768,10 @@ widget.MapView = function() {
                         "<div class=\"ImageContainer\"><img class=\"Icon\" style=\"visibility: hidden;\" onload=\"centerCrop(this);\" src=\"" + image + "\"/></div>" +
                         "<ul>";
                 
-                    content += "<li><strong>" + Messages["exciter_battery_state_exciterName"] + ":</strong> <span>" + Dom.htmlEncode(exciter.name) + "</span></li>";
+                    content += "<li><strong>" + Messages["exciter_battery_state_exciterName"] + ":</strong> <span>" + NDom.htmlEncode(exciter.name) + "</span></li>";
                 
                 if (exciter.exciterTypeName) {
-                    content += "<li><strong>" + Messages["type"] + "</strong> <span>" + Dom.htmlEncode(exciter.exciterTypeName) + "</span></li>";
+                    content += "<li><strong>" + Messages["type"] + "</strong> <span>" + NDom.htmlEncode(exciter.exciterTypeName) + "</span></li>";
                 }
                 
                 content += "</ul></div>";
@@ -851,20 +851,20 @@ widget.MapView = function() {
                         "<div class=\"ImageContainer\"><img class=\"Icon\" style=\"visibility: hidden;\" fallback-src=\"" + fallbackIcon  + "\" onerror=\"showFallback(this);\" onload=\"centerCrop(this);\" /></div>" +
                         "<ul>";
                 if (zone.shortName) {
-                    content += "<li><strong>" + Messages["zone_wizard_general_tab_zone_short_name_label"] + ":</strong> <span>" + Dom.htmlEncode(zone.shortName) + "</span></li>";
+                    content += "<li><strong>" + Messages["zone_wizard_general_tab_zone_short_name_label"] + ":</strong> <span>" + NDom.htmlEncode(zone.shortName) + "</span></li>";
                 }
                 
                 if (zone.parent) {
-                    content += "<li><strong>" + Messages["zone_wizard_general_tab_parent_zone_label"] + ":</strong> <span>" + Dom.htmlEncode(zone.parent.name) + "</span></li>";
+                    content += "<li><strong>" + Messages["zone_wizard_general_tab_parent_zone_label"] + ":</strong> <span>" + NDom.htmlEncode(zone.parent.name) + "</span></li>";
                 }
                 
                 if (zone.zoneBusinessStatus) {
-                    content += "<li><strong>" + Messages["common_property_label_zone_status"] + ":</strong> <span>" + Dom.htmlEncode(zone.zoneBusinessStatus.name) + "</span></li>";
+                    content += "<li><strong>" + Messages["common_property_label_zone_status"] + ":</strong> <span>" + NDom.htmlEncode(zone.zoneBusinessStatus.name) + "</span></li>";
                 }
                 if (zone.zoneTypes && zone.zoneTypes.length > 0) {
-                    content += "<li><strong>" + Messages["type"] + ":</strong> <span>" + Dom.htmlEncode(zone.zoneTypes[0].name) + "</span></li>";
+                    content += "<li><strong>" + Messages["type"] + ":</strong> <span>" + NDom.htmlEncode(zone.zoneTypes[0].name) + "</span></li>";
                 }
-                content += "<li><strong>" + Messages["last_updated"] + "</strong> <span>" + Dom.htmlEncode(DateUtil.transportToDisplay(zone.updated)) + "</span></li>";
+                content += "<li><strong>" + Messages["last_updated"] + "</strong> <span>" + NDom.htmlEncode(DateUtil.transportToDisplay(zone.updated)) + "</span></li>";
                 
                 content += "</ul></div>" 
                 if (showZoneDetail) {
@@ -939,7 +939,7 @@ widget.MapView = function() {
         }); //avoid loader message
     }
     MapView.prototype.onWheel = function(event) {
-        Dom.cancelEvent(event);
+        NDom.cancelEvent(event);
         
         var f = 1.2;
         if (event.deltaY > 0) f = 1 / f;
@@ -951,8 +951,8 @@ widget.MapView = function() {
         if (r < this.minZoom || r > this.maxZoom) {
             return;
         }
-        var cx = useCenter ? Dom.getOffsetWidth(this.container) / 2 : this._lastOffsetX;
-        var cy = useCenter ? Dom.getOffsetHeight(this.container) / 2 : this._lastOffsetY;
+        var cx = useCenter ? NDom.getOffsetWidth(this.container) / 2 : this._lastOffsetX;
+        var cy = useCenter ? NDom.getOffsetHeight(this.container) / 2 : this._lastOffsetY;
         var dx = (cx - this.X) * (f - 1);
         var dy = (cy - this.Y) * (f - 1);
         
@@ -978,11 +978,11 @@ widget.MapView = function() {
     MapView.prototype.focus = function (view, focus) {
         
          if (!focus) {
-             Dom.removeClass(view, "FocusedObject");
+             NDom.removeClass(view, "FocusedObject");
              view.blur();
              this.focusedObjectView = null;
          } else {
-             Dom.addClass(view, "FocusedObject");
+             NDom.addClass(view, "FocusedObject");
              view.focus();
              this.focusedObjectView = view;
          }
@@ -1043,7 +1043,7 @@ widget.MapView = function() {
         this._addOnShowListener(objectView);
         
         var thiz = this;
-        Dom.registerEvent(polygonView, "click", function(e){
+        NDom.registerEvent(polygonView, "click", function(e){
             //console.log(e.target);
             if (doNoFireClick) {
                 //console..log("Do not fire");
@@ -1051,13 +1051,13 @@ widget.MapView = function() {
                 return;
             }
             thiz.closeAllPopOvers();
-            Dom.cancelEvent(e);
+            NDom.cancelEvent(e);
             var p = objectView._pop.data("bs.popover");
             objectView._pop.popover("show");
             
         });
 
-        Dom.registerEvent(polygonView, "mouseover", function(){
+        NDom.registerEvent(polygonView, "mouseover", function(){
             objectView.setAttribute("filter", "url(#filterHover)");
             if (polygonView.applyGradient) {
                 var fill = polygonView.getAttribute("fill");
@@ -1065,7 +1065,7 @@ widget.MapView = function() {
             }
             //objectView.setAttribute("fill", "url(#)");
         });
-        Dom.registerEvent(polygonView, "mouseout", function(){
+        NDom.registerEvent(polygonView, "mouseout", function(){
             objectView.setAttribute("filter", "none");
             if (polygonView.child) {
                 var fill = polygonView.getAttribute("fill");
@@ -1134,10 +1134,10 @@ widget.MapView = function() {
     MapView.prototype.setMovable = function (objectView, movable) {
         objectView._object.movable = movable;
         if (movable) {
-            Dom.addClass(objectView, "MovableObject");
+            NDom.addClass(objectView, "MovableObject");
             this.closeAllPopOvers();
         } else {
-            Dom.removeClass(objectView, "MovableObject");
+            NDom.removeClass(objectView, "MovableObject");
         }
     };
     MapView.prototype.addObject = function(object) {
@@ -1166,9 +1166,9 @@ widget.MapView = function() {
         objectView._object = object;
         objectView._counterId = counterId;
         
-        Dom.addClass(objectView, "Object");
-        if (object.movable) Dom.addClass(objectView, "MovableObject");
-        if (object.extraClass) Dom.addClass(objectView, object.extraClass);
+        NDom.addClass(objectView, "Object");
+        if (object.movable) NDom.addClass(objectView, "MovableObject");
+        if (object.extraClass) NDom.addClass(objectView, object.extraClass);
         
         this.targetContainer.appendChild(objectView);
         this.objectViews.push(objectView);
@@ -1187,7 +1187,7 @@ widget.MapView = function() {
         if (!object.movable) {
             this.ensurePopOverCreated(objectView);
             this.setPopOverVisible(objectView, object.primary, "closeAll");
-            Dom.registerEvent(objectView.firstChild, "click", function(e) {
+            NDom.registerEvent(objectView.firstChild, "click", function(e) {
                 if (object.movable) return;
                 if (doNoFireClick) {
                     doNoFireClick = false;
@@ -1195,7 +1195,7 @@ widget.MapView = function() {
                     if (objectView._type != "asset") return;
                 }
                 
-                var target = Dom.getTarget(e);
+                var target = NDom.getTarget(e);
                 if (target.getAttribute("type") != null) {
                     return;
                 }
@@ -1211,7 +1211,7 @@ widget.MapView = function() {
                     items.unshift(objectView);
                     
                     for (var i = 0; i < items.length; i ++) {
-                        html += "<li><a href=\"#\" object-id=\"" + items[i]._id + "\">" + Dom.htmlEncode(items[i]._object.title) + "</a></li>";
+                        html += "<li><a href=\"#\" object-id=\"" + items[i]._id + "\">" + NDom.htmlEncode(items[i]._object.title) + "</a></li>";
                     }
                     
                     html += "</ul></div>";
@@ -1290,13 +1290,13 @@ widget.MapView = function() {
         if (objectView._isSVG) {
             return false;
         }
-        var boundTop = Dom.getOffsetTop(this.container);
-        var boundLeft = Dom.getOffsetLeft(this.container);
-        var boundRight = boundLeft + Dom.getOffsetWidth(this.container);
-        var boundBottom = boundTop + Dom.getOffsetHeight(this.container)
+        var boundTop = NDom.getOffsetTop(this.container);
+        var boundLeft = NDom.getOffsetLeft(this.container);
+        var boundRight = boundLeft + NDom.getOffsetWidth(this.container);
+        var boundBottom = boundTop + NDom.getOffsetHeight(this.container)
         var pos = {
-            left: Dom.getOffsetLeft(objectView),
-            top:  Dom.getOffsetTop(objectView),
+            left: NDom.getOffsetLeft(objectView),
+            top:  NDom.getOffsetTop(objectView),
             width: objectView.offsetWidth,
             height: objectView.offsetHeight
         };
@@ -1411,8 +1411,8 @@ widget.MapView = function() {
                 var x = object.x * this.ratio;
                 var y = object.y * this.ratio;
                 //console..log(x, y);
-                var popoverHeight = Dom.getOffsetHeight(popover);
-                var popoverWidth = Dom.getOffsetWidth(popover);
+                var popoverHeight = NDom.getOffsetHeight(popover);
+                var popoverWidth = NDom.getOffsetWidth(popover);
                 var left = 0;
                 var top = 0; 
                 var position = objectView._popPlacement;
@@ -1484,8 +1484,8 @@ widget.MapView = function() {
         
 
         try {
-            var w = Math.round(Dom.getOffsetWidth(this.container) * Dom.getOffsetWidth(this.navigatorViewContainer) / cw);
-            var h = Math.round(Dom.getOffsetHeight(this.container) * Dom.getOffsetHeight(this.navigatorViewContainer) / ch);
+            var w = Math.round(NDom.getOffsetWidth(this.container) * NDom.getOffsetWidth(this.navigatorViewContainer) / cw);
+            var h = Math.round(NDom.getOffsetHeight(this.container) * NDom.getOffsetHeight(this.navigatorViewContainer) / ch);
             
             this.navigatorViewIndicator.style.width = w + "px";
             this.navigatorViewIndicator.style.height = h + "px";
@@ -1525,7 +1525,7 @@ widget.MapView = function() {
         this.setNavigtorVisible(false);
         this.image.src = "";
         this.image.style.display = "none";
-        Dom.empty(this.svgCanvas);
+        NDom.empty(this.svgCanvas);
         this.objectViews = [];
         this.X = 0;
         this.Y = 0;
@@ -1577,9 +1577,9 @@ widget.MapView = function() {
             view._process = false;
             views.push(view);
             
-            Dom.removeClass(view, "Grouped");
-            Dom.removeClass(view, "GroupLeader");
-            Dom.removeClass(view, "GroupLeaderAlone");
+            NDom.removeClass(view, "Grouped");
+            NDom.removeClass(view, "GroupLeader");
+            NDom.removeClass(view, "GroupLeaderAlone");
         }
         
         var visibleViews = [];
@@ -1589,17 +1589,17 @@ widget.MapView = function() {
             var result = this._findNearest(visibleViews, view);
             if (result.view && result.distance < THRESHOLD) { //to close to an existing group, join
                 result.view.nearBy.push(view);
-                Dom.addClass(view, "Grouped");
+                NDom.addClass(view, "Grouped");
                 
                 var title = Dom.get(""+ result.view._counterId);
                 var count = result.view.nearBy.length + 1;
                 if (title) {
                     title.innerHTML = "" + (count);
                 }
-                Dom.removeClass(result.view, "GroupLeaderAlone");
+                NDom.removeClass(result.view, "GroupLeaderAlone");
             } else {    //not close to any existing group, form a new group, initially alone.
-                Dom.addClass(view, "GroupLeader");
-                Dom.addClass(view, "GroupLeaderAlone");
+                NDom.addClass(view, "GroupLeader");
+                NDom.addClass(view, "GroupLeaderAlone");
                 visibleViews.push(view);
             }
         }
@@ -1610,13 +1610,13 @@ widget.MapView = function() {
             return;
         }
         
-        var cvWidth = Dom.getOffsetWidth(this.canvas);
-        var cvHeight = Dom.getOffsetHeight(this.canvas);
+        var cvWidth = NDom.getOffsetWidth(this.canvas);
+        var cvHeight = NDom.getOffsetHeight(this.canvas);
         if (cvWidth == 0 || cvHeight == 0) return;
         
         //console..log("canvas ", cvWidth , ",", cvHeight);
-        var nvWidth = Dom.getOffsetWidth(this.navigatorViewContainer);
-        var nvHeight = Dom.getOffsetHeight(this.navigatorViewContainer);
+        var nvWidth = NDom.getOffsetWidth(this.navigatorViewContainer);
+        var nvHeight = NDom.getOffsetHeight(this.navigatorViewContainer);
         if (nvWidth == 0 || nvHeight == 0) return;
         //console..log("nv w ", nvWidth , ",", nvHeight);
         
@@ -1716,8 +1716,8 @@ widget.MapView = function() {
         var object = view._object;
         var x = object.x * this.ratio;
         var y = object.y * this.ratio;
-        var W = Dom.getOffsetWidth(this.container);
-        var H = Dom.getOffsetHeight(this.container);
+        var W = NDom.getOffsetWidth(this.container);
+        var H = NDom.getOffsetHeight(this.container);
         var nx = W/2 - x;
         var ny = H/2 - y;
         var dx = nx - this.X;
@@ -1784,30 +1784,30 @@ widget.MapView = function() {
     };
     
     MapView.prototype.setCenterCrop = function() {
-        var cw = Math.round(Dom.getOffsetWidth(this.container) * Dom.getOffsetWidth(this.navigatorViewContainer)) / this.navigatorViewIndicatorWidth;
+        var cw = Math.round(NDom.getOffsetWidth(this.container) * NDom.getOffsetWidth(this.navigatorViewContainer)) / this.navigatorViewIndicatorWidth;
         var ratio = cw / this.originalImageWidth;
         this.ratio = ratio;
         this._invalidateZoom();
         var nh = parseInt(this.navigatorViewIndicator.style.height.replace("px", ""), 10);
         var box = Dom.getBoundingClientRect(this.navigatorViewContainer);
         if (nh > box.height) {
-            var ch = Math.round(Dom.getOffsetHeight(this.container) * Dom.getOffsetHeight(this.navigatorViewContainer)) / box.height;
+            var ch = Math.round(NDom.getOffsetHeight(this.container) * NDom.getOffsetHeight(this.navigatorViewContainer)) / box.height;
             this.ratio = ch / this.originalImageHeight;
             this._invalidateZoom();
         }
     };
     
     MapView.prototype.moveBy = function(x, y) {
-        var mapX = x * Dom.getOffsetWidth(this.canvas) / Dom.getOffsetWidth(this.navigatorViewContainer);
-        var mapY = y * Dom.getOffsetHeight(this.canvas) / Dom.getOffsetHeight(this.navigatorViewContainer);
+        var mapX = x * NDom.getOffsetWidth(this.canvas) / NDom.getOffsetWidth(this.navigatorViewContainer);
+        var mapY = y * NDom.getOffsetHeight(this.canvas) / NDom.getOffsetHeight(this.navigatorViewContainer);
         this.panTo(-mapX, -mapY);
     };
     
     MapView.prototype.getLimitedValue = function(dx, dy) {
         var x = this.X + dx;
         var y = this.Y + dy;
-        var newX = Math.round((0 - x) / Dom.getOffsetWidth(this.canvas) * Dom.getOffsetWidth(this.navigatorViewContainer));
-        var newY = Math.round((0 - y) / Dom.getOffsetHeight(this.canvas) * Dom.getOffsetHeight(this.navigatorViewContainer));
+        var newX = Math.round((0 - x) / NDom.getOffsetWidth(this.canvas) * NDom.getOffsetWidth(this.navigatorViewContainer));
+        var newY = Math.round((0 - y) / NDom.getOffsetHeight(this.canvas) * NDom.getOffsetHeight(this.navigatorViewContainer));
         var containerBox = Dom.getBoundingClientRect(this.navigatorViewContainer);
         var indicatorBox = Dom.getBoundingClientRect(this.navigatorViewIndicator);
         var ry = 0;
@@ -1853,23 +1853,23 @@ widget.MapView = function() {
                 "<div class=\"ImageContainer\"><img class=\"Icon\" style=\"visibility: hidden;\" fallback-src=\"" + fallbackImage + "\" onload=\"centerCrop(this);\" onerror=\"showFallback(this);\" /></div>" +
                 "<ul>";
         if (assetDTO && assetDTO.applicationId) {
-            content += "<li><strong>" + Messages["tag_assets_extId_label"] +"</strong> <span>" + Dom.htmlEncode(assetDTO && assetDTO.applicationId) + "</span></li>";
+            content += "<li><strong>" + Messages["tag_assets_extId_label"] +"</strong> <span>" + NDom.htmlEncode(assetDTO && assetDTO.applicationId) + "</span></li>";
         }
         var bs = location.asset.assetBusinessStatus
         var status =  bs ? bs.name : "";
         
         var dateCreated = location.dateCreated || "";
         if (dateCreated.length > 0) {
-            content += "<li><strong>" + Messages["asset_last_seen_label"] + "</strong> <span>" + Dom.htmlEncode(DateUtil.transportToDisplay(dateCreated)) + "</span></li>";
+            content += "<li><strong>" + Messages["asset_last_seen_label"] + "</strong> <span>" + NDom.htmlEncode(DateUtil.transportToDisplay(dateCreated)) + "</span></li>";
         }
-        content += "<li><strong>" + Messages["common_property_label_location"] + ":</strong> <span>" + Dom.htmlEncode(location.shortLocationPath || "") + "</span></li>";
+        content += "<li><strong>" + Messages["common_property_label_location"] + ":</strong> <span>" + NDom.htmlEncode(location.shortLocationPath || "") + "</span></li>";
         
         if ("true" === getConfig(CURRENT_APP.toLowerCase(), "amw2_config_locator_show_business_status_icons").smallValue
                 && bs) {
-            content += "<li><strong>" + Messages["tag_assets_business_status_label"] + "</strong>" + (bs ? ("<span class=\"IconicLabel\"><img src=\"" + CONTEXT_PATH + bs.icon + "\" /><span>") : "") + "<span>" + Dom.htmlEncode(status) + "</span></li>";
+            content += "<li><strong>" + Messages["tag_assets_business_status_label"] + "</strong>" + (bs ? ("<span class=\"IconicLabel\"><img src=\"" + CONTEXT_PATH + bs.icon + "\" /><span>") : "") + "<span>" + NDom.htmlEncode(status) + "</span></li>";
         }
         if (assetDTO && assetDTO.primaryCategory) {
-            content += "<li><strong>" + Messages["primary_category_label"] + ":</strong> <span>" + Dom.htmlEncode(assetDTO.primaryCategory.name) + "</span></li>";
+            content += "<li><strong>" + Messages["primary_category_label"] + ":</strong> <span>" + NDom.htmlEncode(assetDTO.primaryCategory.name) + "</span></li>";
         }
         
         if (asset.measurementResults) {
@@ -1917,22 +1917,22 @@ widget.MapView = function() {
                        } else if (def.customPropertyType == "BOOLEAN") {
                            value = ("" + value).toLowerCase() == "true" ? Messages["yes"] : Messages["no"];
                        }
-                       content += "<li><strong>" + def.name + ":</strong> <span>" + Dom.htmlEncode(value) + "</span></li>";
+                       content += "<li><strong>" + def.name + ":</strong> <span>" + NDom.htmlEncode(value) + "</span></li>";
                    } 
                 }
             }
         }
         var updated = assetDTO.modifiedDate || "";
         if (updated.length > 0) {
-            content += "<li><strong>" + Messages["last_updated"] + "</strong> <span>" + Dom.htmlEncode(DateUtil.transportToDisplay(updated)) + "</span></li>";
+            content += "<li><strong>" + Messages["last_updated"] + "</strong> <span>" + NDom.htmlEncode(DateUtil.transportToDisplay(updated)) + "</span></li>";
         }
         
         if (asset.assembly) {
             var physical = asset.assemblyConnectionType == "PHYSICAL";
-            content += "<li><strong>" + Messages["assembly_tab_title"] + ":</strong> <span><i class=\"fa fa-" + (physical ? "link" : "unlink") + "\"></i> <a onclick=\"showAssetDetail(" + asset.assembly.id + "); return false;\" primary=\"true\" href=\"#"+ asset.assembly.id + "\">" + Dom.htmlEncode(asset.assembly.name) + "</a></span></li>";
+            content += "<li><strong>" + Messages["assembly_tab_title"] + ":</strong> <span><i class=\"fa fa-" + (physical ? "link" : "unlink") + "\"></i> <a onclick=\"showAssetDetail(" + asset.assembly.id + "); return false;\" primary=\"true\" href=\"#"+ asset.assembly.id + "\">" + NDom.htmlEncode(asset.assembly.name) + "</a></span></li>";
         }
         if (asset.container) {
-            content += "<li><strong>" + Messages["container_tab_title"] + ":</strong> <a onclick=\"showAssetDetail(" + asset.container.id + "); return false;\" primary=\"true\" href=\"#"+ asset.container.id + "\">" + Dom.htmlEncode(asset.container.name) + "</a></li>";
+            content += "<li><strong>" + Messages["container_tab_title"] + ":</strong> <a onclick=\"showAssetDetail(" + asset.container.id + "); return false;\" primary=\"true\" href=\"#"+ asset.container.id + "\">" + NDom.htmlEncode(asset.container.name) + "</a></li>";
         }
         
         content += "</ul>";
@@ -1993,7 +1993,7 @@ widget.MapView = function() {
                 $eventService.findEventsAssociatedWithAsset(_long(assetDTO.id), function(event) {
                     var eventHTML = "";
                     if (event) {
-                        eventHTML = "<img src=\"" + CONTEXT_PATH + event.eventTypeIcon + "\" /> " + Dom.htmlEncode(event.eventSpec.name);
+                        eventHTML = "<img src=\"" + CONTEXT_PATH + event.eventTypeIcon + "\" /> " + NDom.htmlEncode(event.eventSpec.name);
                         eventHTML += " (" + DateUtil.transportToDisplay(event.dateCreated) + ")";
                     } else {
                         eventHTML = "<span class=\"NoEvent\">" + Messages["no_associated_events_msg"] + "</span>"

@@ -16,16 +16,16 @@ SVGExporter.prototype.getRasterizedPageDestination = function (baseDir) {
 
 SVGExporter.prototype.export = function (doc, options, destFile, xmlFile, callback) {
     if (!this.xsltDOM) {
-        this.xsltDOM = Dom.parseFile(getStaticFilePath("pencil-core/exporter/Pencil2SVG.xslt"));
+        this.xsltDOM = NDom.parseFile(getStaticFilePath("pencil-core/exporter/Pencil2SVG.xslt"));
     }
 
     this.xsltProcessor.reset();
     this.xsltProcessor.importStylesheet(this.xsltDOM);
 
-    var sourceDOM = Dom.parseFile(xmlFile);
+    var sourceDOM = NDom.parseFile(xmlFile);
     var result = this.xsltProcessor.transformToDocument(sourceDOM);
 
-    Dom.serializeNodeToFile(result, destFile);
+    NDom.serializeNodeToFile(result, destFile);
 
     callback();
 };

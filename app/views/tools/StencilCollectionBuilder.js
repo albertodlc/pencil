@@ -31,7 +31,7 @@ collection.BOUND_CALCULATOR = {
             var func = RegExp.$3;
             var delta = RegExp.$4;
             if (targetName) {
-                var shapeNode = Dom.findUpward(F._target, {eval: function (node) {
+                var shapeNode = NDom.findUpward(F._target, {eval: function (node) {
                     return node.hasAttributeNS && node.getAttributeNS(PencilNamespaces.p, "type") == "Shape";
                 }});
 
@@ -436,7 +436,7 @@ collection.generatePathDOM = function (svgPathData, size, keepPathStyle) {
         });
     }
 
-    return Dom.newDOMFragment(specs);
+    return NDom.newDOMFragment(specs);
 };
 collection.generateAdvancedRectPathData = function (box, strokeStyle, r, withTop, withRight, withBottom, withLeft, withTopLeftCorner, withTopRightCorner, withBottomRightCorner, withBottomLeftCorner) {
     var x = r * 4 * (Math.sqrt(2) - 1) / 3;
@@ -501,7 +501,7 @@ collection.generateAdvancedRectPathData = function (box, strokeStyle, r, withTop
 collection.toColorizedDOMNode = function (svgXML, color) {
     if (!svgXML) return document.createDocumentFragment();
 
-    var svg = Dom.parseDocument(svgXML);
+    var svg = NDom.parseDocument(svgXML);
 
     if (color) {
         var c = color.toRGBAString();
@@ -749,7 +749,7 @@ StencilCollectionBuilder.prototype.buildImpl = function (options, onBuildDoneCal
     shapes.setAttribute("description", options.description);
     shapes.setAttribute("url", options.url);
 
-    shapes.appendChild(Dom.newDOMElement({
+    shapes.appendChild(NDom.newDOMElement({
         _name: "Script",
         _uri: PencilNamespaces.p,
         comments: "Built-in util script",
@@ -757,7 +757,7 @@ StencilCollectionBuilder.prototype.buildImpl = function (options, onBuildDoneCal
     }));
 
     if (options.extraScript) {
-        shapes.appendChild(Dom.newDOMElement({
+        shapes.appendChild(NDom.newDOMElement({
             _name: "Script",
             _uri: PencilNamespaces.p,
             comments: "Extra script",
@@ -767,7 +767,7 @@ StencilCollectionBuilder.prototype.buildImpl = function (options, onBuildDoneCal
 
     var globalPropertySpecs = [];
 
-    shapes.appendChild(Dom.newDOMElement({
+    shapes.appendChild(NDom.newDOMElement({
         _name: "Properties",
         _uri: PencilNamespaces.p,
         _children: [
@@ -850,7 +850,7 @@ StencilCollectionBuilder.prototype.buildImpl = function (options, onBuildDoneCal
         console.log(resourceList);
 
         var script = "collection.RESOURCE_LIST = " + JSON.stringify(resourceList) + ";\n" + StencilCollectionBuilder.COLLECTION_RESOURCE_SCRIPT;
-        shapes.appendChild(Dom.newDOMElement({
+        shapes.appendChild(NDom.newDOMElement({
             _name: "Script",
             _uri: PencilNamespaces.p,
             comments: "Resource script",
@@ -906,7 +906,7 @@ StencilCollectionBuilder.prototype.buildImpl = function (options, onBuildDoneCal
                 fontsSpec._children.push(fontSpec);
             });
 
-            shapes.appendChild(Dom.newDOMElement(fontsSpec));
+            shapes.appendChild(NDom.newDOMElement(fontsSpec));
         }
         
         // console.log("Private collection\n", privateCollection.toXMLDom());
@@ -953,7 +953,7 @@ StencilCollectionBuilder.prototype.buildImpl = function (options, onBuildDoneCal
         //append global propert fragment
         if (globalPropertySpecs && globalPropertySpecs.length > 0) {
             var globalGroupNode = NDom.getSingle("/p:Shapes/p:Properties/p:PropertyGroup", dom);
-            globalGroupNode.appendChild(Dom.newDOMFragment(globalPropertySpecs, dom));
+            globalGroupNode.appendChild(NDom.newDOMFragment(globalPropertySpecs, dom));
 
             for (var spec of globalPropertySpecs) {
                 var prop = spec._prop;
@@ -1001,7 +1001,7 @@ StencilCollectionBuilder.prototype.buildImpl = function (options, onBuildDoneCal
                 }
 
                 var groupNode = NDom.getSingle("./p:Properties/p:PropertyGroup[@holder='true']", shapeDefNode);
-                groupNode.appendChild(Dom.newDOMFragment(shapeDefNode._propertyFragmentSpec, dom));
+                groupNode.appendChild(NDom.newDOMFragment(shapeDefNode._propertyFragmentSpec, dom));
             }
         });
 
@@ -1085,11 +1085,11 @@ StencilCollectionBuilder.prototype.buildImpl = function (options, onBuildDoneCal
                 ]
             };
 
-            if (page.note) shapeSpec.description = Dom.htmlStrip(page.note);
+            if (page.note) shapeSpec.description = NDom.htmlStrip(page.note);
 
             var propertyMap = {};
 
-            var contentNode = Dom.newDOMElement({
+            var contentNode = NDom.newDOMElement({
                 _name: "Content",
                 _uri: PencilNamespaces.p
             }, dom);
@@ -1317,7 +1317,7 @@ StencilCollectionBuilder.prototype.buildImpl = function (options, onBuildDoneCal
                 actions.push(snapActionNode);
             }
 
-            var shape = Dom.newDOMElement(shapeSpec, dom);
+            var shape = NDom.newDOMElement(shapeSpec, dom);
             if (!contentNode.hasChildNodes()) return;
             shape.appendChild(contentNode);
             shapes.appendChild(shape);
@@ -1340,7 +1340,7 @@ StencilCollectionBuilder.prototype.buildImpl = function (options, onBuildDoneCal
 };
 
 StencilCollectionBuilder.prototype.saveResultDom = function (dom, privateCollection, dir, options, callback) {
-    var xsltDOM = Dom.parseDocument(
+    var xsltDOM = NDom.parseDocument(
 `<xsl:stylesheet version="1.0"
  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
  xmlns:p="http://www.evolus.vn/Namespace/Pencil">
@@ -1358,7 +1358,7 @@ StencilCollectionBuilder.prototype.saveResultDom = function (dom, privateCollect
 
     var result = xsltProcessor.transformToDocument(dom);
 
-    Dom.serializeNodeToFile(result, path.join(dir, "Definition.xml"));
+    NDom.serializeNodeToFile(result, path.join(dir, "Definition.xml"));
     
     if (privateCollection && privateCollection.shapeDefs.length > 0) {
         var xml = PrivateCollectionManager.getCollectionsExportedXML([privateCollection]);
@@ -1572,7 +1572,7 @@ StencilCollectionBuilder.prototype.processShortcuts = function (pages, dom, dir,
             });
             
         }, function () {
-            var fragment = Dom.newDOMFragment(shortcutSpecs, dom);
+            var fragment = NDom.newDOMFragment(shortcutSpecs, dom);
             dom.documentElement.appendChild(fragment);
             if (callback) callback();
         });
@@ -1728,7 +1728,7 @@ StencilCollectionBuilder.prototype.generateCollectionLayout = function (collecti
             div.appendChild(img);
         }
 
-        Dom.serializeNodeToFile(html, path.join(dir, "Layout.xhtml"), "");
+        NDom.serializeNodeToFile(html, path.join(dir, "Layout.xhtml"), "");
         if (callback) callback();
     };
 
@@ -1875,7 +1875,7 @@ StencilCollectionBuilder.prototype.deploy = function (callback) {
             attr("thumbnail", repoDownloadBaseURL + currentOptions.id + "/layout_image.png?t=" + (new Date().getTime()));
             attr("icon", "");
             
-            var xsltDOM = Dom.parseDocument(
+            var xsltDOM = NDom.parseDocument(
 `<xsl:stylesheet version="1.0"
  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
  xmlns:p="http://www.evolus.vn/Namespace/Pencil">
@@ -1893,7 +1893,7 @@ StencilCollectionBuilder.prototype.deploy = function (callback) {
 
             var result = xsltProcessor.transformToDocument(dom);
 
-            Dom.serializeNodeToFile(result, filePath);
+            NDom.serializeNodeToFile(result, filePath);
             
             callback(true);
         });

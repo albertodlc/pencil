@@ -4,7 +4,7 @@ function ValueParamEditor(param, valueMap) {
 ValueParamEditor.prototype = new BaseParamEditor();
 
 ValueParamEditor.prototype.buildBodyUI = function () {
-    Dom.addClass(this.containerElement, "ValueParamEditorContainer ValueParamEditorContainer_" + this.param.valueParamType.name);
+    NDom.addClass(this.containerElement, "ValueParamEditorContainer ValueParamEditorContainer_" + this.param.valueParamType.name);
     var key = this.param.valueParamType.name === "SINGLE_SELECTION_LIST" ? "LIST" : this.param.valueParamType.name;
     var extraPrototype = ValueParamEditor.PARAM_TYPES[key];
     if (!extraPrototype) extraPrototype = ValueParamEditor.PARAM_TYPES.DEFAULT;
@@ -16,7 +16,7 @@ ValueParamEditor.prototype.buildBodyUI = function () {
 //    this.bodyElement.setAttribute("title", this.param.valueParamType.name);
     
     var thiz = this;
-//    Dom.registerEvent(this.containerElement, "dblclick", function () {
+//    NDom.registerEvent(this.containerElement, "dblclick", function () {
 //        console.log("------------------ " + thiz.param.key + " -------------------");
 //        console.log("  PARAM:", thiz.param);
 //    });
@@ -94,7 +94,7 @@ ValueParamEditor.PARAM_TYPES = {
     },
     MULTI_SELECTION_TREE: {
         buildBodyControl: function () {
-            Dom.addClass(this.containerElement, "EditModeActivated");
+            NDom.addClass(this.containerElement, "EditModeActivated");
             var thiz = this;
             this.selectionEditor = new widget.pe.MultiSelectionEditor(this.bodyElement, {
                 title: this.getPreLabel() || Messages[this.param.displayedName],
@@ -182,7 +182,7 @@ ValueParamEditor.PARAM_TYPES = {
     },
     MULTI_SELECTION_LIST: {
         buildBodyControl: function () {
-            Dom.addClass(this.containerElement, "EditModeActivated");
+            NDom.addClass(this.containerElement, "EditModeActivated");
             var thiz = this;
             this.selectionEditor = new widget.pe.MultiSelectionEditor(this.bodyElement, {
                 title: this.getPreLabel(),
@@ -312,7 +312,7 @@ ValueParamEditor.PARAM_TYPES = {
     BOOLEAN: {
         buildBodyControl: function () {
             var id = widget.random();
-            this.checkBox = Dom.newDOMElement({
+            this.checkBox = NDom.newDOMElement({
                 _name: "input",
                 type: "checkbox",
                 "id": id
@@ -336,7 +336,7 @@ ValueParamEditor.PARAM_TYPES = {
         buildBodyControl: function () {
             var thiz = this;
             this.items = [];
-            var button = Dom.newDOMElement({
+            var button = NDom.newDOMElement({
                 _name: "button",
                 "class": "btn btn-default MultiSelectionEditor Control",
                 _children: [{
@@ -354,8 +354,8 @@ ValueParamEditor.PARAM_TYPES = {
             }, document, this);
             this.bodyElement.appendChild(button);
             
-            Dom.registerEvent(button, "click", function(e){
-                Dom.cancelEvent(e);
+            NDom.registerEvent(button, "click", function(e){
+                NDom.cancelEvent(e);
                 widget.Dialog.select(thiz.param.options, function (items) {
                     thiz.items = items;
                     thiz.invalidateSelectedItemDisplay();
@@ -396,7 +396,7 @@ ValueParamEditor.PARAM_TYPES = {
             for (var i = 0; i < this.items.length; i ++) {
                 if (html) html += ", ";
                 var item = this.items[i];
-                html += Dom.htmlEncode(item.displayName || Messages[item.displayKey]);
+                html += NDom.htmlEncode(item.displayName || Messages[item.displayKey]);
             }
             this.listView.innerHTML = html || "&#160;";
         }
@@ -404,7 +404,7 @@ ValueParamEditor.PARAM_TYPES = {
     STRING: {
         buildBodyControl: function () {
             var id = widget.random();
-            this.input = Dom.newDOMElement({
+            this.input = NDom.newDOMElement({
                 _name: "input",
                 type: "type",
                 "class": "form-control",
@@ -426,7 +426,7 @@ ValueParamEditor.PARAM_TYPES = {
     INTEGER: {
         buildBodyControl: function () {
             var id = widget.random();
-            this.input = Dom.newDOMElement({
+            this.input = NDom.newDOMElement({
                 _name: "input",
                 type: "type",
                 "class": "form-control",
@@ -453,7 +453,7 @@ ValueParamEditor.PARAM_TYPES = {
     SINGLE_TAG: {
         buildBodyControl: function () {
             var id = widget.random();
-            this.input = Dom.newDOMElement({
+            this.input = NDom.newDOMElement({
                 _name: "input",
                 type: "type",
                 "class": "form-control",
@@ -518,7 +518,7 @@ ValueParamEditor.PARAM_TYPES = {
     SINGLE_ASSET: {
         buildBodyControl: function () {
             var id = widget.random();
-            this.input = Dom.newDOMElement({
+            this.input = NDom.newDOMElement({
                 _name: "input",
                 type: "type",
                 "class": "form-control",
@@ -592,8 +592,8 @@ ValueParamEditor.PARAM_TYPES = {
         buildBodyControl: function () {
             var thiz = this;
             this.items = [];
-            Dom.addClass(this.containerElement, "EditModeActivated");
-            var button = Dom.newDOMElement({
+            NDom.addClass(this.containerElement, "EditModeActivated");
+            var button = NDom.newDOMElement({
                 _name: "button",
                 "class": "btn btn-default MultiSelectionEditor Control",
                 _children: [{
@@ -626,8 +626,8 @@ ValueParamEditor.PARAM_TYPES = {
                 thiz.bodyElement.assetView.innerHTML = html;
             };
             
-            Dom.registerEvent(button, "click", function(e){
-                Dom.cancelEvent(e);
+            NDom.registerEvent(button, "click", function(e){
+                NDom.cancelEvent(e);
                 new MultiAssetSelectionDialog(function(items){
                     thiz.items = items;
                     thiz.renderer(thiz.items);
@@ -654,9 +654,9 @@ ValueParamEditor.PARAM_TYPES = {
         buildBodyControl: function () {
             var thiz = this;
             this.source = [];
-            Dom.addClass(this.containerElement, "EditModeActivated");
+            NDom.addClass(this.containerElement, "EditModeActivated");
             var thiz = this;
-            var button = Dom.newDOMElement({
+            var button = NDom.newDOMElement({
                 _name: "button",
                 "class": "btn btn-default MultiSelectionEditor Control",
                 _children: [{
@@ -692,13 +692,13 @@ ValueParamEditor.PARAM_TYPES = {
                 return false;
             };
             
-            Dom.registerEvent(button, "click", function(e){
-                Dom.cancelEvent(e);
+            NDom.registerEvent(button, "click", function(e){
+                NDom.cancelEvent(e);
                 var context = thiz.param._context;
                 new TableSingleSelectionDialog(function(item){
                     thiz.item = item;
                     thiz.getDisplayText(item.id, function (name) {
-                        thiz.bodyElement.itemView.innerHTML = Dom.htmlEncode(name);
+                        thiz.bodyElement.itemView.innerHTML = NDom.htmlEncode(name);
                     });
                      
                 }, context, thiz.param.key, thiz.item, thiz.getPreLabel()).open();
@@ -711,7 +711,7 @@ ValueParamEditor.PARAM_TYPES = {
         setValue: function (value) {
             var thiz = this;
             this.getDisplayText(parseInt(value, 10), function (name) {
-                thiz.bodyElement.itemView.innerHTML = Dom.htmlEncode(name);
+                thiz.bodyElement.itemView.innerHTML = NDom.htmlEncode(name);
             });
             this.item = {id: value};
         },
@@ -731,7 +731,7 @@ ValueParamEditor.PARAM_TYPES = {
     },
     DEFAULT: {
         buildBodyControl: function () {
-            this.bodyElement.appendChild(Dom.newDOMElement({
+            this.bodyElement.appendChild(NDom.newDOMElement({
                 _name: "span",
                 "style": "color: red;",
                 _html: "?" + this.param.valueParamType.name + "?"

@@ -1,6 +1,6 @@
 function WizardDialog() {
     Dialog.call(this);
-    Dom.addClass(this.wizardContent, "WizardContent");
+    NDom.addClass(this.wizardContent, "WizardContent");
     this.wizardPanes = [];
     this.nextable = true;
     for (var i = 0; i < this.wizardContent.childNodes.length; i ++) {
@@ -27,7 +27,7 @@ WizardDialog.prototype.invalidateWizardPane = function () {
     }, 100);
 };
 WizardDialog.prototype.addWizardPane = function (node) {
-    Dom.addClass(node, "WizardPane");
+    NDom.addClass(node, "WizardPane");
     this.wizardPanes.push(node);
 };
 WizardDialog.prototype.activeWizardPane = function (pane) {
@@ -35,12 +35,12 @@ WizardDialog.prototype.activeWizardPane = function (pane) {
     for (var i = 0; i < this.wizardPanes.length; i ++) {
         var p = this.wizardPanes[i];
         if (p == pane) {
-            Dom.addClass(p, "ActiveWizardPane");
+            NDom.addClass(p, "ActiveWizardPane");
         } else {
-            Dom.removeClass(p, "ActiveWizardPane");
+            NDom.removeClass(p, "ActiveWizardPane");
         }
     }
-    Dom.emitEvent("e:WizardPaneChange", this.node());
+    NDom.emitEvent("e:WizardPaneChange", this.node());
 };
 WizardDialog.prototype.onBack = function () {
     if(!this.invalidateSelection()) return;
@@ -108,14 +108,14 @@ WizardDialog.prototype.getDialogActions = function () {
     ]
 };
 WizardDialog.prototype.ensureSizing = function () {
-    var w = Dom.getOffsetWidth(this.node()) - 2;
+    var w = NDom.getOffsetWidth(this.node()) - 2;
     var h = 0;
 
     for (var i = 0; i < this.wizardPanes.length; i ++) {
         var contentNode = this.wizardPanes[i];
-        Dom.removeClass(contentNode, "Measured");
-        var cw = Dom.getOffsetWidth(contentNode);
-        var ch = Dom.getOffsetHeight(contentNode);
+        NDom.removeClass(contentNode, "Measured");
+        var cw = NDom.getOffsetWidth(contentNode);
+        var ch = NDom.getOffsetHeight(contentNode);
 
         w = Math.max(w, cw);
         h = Math.max(h, ch);
@@ -126,6 +126,6 @@ WizardDialog.prototype.ensureSizing = function () {
 
     for (var i = 0; i < this.wizardPanes.length; i ++) {
         var contentNode = this.wizardPanes[i];
-        Dom.addClass(contentNode, "Measured");
+        NDom.addClass(contentNode, "Measured");
     }
 };

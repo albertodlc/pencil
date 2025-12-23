@@ -31,7 +31,7 @@
                 this.focusableBox = box2;
 
                 this.addEventListener("mousedown", function (event) {
-                    var inDrawing = Dom.findUpward(event.originalTarget, function (node) {
+                    var inDrawing = NDom.findUpward(event.originalTarget, function (node) {
                         return (node == box2 || node == thiz.popup || node == thiz.svg);
                     });
                     if (!inDrawing) {
@@ -181,13 +181,13 @@
                         thiz._lastPY = thiz._currentPY;
                         thiz._lastScrollX = thiz.parentNode.scrollLeft;
                         thiz._lastScrollY = thiz.parentNode.scrollTop;
-                        Dom.addClass(thiz, "PanDown");
+                        NDom.addClass(thiz, "PanDown");
                     }
                 }, false);
                 this.svg.ownerDocument.addEventListener("keyup", function (event) {
                     if (event.keyCode == event.DOM_VK_SPACE && thiz.spaceHeld == true) {
                         thiz.spaceHeld = false;
-                        Dom.removeClass(thiz, "PanDown");
+                        NDom.removeClass(thiz, "PanDown");
                     }
                 }, false);
 
@@ -279,7 +279,7 @@
             <method name="_sayTargetChanged">
                 <body>
                 <![CDATA[
-                    Dom.emitEvent("p:TargetChanged", this, {canvas: this});
+                    NDom.emitEvent("p:TargetChanged", this, {canvas: this});
                 ]]>
                 </body>
             </method>
@@ -483,7 +483,7 @@
                         target.setGeometry(geo);
                     }, this, Util.getMessage("action.canvas.zoom"));
 
-                    Dom.emitEvent("p:ShapeGeometryModified", this, {setter: setter ? setter : null});
+                    NDom.emitEvent("p:ShapeGeometryModified", this, {setter: setter ? setter : null});
                 ]]>
                 </body>
             </method>
@@ -544,10 +544,10 @@
                         node.setAttribute("id", uuid);
                         node.id = uuid;
 
-                        Dom.updateIdRef(shape, name, uuid);
+                        NDom.updateIdRef(shape, name, uuid);
                     });
 
-                    Dom.renewId(shape);
+                    NDom.renewId(shape);
 
                     // add the newly created shape into the drawing layer
                     this.drawingLayer.appendChild(shape);
@@ -690,7 +690,7 @@
                 <body>
                 <![CDATA[
                     tick("begin");
-                    Dom.emitEvent("p:CanvasMouseDown", this, {});
+                    NDom.emitEvent("p:CanvasMouseDown", this, {});
 
                     var canvasList = Pencil.getCanvasList();
                     for (var i = 0; i < canvasList.length; i++) {
@@ -704,12 +704,12 @@
                     this._button = event.button;
 
                     var thiz = this;
-                    var isInControlLayer = Dom.findUpward(event.originalTarget, function (node) {
+                    var isInControlLayer = NDom.findUpward(event.originalTarget, function (node) {
                         return (node == thiz.controlLayer);
                     });
                     if (isInControlLayer) return;
 
-                    var top = Dom.findTop(event.originalTarget, function (node) {
+                    var top = NDom.findTop(event.originalTarget, function (node) {
                         return node.hasAttributeNS && node.hasAttributeNS(PencilNamespaces.p, "type");
                     });
                     if (top && this.isShapeLocked(top)) top = null;
@@ -819,7 +819,7 @@
                         this.snappingHelper.updateSnappingGuide(this.currentController);
                         this.snappingHelper.clearSnappingGuide();
 
-                        Dom.emitEvent("p:ShapeGeometryModified", this, {setter: null});
+                        NDom.emitEvent("p:ShapeGeometryModified", this, {setter: null});
 
                         if (this.hasMoved) {
                             //just to save state
@@ -831,7 +831,7 @@
                     this.controllerHeld = false;
 
                     if (Config.get("quick.editting", false) == true) {
-                        Dom.emitEvent("p:ShapeInserted", this.currentController.svg, {controller: this.currentController, origTarget: event.originalTarget, clientX: event.clientX, clientY: event.clientY});
+                        NDom.emitEvent("p:ShapeInserted", this.currentController.svg, {controller: this.currentController, origTarget: event.originalTarget, clientX: event.clientX, clientY: event.clientY});
                     }
                 ]]>
                 </body>
@@ -850,7 +850,7 @@
 
                         if (this.hasMoved) {
                             debug("current controller: " + this.currentController.constructor.name);
-                            Dom.emitEvent("p:ShapeGeometryModified", this, {setter: null});
+                            NDom.emitEvent("p:ShapeGeometryModified", this, {setter: null});
                         }
                         
                         if (this.currentController.invalidateOutboundConnections) {
@@ -943,7 +943,7 @@
 
                         DockingManager.enableDocking(this.currentController);
 
-                        var canvas = Dom.findUpward(event.originalTarget, function (node) {
+                        var canvas = NDom.findUpward(event.originalTarget, function (node) {
                             return node.namespaceURI == PencilNamespaces.xul && node.localName == "pcanvas";
                         });
                         if (canvas && canvas == this && this.currentController) {
@@ -974,7 +974,7 @@
                 <body>
                 <![CDATA[
                     //is it from an html:a?
-                    var a = Dom.findUpward(event.originalTarget, function (node) {
+                    var a = NDom.findUpward(event.originalTarget, function (node) {
                         return (node && node.nodeType == 1
                                     && node.localName.toLowerCase() == "a"
                                     && node.namespaceURI == PencilNamespaces.html);
@@ -983,7 +983,7 @@
                     if (!a) return;
 
                     //is this html:a inside an svg:foreignObject?
-                    var foreignObject = Dom.findUpward(a, function (node) {
+                    var foreignObject = NDom.findUpward(a, function (node) {
                         return (node && node.nodeType == 1
                                     && node.localName == "foreignObject"
                                     && node.namespaceURI == PencilNamespaces.svg);
@@ -1244,7 +1244,7 @@
 
                         this.invalidateEditors();
                         event.preventDefault();
-                        Dom.emitEvent("p:ShapeGeometryModified", this, {setter: null});
+                        NDom.emitEvent("p:ShapeGeometryModified", this, {setter: null});
 
                     } else if (event.keyCode == event.DOM_VK_DELETE) {
                         if (this.currentController) {
@@ -1259,7 +1259,7 @@
                         }
                     } else if (event.keyCode == event.DOM_VK_F2) {
                         if (this.currentController) {
-                            Dom.emitEvent("p:TextEditingRequested", event.originalTarget, {controller: this.currentController});
+                            NDom.emitEvent("p:TextEditingRequested", event.originalTarget, {controller: this.currentController});
                         }
                     } else if (event.keyCode == event.DOM_VK_TAB) {
                         if (event.shiftKey) {
@@ -1333,7 +1333,7 @@
                             this.lockingMenuItem.style.display = "";
                             this.lockingMenuItem.setAttribute("checked", "false");
                         } else {
-                            var top = Dom.findTop(event.originalTarget, function (node) {
+                            var top = NDom.findTop(event.originalTarget, function (node) {
                                 return node.hasAttributeNS && node.hasAttributeNS(PencilNamespaces.p, "type");
                             });
                             if (top && this.isShapeLocked(top)) {
@@ -1444,8 +1444,8 @@
                         }
                         this.attachToMenu.addEventListener("command", function (event) {
                             try {
-                                var containerNode = Dom.findUpward(event.originalTarget, function (node) { return node._container; });
-                                var attachSlotNode = Dom.findUpward(event.originalTarget, function (node) { return node._attachSlot; });
+                                var containerNode = NDom.findUpward(event.originalTarget, function (node) { return node._container; });
+                                var attachSlotNode = NDom.findUpward(event.originalTarget, function (node) { return node._attachSlot; });
                                 if (containerNode && containerNode._container && attachSlotNode && attachSlotNode._attachSlot && containerNode._container._target) {
                                     var target = containerNode._container._target;
                                     var defId = target.def.id;
@@ -1508,8 +1508,8 @@
                         }
                         this.detachFromMenu.addEventListener("command", function (event) {
                             try {
-                                var containerNode = Dom.findUpward(event.originalTarget, function (node) { return node._container; });
-                                var detachSlotNode = Dom.findUpward(event.originalTarget, function (node) { return node._detachSlot; });
+                                var containerNode = NDom.findUpward(event.originalTarget, function (node) { return node._container; });
+                                var detachSlotNode = NDom.findUpward(event.originalTarget, function (node) { return node._detachSlot; });
                                 if (containerNode && containerNode._container && detachSlotNode && detachSlotNode._detachSlot) {
                                     var attachment = containerNode._container.getProperty(detachSlotNode._detachSlot.name);
                                     if (attachment && attachment.defId) {
@@ -1519,7 +1519,7 @@
                                             var controller = thiz.currentController;
                                             if (controller) {
                                                 Svg.ensureCTM(controller.svg, attachment.ctm);
-                                                var metaNode = Dom.parseToNode(attachment.metaData);
+                                                var metaNode = NDom.parseToNode(attachment.metaData);
                                                 if (metaNode) {
                                                     NDom.workOn("./p:property", metaNode, function (node) {
                                                         var name = node.getAttribute("name");
@@ -1605,7 +1605,7 @@
                     
                     //find the top, get the def
                     var thiz = this;
-                    var top = Dom.findTop(event.originalTarget, function (node) {
+                    var top = NDom.findTop(event.originalTarget, function (node) {
                         return node.hasAttributeNS && node.hasAttributeNS(PencilNamespaces.p, "type") && node.getAttributeNS(PencilNamespaces.p, "type") == "Shape" && !thiz.isShapeLocked(node);
                     });
                     
@@ -1616,7 +1616,7 @@
                     var target = this.createControllerFor(top);
                     
                     stencilDebug("emitting event p:ShapeDoubleClicked");
-                    Dom.emitEvent("p:ShapeDoubleClicked", top, {controller: target, origTarget: event.originalTarget, clientX: event.clientX, clientY: event.clientY});
+                    NDom.emitEvent("p:ShapeDoubleClicked", top, {controller: target, origTarget: event.originalTarget, clientX: event.clientX, clientY: event.clientY});
 
                 ]]>
                 </body>
@@ -1868,7 +1868,7 @@
             <method name="_sayContentModified">
                 <body>
                 <![CDATA[
-                    Dom.emitEvent("p:ContentModified", this);
+                    NDom.emitEvent("p:ContentModified", this);
                 ]]>
                 </body>
             </method>
@@ -1893,7 +1893,7 @@
                 <body>
                 <![CDATA[
                     this.selectNone();
-                    Dom.empty(this.drawingLayer);
+                    NDom.empty(this.drawingLayer);
 
                     //alert("copy back: " + memento.node.childNodes.length + " nodes");
                     var fragment = this.drawingLayer.ownerDocument.createDocumentFragment();
@@ -2187,10 +2187,10 @@
                         node.setAttribute("id", uuid);
                         node.id = uuid;
 
-                        Dom.updateIdRef(shape, name, uuid);
+                        NDom.updateIdRef(shape, name, uuid);
                     });
 
-                    Dom.renewId(shape);
+                    NDom.renewId(shape);
 
                     shape.style.visibility = "hidden";
                     this.setAttributeNS(PencilNamespaces.p, "p:holding", "true");
@@ -2226,7 +2226,7 @@
                             Pencil._painterSourceProperties = target.getProperties();
                             var canvasList = Pencil.getCanvasList();
                             for (var i = 0; i < canvasList.length; i++) {
-                                Dom.addClass(canvasList[i], "Painter");
+                                NDom.addClass(canvasList[i], "Painter");
                             }
                         }
                     } catch (e) {
@@ -2314,7 +2314,7 @@
         <handlers>
             <handler event="dragenter">
                 <![CDATA[
-                    if (!Dom.isChildOf(event.originalTarget, this.svg)) return;
+                    if (!NDom.isChildOf(event.originalTarget, this.svg)) return;
                     //debug("PCanvas: drag enter, " + event.originalTarget.localName);
 
                     // find the first DO that accepts this drag session, use its for subsequence events
@@ -2335,7 +2335,7 @@
             </handler>
             <handler event="dragexit">
                 <![CDATA[
-                    if (!Dom.isChildOf(event.originalTarget, this.svg)) return;
+                    if (!NDom.isChildOf(event.originalTarget, this.svg)) return;
                     //debug("PCanvas: drag exit, " + event.originalTarget.localName);
                     if (!this.currentDragObserver) return;
 

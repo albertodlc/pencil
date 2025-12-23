@@ -162,11 +162,11 @@ CollectionResourceBrowserDialog.prototype.search = function () {
 
     this.getMatchingResources(dirPath, this.prefix || "", keyword)
         .then(function (matched) {
-            Dom.empty(this.resultContainer);
+            NDom.empty(this.resultContainer);
             var count = 0;
             var previousview = null;
             for (var item of matched) {
-                var view = Dom.newDOMElement({
+                var view = NDom.newDOMElement({
                     _name: "div",
                     _uri: PencilNamespaces.html,
                     title: path.basename(item.name),
@@ -199,7 +199,7 @@ CollectionResourceBrowserDialog.prototype.search = function () {
         });
 };
 CollectionResourceBrowserDialog.prototype.handleListFocus = function (e) {
-    var view = Dom.findUpwardForNodeWithData(e.target, "_data");
+    var view = NDom.findUpwardForNodeWithData(e.target, "_data");
     if (!view) return;
     this.selectedView = view;
 };
@@ -211,7 +211,7 @@ CollectionResourceBrowserDialog.prototype.returnData = function (data) {
         this.close(new ImageData(data.size.w, data.size.h, ImageData.idToRefString(id)));
 
     } else if (this.returnType == CollectionResourceBrowserDialog.RETURN_IMAGEDATA_SVG_GROUP) {
-        var svg = Dom.parseFile(data.path);
+        var svg = NDom.parseFile(data.path);
         var g = svg.createElementNS(PencilNamespaces.svg, "g");
         while (svg.documentElement.firstChild) {
             var child = svg.documentElement.firstChild;
@@ -219,7 +219,7 @@ CollectionResourceBrowserDialog.prototype.returnData = function (data) {
             g.appendChild(child);
         }
 
-        var xmlData = CollectionResourceBrowserDialog.SVG_IMAGE_DATA_PREFIX + Dom.serializeNode(g);
+        var xmlData = CollectionResourceBrowserDialog.SVG_IMAGE_DATA_PREFIX + NDom.serializeNode(g);
         this.close(new ImageData(data.size.w, data.size.h, xmlData));
     } else if (this.returnType == CollectionResourceBrowserDialog.RETURN_CONTENT) {
         this.close({
@@ -229,7 +229,7 @@ CollectionResourceBrowserDialog.prototype.returnData = function (data) {
     } else if (this.returnType == CollectionResourceBrowserDialog.RETURN_DOMCONTENT) {
         this.close({
             size: data.size,
-            document: Dom.parseFile(data.path)
+            document: NDom.parseFile(data.path)
         });
     }
 };
@@ -250,7 +250,7 @@ CollectionResourceBrowserDialog.prototype.handleFilterKeyDown = function (e) {
     }
 };
 CollectionResourceBrowserDialog.prototype.handleListKeyDown = function (e) {
-    var view = Dom.findUpwardForNodeWithData(e.target, "_data");
+    var view = NDom.findUpwardForNodeWithData(e.target, "_data");
     if (!view) return;
 
     if (e.keyCode == DOM_VK_UP) {
@@ -378,7 +378,7 @@ CollectionResourceBrowserDialog.prototype.showItem = function (item, shouldShow)
             }];
         }
 
-        var fragment = Dom.newDOMFragment(spec);
+        var fragment = NDom.newDOMFragment(spec);
         item.appendChild(fragment);
 
         if (this.type == CollectionResourceBrowserDialog.TYPE_SVG) {
@@ -405,7 +405,7 @@ CollectionResourceBrowserDialog.prototype.ensureVisibleItemsContent = function (
 };
 CollectionResourceBrowserDialog.SVG_IMAGE_DATA_PREFIX = "data:image/svg+xml;utf8,";
 CollectionResourceBrowserDialog.prototype.handleItemDblClick = function (e) {
-    var data = Dom.findUpwardForData (e.target, "_data");
+    var data = NDom.findUpwardForData (e.target, "_data");
     if (!data) return;
 
     this.returnData(data);

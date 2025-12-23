@@ -31,14 +31,14 @@ ODTExporter.prototype.transform = function (template, fileBaseName, sourceDOM, t
 
     this.xsltProcessor.reset();
 
-    var xsltDOM = Dom.parseFile(styleSheetFile);
+    var xsltDOM = NDom.parseFile(styleSheetFile);
     this.xsltProcessor.importStylesheet(xsltDOM);
 
     var result = this.xsltProcessor.transformToDocument(sourceDOM);
 
     var xmlFile = path.join(targetDir, fileBaseName + ".xml");
 
-    Dom.serializeNodeToFile(result, xmlFile);
+    NDom.serializeNodeToFile(result, xmlFile);
 };
 
 ODTExporter.prototype.export = function (doc, options, destFile, xmlFile, callback) {
@@ -70,7 +70,7 @@ ODTExporter.prototype.export = function (doc, options, destFile, xmlFile, callba
     }.bind(this));
 
     //transform the xml to HTML
-    var sourceDOM = Dom.parseFile(xmlFile);
+    var sourceDOM = NDom.parseFile(xmlFile);
 
     //changing rasterized path to relative
     this.fixAbsoluteRasterizedPaths(sourceDOM, this.tmpDir.name);

@@ -3,7 +3,7 @@ function Menu() {
     this.items = [];
     var thiz = this;
     this.popupContainer.addEventListener("click", function (event) {
-        var itemNode = Dom.findUpwardForNodeWithData(event.target, "_item");
+        var itemNode = NDom.findUpwardForNodeWithData(event.target, "_item");
         if (!itemNode) return;
         var item = itemNode._item;
         if (itemNode.getAttribute && itemNode.getAttribute("disabled") == "true") return;
@@ -20,7 +20,7 @@ function Menu() {
             thiz.closeUpward();
         } else if (item.type == "SubMenu") {
             if (item.run) {
-                var iconNode = Dom.findParentWithClass(event.target, "SubMenuIcon");
+                var iconNode = NDom.findParentWithClass(event.target, "SubMenuIcon");
                 if (iconNode) {
                     thiz.openSubMenu(itemNode);
                 } else {
@@ -49,7 +49,7 @@ __extend(Popup, Menu);
 
 Menu.prototype.hideCurrentSubMenu = function () {
     if (this.currentItemNodeWithSubMenu) {
-        Dom.removeClass(this.currentItemNodeWithSubMenu, "Active");
+        NDom.removeClass(this.currentItemNodeWithSubMenu, "Active");
         this.currentItemNodeWithSubMenu._subMenu.hideMenu();
         this.currentItemNodeWithSubMenu = null;
     }
@@ -72,7 +72,7 @@ Menu.prototype.openSubMenu = function (itemNode) {
     itemNode._subMenu = menu;
 
     this.currentItemNodeWithSubMenu = itemNode;
-    Dom.addClass(this.currentItemNodeWithSubMenu, "Active");
+    NDom.addClass(this.currentItemNodeWithSubMenu, "Active");
     this.currentSubMenu = menu;
 };
 
@@ -82,14 +82,14 @@ Menu.prototype.handleMouseIn = function (event) {
     if (this._parent && this._parent.currentHideMenuTimeout && this == this._parent.currentItemNodeWithSubMenu._subMenu) {
         window.clearTimeout(this._parent.currentHideMenuTimeout);
         this._parent.currentHideMenuTimeout = null;
-        Dom.addClass(this._parent.currentItemNodeWithSubMenu, "Active");
+        NDom.addClass(this._parent.currentItemNodeWithSubMenu, "Active");
 
         if (this._parent.currentShowMenuTimeout) {
             window.clearTimeout(this._parent.currentShowMenuTimeout);
         }
     }
 
-    var itemNode = Dom.findUpwardForNodeWithData(event.target, "_item");
+    var itemNode = NDom.findUpwardForNodeWithData(event.target, "_item");
     if (!itemNode) return;
     var item = itemNode._item;
     var disabled = itemNode.getAttribute && itemNode.getAttribute("disabled") == "true";
@@ -100,7 +100,7 @@ Menu.prototype.handleMouseIn = function (event) {
             window.clearTimeout(this.currentHideMenuTimeout);
         }
 
-        Dom.removeClass(this.currentItemNodeWithSubMenu, "Active");
+        NDom.removeClass(this.currentItemNodeWithSubMenu, "Active");
         this.currentHideMenuTimeout = window.setTimeout(function () {
             thiz.hideCurrentSubMenu();
             thiz.currentHideMenuTimeout = null;
@@ -135,7 +135,7 @@ Menu.prototype.renderItem = function (item) {
         if (this.lastItemWasActualEntry) {
             this.lastItemWasActualEntry = false;
 
-            var sep = Dom.newDOMElement({
+            var sep = NDom.newDOMElement({
                 _name: "hr",
                 "class": "MenuItem MenuSeparator",
                 disabled: true
@@ -152,7 +152,7 @@ Menu.prototype.renderItem = function (item) {
     }
 
     var disabled = ((item.isEnabled && !item.isEnabled()) || (item.isValid && !item.isValid()) || item.disabled) ? true : false;
-    var hbox = Dom.newDOMElement({
+    var hbox = NDom.newDOMElement({
         _name: "hbox",
         "class": "MenuItem",
         disabled: disabled
@@ -164,7 +164,7 @@ Menu.prototype.renderItem = function (item) {
     var checkboxId = null;
     if (item.type == "Toggle" || item.type == "Selection") {
         checkboxId = Util.newUUID();
-        var checkbox = Dom.newDOMElement({
+        var checkbox = NDom.newDOMElement({
             _name: "input",
             type: item.type == "Toggle" ? "checkbox" : "radio",
             "class": "Checkbox",
@@ -179,7 +179,7 @@ Menu.prototype.renderItem = function (item) {
         hbox._checkbox = checkbox;
         hbox._prefixed = true;
     } else {
-        var i = Dom.newDOMElement({
+        var i = NDom.newDOMElement({
             _name: "i",
             _text: item.icon || ""
         });
@@ -187,7 +187,7 @@ Menu.prototype.renderItem = function (item) {
         hbox._prefixed = item.icon ? true : false;
     }
 
-    var label = Dom.newDOMElement({
+    var label = NDom.newDOMElement({
         _name: "label",
         _text: item.label || item.getLabel(),
         flex: "1"
@@ -198,7 +198,7 @@ Menu.prototype.renderItem = function (item) {
 
     if (item.shortcut) {
         if (!item.parsedShortcut) UICommandManager.parseShortcut(item);
-        var shortcutSpan = Dom.newDOMElement({
+        var shortcutSpan = NDom.newDOMElement({
             _name: "span",
             "class": "Shortcut",
             _text: item.parsedShortcut ? item.parsedShortcut.displayName : item.shortcut
@@ -206,7 +206,7 @@ Menu.prototype.renderItem = function (item) {
         hbox.appendChild(shortcutSpan);
     } else {
         if (item.type == "SubMenu") {
-            hbox.appendChild(Dom.newDOMElement({
+            hbox.appendChild(NDom.newDOMElement({
                 _name: "i",
                 _text: "keyboard_arrow_right",
                 "class": "SubMenuIcon"
@@ -222,7 +222,7 @@ Menu.prototype.getMenuItemNodes = function () {
     return this.popupContainer.childNodes;
 };
 Menu.prototype.render = function () {
-    Dom.empty(this.popupContainer);
+    NDom.empty(this.popupContainer);
     var actualItems = [];
     for (var i in this.items) {
         var item = this.items[i];
@@ -245,9 +245,9 @@ Menu.prototype.render = function () {
     if (last && last._item == Menu.SEPARATOR) last.parentNode.removeChild(last);
 
     if (withPrefix) {
-        Dom.removeClass(this.popupContainer, "NoPrefix");
+        NDom.removeClass(this.popupContainer, "NoPrefix");
     } else {
-        Dom.addClass(this.popupContainer, "NoPrefix")
+        NDom.addClass(this.popupContainer, "NoPrefix")
     }
 };
 Menu.prototype.showMenu = function (anchor, hAlign, vAlign, hPadding, vPadding, autoFlip) {

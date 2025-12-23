@@ -3,7 +3,7 @@ function BaseCollectionPane() {
     var thiz = this;
 
     this.bind("contextmenu", function (event) {
-        var collectionNode = Dom.findUpwardForNodeWithData(event.target, "_collection");
+        var collectionNode = NDom.findUpwardForNodeWithData(event.target, "_collection");
         if (!collectionNode) return;
 
         collectionNode.focus();
@@ -12,12 +12,12 @@ function BaseCollectionPane() {
     }, this.selectorPane);
 
     this.selectorPane.addEventListener("click", function(event) {
-        var item = Dom.findUpward(Dom.getTarget(event), function (n) {
+        var item = NDom.findUpward(NDom.getTarget(event), function (n) {
             return n._collection;
         });
 
         if (!item) return;
-        Dom.doOnAllChildren(thiz.selectorPane, function (n) {
+        NDom.doOnAllChildren(thiz.selectorPane, function (n) {
             if (n.setAttribute) n.setAttribute("active", n == item);
         });
         thiz.openCollection(item._collection);
@@ -31,7 +31,7 @@ function BaseCollectionPane() {
 
     this.shapeListContainer.addEventListener("dragstart", function (event) {
         nsDragAndDrop.dragStart(event);
-        var n = Dom.findUpwardForNodeWithData(Dom.getTarget(event), "_def");
+        var n = NDom.findUpwardForNodeWithData(NDom.getTarget(event), "_def");
         var def = n._def;
         thiz.addDefDataToDataTransfer(def, event);
         event.dataTransfer.setDragImage(thiz.dndImage, 8, 8);
@@ -127,7 +127,7 @@ BaseCollectionPane.prototype.onSizeChanged = function () {
 };
 BaseCollectionPane.prototype.reload = function (selectedCollectionId) {
     if (this.node().offsetWidth <= 0) return;
-    Dom.empty(this.selectorPane);
+    NDom.empty(this.selectorPane);
 
     if (!selectedCollectionId) selectedCollectionId = this.getLastUsedCollection();
 
@@ -136,10 +136,10 @@ BaseCollectionPane.prototype.reload = function (selectedCollectionId) {
     var foundNode = null;
     var collections = this.getCollections();
 
-    Dom.empty(this.shapeList);
-    Dom.empty(this.collectionIcon);
-    Dom.empty(this.collectionTitle);
-    Dom.empty(this.collectionDescription);
+    NDom.empty(this.shapeList);
+    NDom.empty(this.collectionIcon);
+    NDom.empty(this.collectionTitle);
+    NDom.empty(this.collectionDescription);
     this.settingButton.style.visibility = "inherit";
 
     for (var i = 0; i < collections.length; i ++) {
@@ -148,7 +148,7 @@ BaseCollectionPane.prototype.reload = function (selectedCollectionId) {
             var icon = this.getCollectionIcon(collection);
             var typeClass = collection.developerStencil ? "TypeDeveloper" : (collection.userDefined ? "TypeUser" : "TypeSystem");
             if (collection.builderStencil) typeClass += " TypeBuilder";
-            var node = Dom.newDOMElement({
+            var node = NDom.newDOMElement({
                 _name: "vbox",
                 "class": "Item" + (collection.previewURL ? " WithPreview" : "") + " " + typeClass,
                 "tabindex": "0",
@@ -211,7 +211,7 @@ BaseCollectionPane.prototype.reload = function (selectedCollectionId) {
     }, 10);
 
     if (lastNode) {
-        Dom.doOnAllChildren(this.selectorPane, function (n) {
+        NDom.doOnAllChildren(this.selectorPane, function (n) {
             if (n.setAttribute) n.setAttribute("active", n == lastNode);
         });
 
@@ -263,16 +263,16 @@ BaseCollectionPane.prototype.filterCollections = function () {
         this.openCollection(this.last);
     } else if (firstNode != null){
 
-        Dom.doOnAllChildren(this.selectorPane, function (n) {
+        NDom.doOnAllChildren(this.selectorPane, function (n) {
             if (n.setAttribute) n.setAttribute("active", n == firstNode);
         });
         this.openCollection(firstNode._collection);
     } else {
-        Dom.empty(this.collectionIcon);
-        Dom.empty(this.collectionTitle);
-        Dom.empty(this.collectionDescription);
-        Dom.empty(this.shapeList);
-        Dom.empty(this.collectionLayoutContainer);
+        NDom.empty(this.collectionIcon);
+        NDom.empty(this.collectionTitle);
+        NDom.empty(this.collectionDescription);
+        NDom.empty(this.shapeList);
+        NDom.empty(this.collectionLayoutContainer);
         this.settingButton.style.visibility = "hidden";
     }
 };
@@ -319,11 +319,11 @@ BaseCollectionPane.prototype.updateLayoutSize = function () {
     this.collectionLayoutContainer.firstChild.style.zoom = r;
 };
 BaseCollectionPane.prototype.openCollection = function (collection) {
-    Dom.empty(this.shapeList);
-    Dom.empty(this.collectionLayoutContainer);
+    NDom.empty(this.shapeList);
+    NDom.empty(this.collectionLayoutContainer);
     this.collectionIcon.innerHTML = this.getCollectionIcon(collection);
-    this.collectionTitle.innerHTML = Dom.htmlEncode(collection.displayName);
-    this.collectionDescription.innerHTML = Dom.htmlEncode(collection.description);
+    this.collectionTitle.innerHTML = NDom.htmlEncode(collection.displayName);
+    this.collectionDescription.innerHTML = NDom.htmlEncode(collection.description);
     this.collectionDescription.setAttribute("title", collection.description);
     this.settingButton.style.visibility =  (collection.propertyGroups && collection.propertyGroups.length > 0) ? "inherit" : "hidden";
 
@@ -417,7 +417,7 @@ BaseCollectionPane.prototype.openCollection = function (collection) {
 
         var holder = {};
 
-        var node = Dom.newDOMElement({
+        var node = NDom.newDOMElement({
             _name: "li",
             "type": "ShapeDef",
             "title": def.displayName,
@@ -502,7 +502,7 @@ BaseCollectionPane.prototype.getLastUsedCollection = function () {
 BaseCollectionPane.prototype.setLastUsedCollection = function (collection) {
 };
 BaseCollectionPane.prototype.reloadDeveloperCollections = function () {
-    Dom.doOnAllChildren(this.selectorPane, function (n) {
+    NDom.doOnAllChildren(this.selectorPane, function (n) {
         if (!n._collection || !n._collection.developerStencil) return;
         var reloadedCollection = CollectionManager.findCollection(n._collection.id);
         if (!reloadedCollection) n.style.display = "none";

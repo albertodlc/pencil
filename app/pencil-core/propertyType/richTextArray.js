@@ -3,7 +3,7 @@ function RichTextArray(rows) {
 }
 RichTextArray.fromString = function (xml) {
     if (!xml) return new RichTextArray([]);
-    var root = Dom.parseToNode(xml);
+    var root = NDom.parseToNode(xml);
 
     var rows = [];
     NDom.workOn("/*/r", root, function (r) {
@@ -32,7 +32,7 @@ RichTextArray.prototype.toString = function () {
         }
     }
 
-    return Dom.serializeNode(root);
+    return NDom.serializeNode(root);
 };
 RichTextArray.prototype.getRows = function () {
     return this.rows;

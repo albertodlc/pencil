@@ -170,11 +170,11 @@ ApplicationPane.prototype.createCanvas = function () {
     var doc = this.getCanvasContainer().ownerDocument;
 
     var scrollPane = doc.createElement("hbox");
-    Dom.addClass(scrollPane, "CanvasScrollPane");
+    NDom.addClass(scrollPane, "CanvasScrollPane");
     scrollPane.setAttribute("flex", "1");
 
     var wrapper = doc.createElement("div");
-    Dom.addClass(wrapper, "CanvasWrapper");
+    NDom.addClass(wrapper, "CanvasWrapper");
     wrapper.setAttribute("tabindex", 0);
     scrollPane.appendChild(wrapper);
 
@@ -182,7 +182,7 @@ ApplicationPane.prototype.createCanvas = function () {
     wrapper.appendChild(container);
     container.style.width = w + "px";
     container.style.height = h + "px";
-    Dom.addClass(container, "Canvas");
+    NDom.addClass(container, "Canvas");
 
     var stencilToolbar = new StencilShapeCanvasToolbar().into(wrapper);
 
@@ -195,7 +195,7 @@ ApplicationPane.prototype.createCanvas = function () {
 
     scrollPane.addEventListener("mouseup", function (e) {
         if (!scrollPane._mouseDownAt || (e.timeStamp - scrollPane._mouseDownAt) > 150) return;
-        if (!Dom.findParentWithClass(e.target, "CanvasWrapper")) {
+        if (!NDom.findParentWithClass(e.target, "CanvasWrapper")) {
             if (!canvas.isSelectingRange) canvas.selectNone();
         }
     });
@@ -280,7 +280,7 @@ ApplicationPane.prototype.setActiveCanvas = function (canvas) {
     }
 
     this.invalidateZoom();
-    Dom.emitEvent("p:CanvasActived", this.node(), {
+    NDom.emitEvent("p:CanvasActived", this.node(), {
         canvas: canvas
     });
 };
@@ -375,7 +375,7 @@ ApplicationPane.prototype.toggleFullscreen = function () {
 ApplicationPane.prototype.validateFullScreen = function () {
     var browserWindow = remote.getCurrentWindow();
     var fullscreen = browserWindow.isFullScreen();
-    Dom.toggleClass(document.body, "Fullscreen", fullscreen);
+    NDom.toggleClass(document.body, "Fullscreen", fullscreen);
     if (fullscreen) {
         this.leftSidePane.collapseAll();
     } else {

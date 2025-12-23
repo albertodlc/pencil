@@ -1,7 +1,7 @@
 widget.ActionBar = function () {
     function actionBarClickHandler(event) {
-        var target = Dom.getTarget(event);
-        var button = Dom.findUpward(target, {
+        var target = NDom.getTarget(event);
+        var button = NDom.findUpward(target, {
             eval: function (n) {
                 return n._action;
             }
@@ -10,7 +10,7 @@ widget.ActionBar = function () {
         if (!button) return;
         if (button.disabled) return;
         
-        Dom.cancelEvent(event);
+        NDom.cancelEvent(event);
         
         var action = button._action;
         
@@ -23,10 +23,10 @@ widget.ActionBar = function () {
         this.actions = [];
         
         this.buttonGroupDiv = document.createElement("div");
-        Dom.addClass(this.buttonGroupDiv, "btn-group nav-pills");
+        NDom.addClass(this.buttonGroupDiv, "btn-group nav-pills");
         this.container.appendChild(this.buttonGroupDiv);
         
-        Dom.registerEvent(this.buttonGroupDiv, "click", actionBarClickHandler, false);
+        NDom.registerEvent(this.buttonGroupDiv, "click", actionBarClickHandler, false);
     }
     ActionBar.prototype.register = function (action) {
         this.actions.push(action);
@@ -41,11 +41,11 @@ widget.ActionBar = function () {
             var disabled = action.isApplicable && !action.isApplicable();
             var button = document.createElement("button");
             button.setAttribute("type", "button");
-            Dom.addClass(button, "btn btn-default");
-            button.innerHTML = "<span><i class=\"fa " + action.getIcon() + "\"></i> " + Dom.htmlEncode(action.getTitle()) + "</span>";
+            NDom.addClass(button, "btn btn-default");
+            button.innerHTML = "<span><i class=\"fa " + action.getIcon() + "\"></i> " + NDom.htmlEncode(action.getTitle()) + "</span>";
             this.buttonGroupDiv.appendChild(button);
             if (disabled) {
-                Dom.addClass(button, "disabled");
+                NDom.addClass(button, "disabled");
                 button.setAttribute("disabled", "true");
             }
             button._action = action;

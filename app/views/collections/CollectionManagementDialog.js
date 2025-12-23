@@ -10,7 +10,7 @@ function CollectionManagementDialog (collectionPanel) {
     this.bind("click", this.handleItemClick, this.collectionContainer);
 
     this.collectionContainer.addEventListener("click",function (event) {
-        var node = Dom.findUpwardForNodeWithData(event.target, "_collection");
+        var node = NDom.findUpwardForNodeWithData(event.target, "_collection");
         var check = node.getAttribute("selected");
         if(check == "true") {
             node.setAttribute("selected", "false");
@@ -20,7 +20,7 @@ function CollectionManagementDialog (collectionPanel) {
     }, false);
 
     this.collectionContainer.addEventListener("mouseover",function (event) {
-        var node = Dom.findUpwardForNodeWithData(event.target, "_collection");
+        var node = NDom.findUpwardForNodeWithData(event.target, "_collection");
         if (node) {
             if (this.activeNode) {
                 this.activeNode.removeAttribute("active");
@@ -33,7 +33,7 @@ function CollectionManagementDialog (collectionPanel) {
 
     var thiz = this;
     this.collectionContainer.addEventListener("dblclick",function (event) {
-        var top = Dom.findUpwardForNodeWithData(event.target, "_collection");
+        var top = NDom.findUpwardForNodeWithData(event.target, "_collection");
         var visible = CollectionManager.isCollectionVisible (top._collection);
         if (!visible) {
             CollectionManager.setCollectionVisible (top._collection, true) ;
@@ -44,7 +44,7 @@ function CollectionManagementDialog (collectionPanel) {
 
     this.bind("dragstart", function (ev) {
         nsDragAndDrop.dragStart(ev);
-        var node = Dom.findUpwardForNodeWithData(event.target, "_collection");
+        var node = NDom.findUpwardForNodeWithData(event.target, "_collection");
         if (!node) return;
         ev.dataTransfer.setData("collectionId", node._collection.id);
         ev.dataTransfer.setData("dragType", "collection");
@@ -62,7 +62,7 @@ function CollectionManagementDialog (collectionPanel) {
             this.hoverNode.removeAttribute("hover");
             this.hoverNode = null;
         }
-        var node = Dom.findUpwardForNodeWithData(event.target, "_collection");
+        var node = NDom.findUpwardForNodeWithData(event.target, "_collection");
         if (node) {
             node.setAttribute("hover", "true");
             this.hoverNode = node;
@@ -78,7 +78,7 @@ function CollectionManagementDialog (collectionPanel) {
             this.hoverNode.removeAttribute("hover");
             this.hoverNode = null;
         }
-        var node = Dom.findUpwardForNodeWithData(event.target, "_collection");
+        var node = NDom.findUpwardForNodeWithData(event.target, "_collection");
         if (!node) return;
         var draggedCollectionId = ev.dataTransfer.getData("collectionId");
         var draggedCollectionId = nsDragAndDrop.getData("collectionId");
@@ -104,7 +104,7 @@ CollectionManagementDialog.prototype.getCollectionIcon = function (collection) {
 };
 
 CollectionManagementDialog.prototype.handleItemClick = function (event) {
-    var control = Dom.findUpwardForNodeWithData(event.target, "_role");
+    var control = NDom.findUpwardForNodeWithData(event.target, "_role");
     if (!control) return;
     var view = control._view;
     var collection = view._collection;
@@ -136,7 +136,7 @@ CollectionManagementDialog.prototype.createCollectionView = function (collection
 
     var holder = {};
 
-    var view = Dom.newDOMElement({
+    var view = NDom.newDOMElement({
         _name: "vbox",
         "class": "CollectionView",
         _children: [
@@ -223,7 +223,7 @@ CollectionManagementDialog.prototype.createCollectionView = function (collection
 }
 
 CollectionManagementDialog.prototype.loadCollectionList = function () {
-    Dom.empty(this.collectionContainer);
+    NDom.empty(this.collectionContainer);
     var collections = CollectionManager.shapeDefinition.collections;
     for( var i = 0; i < collections.length; i++) {
         this.collectionContainer.appendChild(this.createCollectionView(collections[i]));
