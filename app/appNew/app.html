@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'"
+    />
+    <meta
+      http-equiv="X-Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'"
+    />
+    <link rel="stylesheet" href="./css/app.css"/>
+    <script defer type="module" src="app.js"></script>
+    <title>Pencil App</title>
+  </head>
+    <body>
+        <!-- APP PANEL -->
+        <app-pane>
+            <strong slot="app-name">PENCIL</strong>
+        </app-pane>
+        
+        <!-- LOADER -->
+        <div id="bootingIndicator">
+          <img alt="Pencil loader" src="./css/images/logo-shadow.png" />
+        </div>
+    </body>
+</html>

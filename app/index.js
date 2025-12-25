@@ -1,7 +1,8 @@
 "use strict";
 
-const {app, protocol, shell, BrowserWindow} = require("electron");
-const pkg      = require("./package.json");
+const { app, protocol, shell, BrowserWindow} = require("electron");
+const { MacOSToolbar } = require('./views/toolbars/MacOSToolbar');
+
 const fs       = require("fs");
 const path     = require("path");
 const os       = require("os");
@@ -15,18 +16,27 @@ app.commandLine.appendSwitch("disable-site-isolation-trials");
 const remoteMain = require("@electron/remote/main");
 remoteMain.initialize();
 
-// Disable hardware acceleration by default for Linux
-// TODO: implement a setting for this one and requires a restart after changing that value
-if (process.platform.trim().toLowerCase() == "linux" && app.disableHardwareAcceleration) {
-    var useHWAConfig = getAppConfig("core.useHardwareAcceleration");
-    console.log("useHWAConfig: ", useHWAConfig);
-    if (process.argv.indexOf("--with-hwa") < 0 && !useHWAConfig) {
-        console.log("**************** Hardware acceleration disabled for Linux.");
-        app.disableHardwareAcceleration();
-    } else {
-        console.log("Hardware acceleration forcibly enabled.");
-    }
-}
+const PLATFORM = process.platform.trim().toLowerCase();
+
+const iconFile = PLATFORM == "win32" ? "app.ico" : "css/images/logo-shadow.png";
+const mainWindowProperties = {
+    title: app.name, // FIXME: On Linux is not correct - it uses the html title name
+    autoHideMenuBar: true,
+    webPreferences: {
+        webSecurity: false,
+        allowRunningInsecureContent: true,
+        allowDisplayingInsecureContent: true,
+        defaultEncoding: "UTF-8",
+        nodeIntegration: true,
+        contextIsolation: false,
+        enableRemoteModule: true,
+        experimentalFeatures: true,
+        disableDialogs: true,
+        enableBlinkFeatures: "FontAccess"
+    },
+    icon: path.join(__dirname, iconFile)
+};
+
 function getAppConfig(name) {
     var p = path.join(path.join(os.homedir(), ".pencil"), "config.json");
     try {
@@ -37,77 +47,72 @@ function getAppConfig(name) {
         return undefined;
     }
 }
+
+// Disable hardware acceleration by default for Linux
+// TODO: implement a setting for this one and requires a restart after changing that value
+if (PLATFORM == "linux" && app.disableHardwareAcceleration) {
+    var useHWAConfig = getAppConfig("core.useHardwareAcceleration");
+    console.log("useHWAConfig: ", useHWAConfig);
+    if (process.argv.indexOf("--with-hwa") < 0 && !useHWAConfig) {
+        console.log("**************** Hardware acceleration disabled for Linux.");
+        app.disableHardwareAcceleration();
+    } else {
+        console.log("Hardware acceleration forcibly enabled.");
+    }
+}
+
 global.sharedObject = { appArguments: process.argv };
 
-var handleRedirect = (e, url) => {
+const handleRedirect = (e, url) => {
     e.preventDefault();
     shell.openExternal(url);
 }
 
 var mainWindow = null;
-function createWindow() {
-    var mainWindowProperties = {
-        title: pkg.name,
-        autoHideMenuBar: true,
-        webPreferences: {
-          webSecurity: false,
-          allowRunningInsecureContent: true,
-          allowDisplayingInsecureContent: true,
-          defaultEncoding: "UTF-8",
-          nodeIntegration: true,
-          contextIsolation: false,
-          enableRemoteModule: true,
-          experimentalFeatures: true,
-          disableDialogs: true,
-          enableBlinkFeatures: "FontAccess"
-        },
-    };
-
-    var iconFile = process.platform == "win32" ? "app.ico" : "css/images/logo-shadow.png";
-    mainWindowProperties.icon = path.join(__dirname, iconFile);
-
+const createWindow = () => {
     mainWindow = new BrowserWindow(mainWindowProperties);
     remoteMain.enable(mainWindow.webContents)
 
-    var devEnable = false;
-    if (process.argv.indexOf("--enable-dev") >= 0) {
+    let devEnable = false;
+    let entrypoint = __dirname + "/app.xhtml";
+
+    // ! DEBUG console
+    if (process.argv.includes("--enable-dev")) {
         devEnable = true;
     } else if (process.env.PENCIL_ENV === "development") {
         devEnable = true;
     }
 
+    // ! RENDER new app
+    if( process.argv.includes('--new-app') ){
+        entrypoint = __dirname + "/appNew/app.html"
+    }
+
     app.devEnable = devEnable;
 
-    //mainWindow.hide();
-    mainWindow.maximize();
-
     if (devEnable) {
-        //mainWindow.webContents.openDevTools();
+        mainWindow.webContents.openDevTools();
     } else {
         mainWindow.setMenu(null);
     }
 
-    var mainUrl = "file://" + __dirname + "/app.xhtml";
-    mainWindow.loadURL(mainUrl);
-    mainWindow.show();
-
-    if (devEnable) mainWindow.webContents.openDevTools();
+    mainWindow.loadFile(entrypoint);
 
     mainWindow.on("closed", function() {
         mainWindow = null;
         app.exit(0);
     });
 
-    if (process.platform == 'darwin') {
-        var {MacOSToolbar} = require('./views/toolbars/MacOSToolbar');
+    if (PLATFORM == 'darwin') {
         MacOSToolbar.createMacOSToolbar();
     }
 
+    mainWindow.maximize();
     mainWindow.webContents.on("will-navigate", handleRedirect);
     mainWindow.webContents.on("new-window", handleRedirect);
 
     app.mainWindow = mainWindow;
-    global.mainWindow = mainWindow;
+    globalThis.mainWindow = mainWindow;
 
     // const updater = require('./updater');
     // setTimeout(function() {
@@ -117,7 +122,7 @@ function createWindow() {
 
 // Quit when all windows are closed.
 app.on("window-all-closed", function() {
-    if (process.platform !== "darwin") {
+    if (PLATFORM !== "darwin") {
         app.quit();
     }
 });
@@ -149,6 +154,7 @@ app.on('ready', function() {
     const globalShortcutMainService = require("./tools/global-shortcut-main.js");
     globalShortcutMainService.start();
 });
+
 app.on("activate", function() {
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.

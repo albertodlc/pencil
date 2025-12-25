@@ -1,11 +1,10 @@
 const {Menu, app} = require('electron');
-const pkg = require("../../package.json");
 
 exports.MacOSToolbar = {
 
     createMacOSToolbar() {
         var template = [{
-            label: pkg.name,
+            label: app.name,
             submenu: [
                 { label: "Quit", accelerator: "Command+Q", click: function() { app.quit(); }}
             ]}, {

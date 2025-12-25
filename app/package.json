@@ -133,6 +133,7 @@
     "install-app-deps": "node ./node_modules/electron-builder/out/install-app-deps.js",
     "start": "npx electron .",
     "start:dev": "npx electron . --enable-dev --enable-transparent-visuals",
+    "start:dev:new": "npx electron . --new-app --enable-dev --enable-transparent-visuals",
     "start:mac": "npx electron . --enable-dev",
     "clean": "rimraf dist",
     "pack": "build",
