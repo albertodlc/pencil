@@ -36,13 +36,6 @@
     flex: 1;
 }
 
-.content__canvas-area {
-    /* height: 100%; */
-
-    flex: 4;
-    padding: 7px;
-}
-
 .content__properties-area {
     background: #E5E5E5;
 

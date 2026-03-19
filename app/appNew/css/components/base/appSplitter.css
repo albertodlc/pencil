@@ -1,0 +1,12 @@
+.splitter {
+    height: 100%;
+
+    width: 1.25px;
+    cursor: col-resize;
+    background: rgba(0, 0, 0, 0.02);
+    transition: background 0.2s;
+}
+
+.splitter:hover {
+    background-color: #3E7DB5; /* Highlight when hovering */
+}

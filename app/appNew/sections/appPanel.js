@@ -1,7 +1,8 @@
 import { AppLogoHelper } from "../components/base/appLogo.js";
+import { AppSplitterHelper } from "../components/base/appSplitter.js";
 import { AppToolbarHelper } from "../components/base/appToolbar.js";
-import { AppCanvas, AppCanvasHelper } from "../components/drawing/appCanvas.js";
 import { AppMenuHelper } from "../components/navigation/appMenu.js";
+import { AppCanvasAreaHelper } from "./appCanvasArea.js";
 
 export class AppPanel extends HTMLElement {
 
@@ -20,13 +21,25 @@ export class AppPanel extends HTMLElement {
 
     // ! EVENTS
     connectedCallback(){
+        this.addEventListener(AppPanelHelper.EVENTS.DOC_CREATED, this);
+
         if( !this.#mounted ){
             this.#render();
             this.#mounted = true;
         }
     }
 
-    disconnectedCallback(){}
+    disconnectedCallback(){
+        this.removeEventListener(AppPanelHelper.EVENTS.DOC_CREATED, this);
+    }
+
+    handleEvent(event){
+        const { target, type } = event;
+
+        if( type === AppPanelHelper.EVENTS.DOC_CREATED ){
+            this.#refs.canvasArea.createCanvas();
+        }
+    }
 
     // ! RENDER
     #render(){
@@ -41,24 +54,14 @@ export class AppPanel extends HTMLElement {
             </div>
             <div class="content">
                 <div class="content__shapes-area">SHAPES</div>
-                <div id="canvas-area" class="content__canvas-area"></div>
+                <app-splitter></app-splitter>
+                <app-canvas-area></app-canvas-area>
+                <app-splitter></app-splitter>
                 <div class="content__properties-area">PROPERTIES</div>
             </div>
         </div>`;
 
-        this.#refs.canvasArea = this.shadowRoot.querySelector('#canvas-area');
-    }
-
-    #cleanCanvasArea(){
-        this.#refs.canvasArea.innerHTML = '';
-    }
-
-    // ! APIs
-    createCanvas(){
-        const canvas = new AppCanvas();
-
-        this.#cleanCanvasArea();
-        this.#refs.canvasArea.appendChild(canvas);
+        this.#refs.canvasArea = this.shadowRoot.querySelector(AppCanvasAreaHelper.TAG);
     }
 
 }
@@ -66,12 +69,18 @@ export class AppPanel extends HTMLElement {
 export class AppPanelHelper {
     static CSS_CLASS = './css/sections/appPanel.css';
     static TAG = 'app-panel';
+    static EVENTS = {
+        DOC_CREATED: 'app-panel:doc-created',
+    }
 
     static define(){
         AppMenuHelper.define();
         AppLogoHelper.define();
         AppToolbarHelper.define();
-        AppCanvasHelper.define();
+        
+        AppSplitterHelper.define();
+
+        AppCanvasAreaHelper.define();
 
         if (!customElements.get(this.TAG)) {
             customElements.define(this.TAG, AppPanel);

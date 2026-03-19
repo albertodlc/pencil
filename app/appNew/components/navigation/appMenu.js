@@ -1,3 +1,5 @@
+import { GLOBAL_EVENTS } from "../../constants/events.js";
+import { AppPanelHelper } from "../../sections/appPanel.js";
 
 // ! MENU
 export class AppMenu extends HTMLElement {
@@ -42,7 +44,8 @@ export class AppMenu extends HTMLElement {
     }
 
     #handleCreateDocument(){
-        this.dispatchEvent(new CustomEvent('document-create-requested', {
+        // TODO: Util class to dispatch events
+        this.dispatchEvent(new CustomEvent(AppPanelHelper.EVENTS.DOC_CREATED, {
             bubbles: true,
             composed: true
         }));
@@ -51,7 +54,7 @@ export class AppMenu extends HTMLElement {
     }
 
     #handleQuit(){
-        this.dispatchEvent(new CustomEvent('app-close-requested', {
+        this.dispatchEvent(new CustomEvent(GLOBAL_EVENTS.QUIT_APP, {
             bubbles: true,
             composed: true
         }));
