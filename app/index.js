@@ -1,6 +1,6 @@
 "use strict";
 
-const { app, protocol, shell, BrowserWindow} = require("electron");
+const { ipcMain, app, protocol, shell, BrowserWindow} = require("electron");
 const { MacOSToolbar } = require('./views/toolbars/MacOSToolbar');
 
 const fs       = require("fs");
@@ -17,23 +17,44 @@ const remoteMain = require("@electron/remote/main");
 remoteMain.initialize();
 
 const PLATFORM = process.platform.trim().toLowerCase();
+const IS_NEW_APP = process.argv.includes('--new-app');
+const IS_DEV = process.argv.includes("--enable-dev") || process.env.PENCIL_ENV === "development";
+
+// ! NEW
+const newAppWindowProps = {
+    webPreferences: {
+        preload: path.join(__dirname, 'preload.js'),
+        // TODO: Change when the migration is ready
+        contextIsolation: true, // Default in new Electron
+        nodeIntegration: false, // Default in new Electron
+    }
+}
+
+let webPreferencesProps = {
+    webSecurity: false,
+    allowRunningInsecureContent: true,
+    allowDisplayingInsecureContent: true,
+    defaultEncoding: "UTF-8",
+    nodeIntegration: true,
+    contextIsolation: false,
+    enableRemoteModule: true,
+    experimentalFeatures: true,
+    disableDialogs: true,
+    enableBlinkFeatures: "FontAccess",
+}
+
+if(IS_NEW_APP){
+    webPreferencesProps = {
+        ...webPreferencesProps,
+        ...newAppWindowProps.webPreferences
+    };
+}
 
 const iconFile = PLATFORM == "win32" ? "app.ico" : "css/images/logo-shadow.png";
 const mainWindowProperties = {
     title: app.name, // FIXME: On Linux is not correct - it uses the html title name
     autoHideMenuBar: true,
-    webPreferences: {
-        webSecurity: false,
-        allowRunningInsecureContent: true,
-        allowDisplayingInsecureContent: true,
-        defaultEncoding: "UTF-8",
-        nodeIntegration: true,
-        contextIsolation: false,
-        enableRemoteModule: true,
-        experimentalFeatures: true,
-        disableDialogs: true,
-        enableBlinkFeatures: "FontAccess"
-    },
+    webPreferences: webPreferencesProps,
     icon: path.join(__dirname, iconFile)
 };
 
@@ -77,14 +98,12 @@ const createWindow = () => {
     let entrypoint = __dirname + "/app.xhtml";
 
     // ! DEBUG console
-    if (process.argv.includes("--enable-dev")) {
-        devEnable = true;
-    } else if (process.env.PENCIL_ENV === "development") {
+    if (IS_DEV) {
         devEnable = true;
     }
 
     // ! RENDER new app
-    if( process.argv.includes('--new-app') ){
+    if( IS_NEW_APP ){
         entrypoint = __dirname + "/appNew/app.html"
     }
 
@@ -171,4 +190,13 @@ app.on("will-quit", function () {
 
 process.on('uncaughtException', function (error) {
     console.error(error);
+});
+
+
+// ! NEW
+// Listen for the 'quit-app' message from the renderer
+ipcMain.on('quit-app', () => {
+    // This will trigger "window-all-closed" and "will-quit"
+    // ensuring your shortcuts are unregistered correctly.
+    app.quit(); 
 });

@@ -323,9 +323,11 @@ Pencil.getCurrentTarget = function () {
     var canvas = Pencil.activeCanvas;
     return canvas ? canvas.currentController : null;
 };
+
 Pencil.isCollectionPaneVisibled = function () {
     return false;
 }
+
 Pencil._hideCollectionPane = function (c) {
     if (c <= 0) {
         Pencil.sideBoxFloat.style.display = "none";
@@ -336,6 +338,7 @@ Pencil._hideCollectionPane = function (c) {
         window.setTimeout("Pencil._hideCollectionPane(" + parseFloat(c - 0.5) + ")", 1);
     }
 };
+
 Pencil.hideCollectionPane = function () {
     if (!Pencil.hideCollectionPaneTimer) {
         if (Util.platform == "Linux") {
@@ -345,6 +348,7 @@ Pencil.hideCollectionPane = function () {
         }
     }
 }
+
 Pencil.setUpSizeGrip = function () {
     var box = Pencil.sideBoxFloat.getBoundingClientRect();
     var sizeGrip = document.getElementById("collectionPaneSizeGrip");
@@ -352,6 +356,7 @@ Pencil.setUpSizeGrip = function () {
     sizeGrip.setAttribute("top", (box.height - 19));
     sizeGrip.style.display = Pencil.isCollectionPaneVisibled() ? '' : "none";
 };
+
 Pencil._showCollectionPane = function (c) {
     if (c == 0) {
         Pencil.sideBoxFloat.style.opacity = 0;
@@ -363,6 +368,7 @@ Pencil._showCollectionPane = function (c) {
         window.setTimeout("Pencil._showCollectionPane(" + parseFloat(c + 0.5) + ")", 1);
     }
 };
+
 Pencil.showCollectionPane = function () {
     if (Util.platform == "Linux") {
         Pencil.sideBoxFloat.style.opacity = 1;
@@ -372,6 +378,7 @@ Pencil.showCollectionPane = function () {
         Pencil._showCollectionPane(0);
     }
 };
+
 Pencil.toggleCollectionPane = function (dockable) {
     if (!dockable) {
         if (Config.get("collectionPane.floating") == true) {
@@ -406,6 +413,7 @@ Pencil.toggleCollectionPane = function (dockable) {
         document.getElementById("floatingCollectionPane").setAttribute("checked", Config.get("collectionPane.floating") == false);
     }
 };
+
 Pencil.handlePropertiesCommand = function () {
     if (Pencil.activeCanvas.currentController) {
         Pencil.activeCanvas._showPropertyDialog();
@@ -418,14 +426,17 @@ Pencil.handlePropertiesCommand = function () {
         Pencil.controller._pageToEdit = null;
     }
 };
+
 Pencil.updateUndoRedoMenu = function (currentAction, prevAction) {
 //    Pencil.undoMenuItem.setAttribute("label", Util.getMessage("menu.undo.label") + currentAction);
 //    Pencil.redoMenuItem.setAttribute("label", Util.getMessage("menu.redo.label") + prevAction);
     Pencil.activeCanvas.updateContextMenu(currentAction, prevAction);
 };
+
 Pencil._getCanvasPadding = function () {
     return 10;
 };
+
 Object.defineProperty(Pencil, "activeCanvas", {
     set: function (canvas) {
         Canvas.activeCanvas = canvas;

@@ -10,6 +10,7 @@ __extend(Menu, MainMenu);
 MainMenu.prototype.getTemplatePath = function () {
     return this.getTemplatePrefix() + "menus/Menu.xhtml";
 };
+
 MainMenu.prototype.shouldCloseOnBlur = function(event) {
     var thiz = this;
 

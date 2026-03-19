@@ -1,0 +1,15 @@
+.menu__option {
+    padding: 3px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 3px;
+
+    font-size: 1.2em;
+}
+
+.menu__option:hover {
+    background: #3E7DB5;
+    color: #ffffff;
+}

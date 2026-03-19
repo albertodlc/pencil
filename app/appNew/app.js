@@ -1,1 +1,2 @@
-import './sections/applicationPane.js';
+import './sections/appPanel.js';
+

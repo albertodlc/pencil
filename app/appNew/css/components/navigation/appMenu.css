@@ -1,0 +1,88 @@
+
+.menu {
+    position: relative;
+    display: inline-block; /* Keeps the div from taking full width */
+}
+
+.menu__dialog {
+    position: absolute;
+    margin: 0; /* Important: kills the auto-centering */
+
+    /* Position relative to the parent div */
+    /* Places it right under the button */
+    top: 100%;
+    left: 0;
+
+    /* Style */
+    border: #d8d8d8; 
+    background: #f2f2f2;
+    padding: 0.5ex;
+    box-shadow: 0em 0.15ex 0.7em rgb(0 0 0 / 30%);
+    transition: opacity 0.4s;
+    box-sizing: border-box;
+
+    width: 225px;
+    /* height: 450px; */
+}
+
+.menu__hamburger {
+    padding: 10px;
+    display: block;
+    cursor: pointer;
+    background: none;
+    color: inherit;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+}
+
+.menu__hamburger:hover {
+    border-radius: 31px;
+    background: #fff;
+}
+
+.menu_hamburger:hover .menu__hamburger__bar {
+    background-color: #3E7DB5;
+}
+
+/* Style the hamburger icon bars */
+.menu__hamburger__bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    margin: 5px auto;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    background-color: black;
+}
+
+/* Hide the checkbox completely */
+.menu__checkbox {
+    display: none;
+}
+
+/* Default state: Hide the dialog */
+.menu__dialog {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin: 0;
+}
+
+/* "Open" state: When checkbox is checked, show the dialog */
+.menu__checkbox:checked ~ .menu__dialog {
+    display: block;
+}
+
+/* Optional: Transform the hamburger into an 'X' when open */
+.menu__checkbox:checked + .menu_hamburger .menu__hamburger__bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+.menu__checkbox:checked + .menu_hamburger .menu__hamburger__bar:nth-child(2) {
+    opacity: 0;
+}
+.menu__checkbox:checked + .menu_hamburger .menu__hamburger__bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
